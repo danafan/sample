@@ -9,6 +9,7 @@ const yyxq = resolve=>System.import('@/pages/IndexPages/yyxq')
 const yybs_index = resolve=>System.import('@/pages/IndexPages/yybs_index')
 const fqjy_index = resolve=>System.import('@/pages/IndexPages/fqjy_index')
 const yypd_index = resolve=>System.import('@/pages/IndexPages/yypd_index')
+const pdxq_index = resolve=>System.import('@/pages/IndexPages/pdxq_index')
 const scan_index = resolve=>System.import('@/pages/ScanPages/scan_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
 const success = resolve=>System.import('@/pages/CommonPages/success')
@@ -57,6 +58,11 @@ const router = new Router({
 		path: '/yypd_index',
 		name:"样衣盘点",
 		component: yypd_index
+	},
+	{
+		path: '/pdxq_index',
+		name:"盘点详情",
+		component: pdxq_index
 	},
 	{
 		path: '/success',
