@@ -25,13 +25,22 @@
 			</div>
 		</div>
 		<div class="bottom_box">
-			<div class="all_delete" @click="modelFn('2')">全部清空</div>
+			<div class="all_delete" @click="modelFn('2')" v-if="page_type == 'yybd' && listArray.length > 0">全部清空</div>
 			<div class="button_box">
-				<div class="button" @click="scanYyCode">
+				<!-- 样衣绑定 -->
+				<div class="button" @click="scanYyCode" v-if="page_type == 'yybd'">
 					<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
 					<div class="scan_text">扫描样衣码</div>
 				</div>
-				<div class="button rk_button" @click="modelFn('3')">入库</div>
+				<!-- 样衣归还 -->
+				<div class="button" @click="scanYyCode" v-if="page_type == 'yygh'">
+					<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
+					<div class="scan_text">扫码</div>
+				</div>
+				<!-- 样衣绑定 -->
+				<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">入库</div>
+				<!-- 样衣归还 -->
+				<div class="button rk_button" @click="modelFn('4')" v-if="page_type == 'yygh'">归还</div>
 			</div>
 		</div>
 		<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
@@ -57,11 +66,16 @@
 				showPopup:false,			//选择样衣间
 				yyj_list:['第一样衣间','第二样衣间','第三样衣间','第四样衣间','第五样衣间','第六样衣间','第七样衣间','第八样衣间'],
 				activeYyjIndex:0,		//当前选中的样衣间
+				page_type:"yybd",		//页面来源
 			}
+		},
+		created(){
+			//页面来源
+			this.page_type = this.$route.query.type;
 		},
 		methods:{
 			//点击询问
-			modelFn(type){	//1:删除单条；2:全部清空；3:入库
+			modelFn(type){	//1:删除单条；2:全部清空；3:入库；3:归还
 				this.showModel = true;
 				this.modelType = type;
 				switch(this.modelType){
@@ -73,6 +87,9 @@
 					break;
 					case '3':
 					this.value = '即将入库123件商品？';
+					break;
+					case '4':
+					this.value = '确认归还样衣吗？';
 					break;
 				}
 			},
@@ -92,16 +109,23 @@
 						case '3':
 							this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
 						break;
+						case '4':
+							this.$router.push('/success?value=' + '归还成功' + '&img_url=gh');
+						break;
 					}
 				}
 			},
 			//点击进入详情
 			goDetail(){
-				this.$router.push('/yyxq');
+				this.$router.push('/yyxq?type=' + this.page_type);
 			},
 			//点击扫描样衣码
 			scanYyCode(){
-				this.$router.push('/bmbd_index');
+				if(this.page_type == 'yybd'){	//样衣绑定
+					this.$router.push('/bmbd_index');
+				}else{	//样衣归还
+					console.log('样衣归还扫码');
+				}
 			},
 			//切换样衣间
 			checkYyj(index){

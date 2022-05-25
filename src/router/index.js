@@ -7,6 +7,8 @@ const yybd_index = resolve=>System.import('@/pages/IndexPages/yybd_index')
 const bmbd_index = resolve=>System.import('@/pages/IndexPages/bmbd_index')
 const yyxq = resolve=>System.import('@/pages/IndexPages/yyxq')
 const yybs_index = resolve=>System.import('@/pages/IndexPages/yybs_index')
+const fqjy_index = resolve=>System.import('@/pages/IndexPages/fqjy_index')
+const yypd_index = resolve=>System.import('@/pages/IndexPages/yypd_index')
 const scan_index = resolve=>System.import('@/pages/ScanPages/scan_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
 const success = resolve=>System.import('@/pages/CommonPages/success')
@@ -28,7 +30,7 @@ const router = new Router({
 	},
 	{
 		path: '/yybd_index',
-		name:"样衣绑定",
+		name:"样衣绑定/样衣归还",
 		component: yybd_index
 	},
 	{
@@ -45,6 +47,16 @@ const router = new Router({
 		path: '/yybs_index',
 		name:"报损原因",
 		component: yybs_index
+	},
+	{
+		path: '/fqjy_index',
+		name:"发起借样",
+		component: fqjy_index
+	},
+	{
+		path: '/yypd_index',
+		name:"样衣盘点",
+		component: yypd_index
 	},
 	{
 		path: '/success',

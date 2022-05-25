@@ -6,7 +6,11 @@
 		<div class="info_row">商品编码：234234234</div>
 		<div class="info_row">款式编码：234234234</div>
 		<div class="info_row">供应商款号：234234234</div>
-		<div class="info_row">样衣码：234234234</div>
+		<div class="info_row" v-if="page_type == 'yybd'">样衣码：234234234</div>
+		<div class="info_row" v-if="page_type == 'yygh'">样衣状态：借用中</div>
+		<div class="info_row" v-if="page_type == 'yygh'">提交人：哈哈哈</div>
+		<div class="info_row" v-if="page_type == 'yygh'">借样原因：拍照</div>
+		<div class="info_row" v-if="page_type == 'yygh'">备注：这就是备注</div>
 		<van-image-preview v-model:show="showPreImg" :images="images" :start-position="activeIndex">
 		</van-image-preview>
 	</div>
@@ -43,7 +47,12 @@
 				images:['https://cdn.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 				'https://cdn.jsdelivr.net/npm/@vant/assets/apple-2.jpeg','https://cdn.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 				'https://cdn.jsdelivr.net/npm/@vant/assets/apple-2.jpeg'],	//图片列表
+				page_type:"yybd",			//页面来源
 			}
+		},
+		created(){
+			//页面来源
+			this.page_type = this.$route.query.type;
 		},
 		methods:{
 			//预览图片

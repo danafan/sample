@@ -5,19 +5,19 @@
 			<div class="title">德儿电子商务样衣系统</div>
 			<div class="card_box">
 				<div class="list_box">
-					<div class="item" @click="$router.push('/yybd_index')">
+					<div class="item" @click="$router.push('/yybd_index?type=yybd')">
 						<img class="item_icon" src="../../static/yybd_icon.png">
 						<div class="item_lable">样衣绑定</div>
 					</div>
-					<div class="item">
+					<div class="item" @click="$router.push('/fqjy_index')">
 						<img class="item_icon" src="../../static/fqjy_icon.png">
 						<div class="item_lable">发起借样</div>
 					</div>
-					<div class="item">
+					<div class="item" @click="$router.push('/yybd_index?type=yygh')">
 						<img class="item_icon" src="../../static/yygh_icon.png">
 						<div class="item_lable">样衣归还</div>
 					</div>
-					<div class="item">
+					<div class="item" @click="$router.push('/yypd_index')">
 						<img class="item_icon" src="../../static/yypd_icon.png">
 						<div class="item_lable">样衣盘点</div>
 					</div>
