@@ -21,7 +21,7 @@
 						<img class="item_icon" src="../../static/yypd_icon.png">
 						<div class="item_lable">样衣盘点</div>
 					</div>
-					<div class="item">
+					<div class="item" @click="$router.push('/zjcl_index')">
 						<img class="item_icon" src="../../static/zjcl_icon.png">
 						<div class="item_lable">折价处理</div>
 					</div>

@@ -10,8 +10,13 @@ const yybs_index = resolve=>System.import('@/pages/IndexPages/yybs_index')
 const fqjy_index = resolve=>System.import('@/pages/IndexPages/fqjy_index')
 const yypd_index = resolve=>System.import('@/pages/IndexPages/yypd_index')
 const pdxq_index = resolve=>System.import('@/pages/IndexPages/pdxq_index')
+const zjcl_index = resolve=>System.import('@/pages/IndexPages/zjcl_index')
 const scan_index = resolve=>System.import('@/pages/ScanPages/scan_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
+const bdjl_index = resolve=>System.import('@/pages/MinePages/bdjl_index')
+const wdjy_index = resolve=>System.import('@/pages/MinePages/wdjy_index')
+const jyxq = resolve=>System.import('@/pages/MinePages/jyxq')
+
 const success = resolve=>System.import('@/pages/CommonPages/success')
 
 
@@ -63,6 +68,26 @@ const router = new Router({
 		path: '/pdxq_index',
 		name:"盘点详情",
 		component: pdxq_index
+	},
+	{
+		path: '/zjcl_index',
+		name:"折价处理",
+		component: zjcl_index
+	},
+	{
+		path: '/bdjl_index',
+		name:"绑定记录",
+		component: bdjl_index
+	},
+	{
+		path: '/wdjy_index',
+		name:"我的借样",
+		component: wdjy_index
+	},
+	{
+		path: '/jyxq',
+		name:"借样详情",
+		component: jyxq
 	},
 	{
 		path: '/success',

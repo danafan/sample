@@ -8,7 +8,7 @@
   export default {
     name: 'app',
     created(){
-      this.$router.push('/yypd_index')
+      this.$router.push('/index')
     }
   }
 </script>

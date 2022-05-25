@@ -31,7 +31,7 @@
 	.info_row{
 		margin-top: 15rem;
 		font-size: 14rem;
-		color: 000000;
+		color: #000000;
 	}
 }
 
