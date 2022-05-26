@@ -14,14 +14,14 @@
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/wdjy_index')">
+		<div class="option_item" @click="$router.push('/wdjy_index?page_type=wdjy')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/wdjy_icon.png">
 				<div class="option_label">我的借样</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item">
+		<div class="option_item" @click="$router.push('/wdjy_index?page_type=jyjl')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/jyjl_icon.png">
 				<div class="option_label">借样记录</div>

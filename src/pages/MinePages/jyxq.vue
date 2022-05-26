@@ -5,13 +5,13 @@
 			<div class="info_row">款式编码：234234234</div>
 			<div class="info_row">供应商款号：234234234</div>
 			<div class="padding_div"></div>
-			<div class="tab_row">
+			<div class="tab_row" v-if="yy_type == 2">
 				<div class="tab_item" :class="{'active_item':active_index == 0}" @click="checkTab(0)">全部</div>
 				<div class="tab_item" :class="{'active_item':active_index == 1}" @click="checkTab(1)">报损</div>
 				<div class="tab_item" :class="{'active_item':active_index == 2}" @click="checkTab(2)">待还</div>
 				<div class="tab_item" :class="{'active_item':active_index == 3}" @click="checkTab(3)">已还</div>
 			</div>
-			<van-list v-model:loading="loading" :finished="finished" @load="loadMore"
+			<van-list v-model:loading="loading" :finished="finished" @load="loadMore"  v-if="yy_type == 2"
 			>
 			<div class="yy_item" v-for="item in listArray">
 				<img class="yy_img" src="../../static/index_back.png">
@@ -105,7 +105,11 @@
 				loading:false,
 				finished:false,
 				listArray:20,
+				yy_type:1,			//详情类型（1:待借用；2:已借用；3:已拒绝）
 			}
+		},
+		created(){
+			this.yy_type = this.$route.query.type;
 		},
 		methods:{
 			//切换tab

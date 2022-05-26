@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<div class="search_box">
+		<div class="search_box" v-if="page_type == 'jyjl'">
 			<img class="search_icon" src="../../static/search_icon.png">
 			<input class="search_input" type="text" placeholder="搜索借样人" v-model="jyr">
 		</div>
@@ -41,7 +41,12 @@
 				loading:false,
 				finished:false,
 				record_list:10,		//列表
+				page_type:'',		//页面来源
 			}
+		},
+		created(){
+			//页面来源
+			this.page_type = this.$route.query.page_type;
 		},
 		methods:{
 			//切换选中tab
@@ -54,7 +59,16 @@
 			},
 			//借样详情
 			goJyxq(){
-				this.$router.push('/jyxq');
+				if(this.tab_index == 1){	//待借样
+					if(this.page_type == 'wdjy'){	//我的借样
+						this.$router.push('/jyxq?type=' + this.tab_index);
+					}else{	//借样记录
+						this.$router.push('/jyjlxq');
+					}
+				}else{
+					this.$router.push('/jyxq?type=' + this.tab_index);
+				}
+				
 			}
 		}
 	}

@@ -35,7 +35,6 @@
 </div>
 </template>
 <script>
-	import DialogModel from '../../components/dialog_model.vue'
 	export default{
 		data(){
 			return{

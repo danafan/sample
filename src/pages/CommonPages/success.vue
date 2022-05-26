@@ -4,6 +4,7 @@
 		<img class="success_icon" src="../../static/bs_page_icon.png" v-if="img_url =='bs'">
 		<img class="success_icon" src="../../static/jy_page_icon.png" v-if="img_url =='jy'">
 		<img class="success_icon" src="../../static/gh_page_icon.png" v-if="img_url =='gh'">
+		<img class="success_icon" src="../../static/jyjj_page_icon.png" v-if="img_url =='jyjj'">
 		<div class="toast">{{toast_value}}</div>
 		<BigButton button_txt="返回首页" @callback="callBack" v-if="showBut == '1'"></BigButton>
 	</div>

@@ -15,6 +15,7 @@ const scan_index = resolve=>System.import('@/pages/ScanPages/scan_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
 const bdjl_index = resolve=>System.import('@/pages/MinePages/bdjl_index')
 const wdjy_index = resolve=>System.import('@/pages/MinePages/wdjy_index')
+const jyjlxq = resolve=>System.import('@/pages/MinePages/jyjlxq')
 const jyxq = resolve=>System.import('@/pages/MinePages/jyxq')
 
 const success = resolve=>System.import('@/pages/CommonPages/success')
@@ -88,6 +89,11 @@ const router = new Router({
 		path: '/jyxq',
 		name:"借样详情",
 		component: jyxq
+	},
+	{
+		path: '/jyjlxq',
+		name:"借样记录详情",
+		component: jyjlxq
 	},
 	{
 		path: '/success',
