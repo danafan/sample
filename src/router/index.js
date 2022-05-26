@@ -14,7 +14,11 @@ const zjcl_index = resolve=>System.import('@/pages/IndexPages/zjcl_index')
 const scan_index = resolve=>System.import('@/pages/ScanPages/scan_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
 const bdjl_index = resolve=>System.import('@/pages/MinePages/bdjl_index')
+const bdjlxq = resolve=>System.import('@/pages/MinePages/bdjlxq')
 const wdjy_index = resolve=>System.import('@/pages/MinePages/wdjy_index')
+const zcjl_index = resolve=>System.import('@/pages/MinePages/zcjl_index')
+const zcxq = resolve=>System.import('@/pages/MinePages/zcxq')
+const bsjl_index = resolve=>System.import('@/pages/MinePages/bsjl_index')
 const jyjlxq = resolve=>System.import('@/pages/MinePages/jyjlxq')
 const jyxq = resolve=>System.import('@/pages/MinePages/jyxq')
 
@@ -81,6 +85,11 @@ const router = new Router({
 		component: bdjl_index
 	},
 	{
+		path: '/bdjlxq',
+		name:"绑定记录详情",
+		component: bdjlxq
+	},
+	{
 		path: '/wdjy_index',
 		name:"我的借样",
 		component: wdjy_index
@@ -94,6 +103,21 @@ const router = new Router({
 		path: '/jyjlxq',
 		name:"借样记录详情",
 		component: jyjlxq
+	},
+	{
+		path: '/zcjl_index',
+		name:"折价和归还记录首页",
+		component: zcjl_index
+	},
+	{
+		path: '/zcxq',
+		name:"折价和归还记录详情页",
+		component: zcxq
+	},
+	{
+		path: '/bsjl_index',
+		name:"报损记录",
+		component: bsjl_index
 	},
 	{
 		path: '/success',

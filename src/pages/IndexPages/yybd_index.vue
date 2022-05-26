@@ -1,9 +1,19 @@
 <template>
 	<div class="container">
 		<div class="yyj_gly">
-			<div class="row">
+			<!-- 样衣绑定 -->
+			<div class="row" v-if="page_type == 'yybd'">
+				<div class="lable">责任人：</div>
+				<div class="value" @click="checkZrr">
+					<div class="yyj_txt" :class="{'default_txt':zrr != ''}">{{zrr == ''?'选择责任人':zrr}}</div>
+					<img class="right_arrow" src="../../static/right_arrow.png">
+				</div>
+			</div>
+			<div class="row" v-if="page_type == 'yygh'">
 				<div class="lable">管理员：</div>
-				<div class="value">王芳芳</div>
+				<div class="value" @click="checkZrr">
+					王芳芳
+				</div>
 			</div>
 			<div class="row">
 				<div class="lable">样衣间：</div>
@@ -38,7 +48,7 @@
 					<div class="scan_text">扫码</div>
 				</div>
 				<!-- 样衣绑定 -->
-				<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">入库</div>
+				<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">提交</div>
 				<!-- 样衣归还 -->
 				<div class="button rk_button" @click="modelFn('4')" v-if="page_type == 'yygh'">归还</div>
 			</div>
@@ -54,10 +64,12 @@
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi'; // 此方式为整体加载，也可按需进行加载
 	import DialogModel from '../../components/dialog_model.vue'
 	export default{
 		data(){
 			return{
+				zrr:"",						//选中的责任人
 				yyj:"",						//选中的样衣间
 				listArray:['','',''],		//列表
 				showModel:false,			//是否显示弹窗
@@ -101,19 +113,51 @@
 					this.showModel = false;
 					switch(this.modelType){
 						case '1':
-							console.log('删除单条记录')
+						console.log('删除单条记录')
 						break;
 						case '2':
-							console.log('清除全部记录')
+						console.log('清除全部记录')
 						break;
 						case '3':
-							this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
+						this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
 						break;
 						case '4':
-							this.$router.push('/success?value=' + '归还成功' + '&img_url=gh');
+						this.$router.push('/success?value=' + '归还成功' + '&img_url=gh');
 						break;
 					}
 				}
+			},
+			//点击选择责任人
+			checkZrr(){
+				dd.ready(function() {
+				dd.biz.contact.complexPicker({
+	    			title:"测试标题",            //标题
+	    			corpId:"xxx",              //企业的corpId
+	    			multiple:true,            //是否多选
+	    			limitTips:"超出了",          //超过限定人数返回提示
+	    			maxUsers:1000,            //最大可选人数
+	    			pickedUsers:[],            //已选用户
+	    			pickedDepartments:[],          //已选部门
+	    			disabledUsers:[],            //不可选用户
+	    			disabledDepartments:[],        //不可选部门
+	    			requiredUsers:[],            //必选用户（不可取消选中状态）
+	    			requiredDepartments:[],        //必选部门（不可取消选中状态）
+	    			appId:158,              //微应用Id，企业内部应用查看AgentId
+	    			permissionType:"xxx",          //可添加权限校验
+	    			responseUserOnly:false,        //返回人，或者返回人和部门
+	    			startWithDepartmentId:0 ,   //仅支持0和-1
+	    			onSuccess: function(result) {
+				        /**
+				        {
+				            selectedCount:1,                              //选择人数
+				            users:[{"name":"","avatar":"","emplId ":""}]，//返回选人的列表，列表中的对象包含name（用户名），avatar（用户头像），emplId（用户工号）三个字段
+				            departments:[{"id":,"name":"","number":}]//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
+				        }
+				        */
+				    },
+				    onFail : function(err) {}
+				});
+				});
 			},
 			//点击进入详情
 			goDetail(){

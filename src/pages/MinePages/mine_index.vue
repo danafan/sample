@@ -28,21 +28,21 @@
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item">
+		<div class="option_item" @click="$router.push('/zcjl_index?page_type=ghjl')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/ghjl_icon.png">
 				<div class="option_label">归还记录</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item">
+		<div class="option_item" @click="$router.push('/zcjl_index?page_type=cljl')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/zjjl_icon.png">
-				<div class="option_label">折价记录</div>
+				<div class="option_label">样衣处理</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item">
+		<div class="option_item" @click="$router.push('/bsjl_index')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/bsjl_icon.png">
 				<div class="option_label">报损记录</div>

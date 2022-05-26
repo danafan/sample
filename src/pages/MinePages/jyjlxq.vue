@@ -1,50 +1,52 @@
 <template>
 	<div class="container">
-		<div class="yyj_gly">
-			<div class="row">
-				<div>事业部：</div>
-				<div>0001</div>
+		<div class="top_content">
+			<div class="yyj_gly">
+				<div class="row">
+					<div>事业部：</div>
+					<div>0001</div>
+				</div>
+				<div class="row">
+					<div>借衣人：</div>
+					<div>王芳芳</div>
+				</div>
+				<div class="row">
+					<div>提交人：</div>
+					<div>第五样衣间</div>
+				</div>
+				<div class="row">
+					<div>预计归还时间：</div>
+					<div>2019-09-04 12：00</div>
+				</div>
+				<div class="row">
+					<div>借用原因：</div>
+					<div>2019-09-04 12：00</div>
+				</div>
+				<div class="row">
+					<div>备注：</div>
+					<div>2019-09-04 12：00</div>
+				</div>
+				<div class="row">
+					<div>申请时间：</div>
+					<div>2019-09-04 12：00</div>
+				</div>
 			</div>
-			<div class="row">
-				<div>借衣人：</div>
-				<div>王芳芳</div>
+			<van-list v-model:loading="loading"
+			:finished="finished"
+			@load="loadMore"
+			class="van_list"
+			>
+			<div class="yy_item" v-for="item in listArray" @click="goDetail">
+				<img class="yy_img" src="../../static/index_back.png">
+				<div class="yy_content">
+					<div class="yy_row">样衣码：2376452734</div>
+					<div class="yy_row">款式编码：2376452734</div>
+				</div>
+				<img class="delete_icon" src="../../static/delete_icon.png" @click.stop="modelFn('1')">
+				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
-			<div class="row">
-				<div>提交人：</div>
-				<div>第五样衣间</div>
-			</div>
-			<div class="row">
-				<div>预计归还时间：</div>
-				<div>2019-09-04 12：00</div>
-			</div>
-			<div class="row">
-				<div>借用原因：</div>
-				<div>2019-09-04 12：00</div>
-			</div>
-			<div class="row">
-				<div>备注：</div>
-				<div>2019-09-04 12：00</div>
-			</div>
-			<div class="row">
-				<div>申请时间：</div>
-				<div>2019-09-04 12：00</div>
-			</div>
-		</div>
-		<van-list v-model:loading="loading"
-		:finished="finished"
-		@load="loadMore"
-		class="van_list"
-		>
-		<div class="yy_item" v-for="item in listArray" @click="goDetail">
-			<img class="yy_img" src="../../static/index_back.png">
-			<div class="yy_content">
-				<div class="yy_row">样衣码：2376452734</div>
-				<div class="yy_row">款式编码：2376452734</div>
-			</div>
-			<img class="delete_icon" src="../../static/delete_icon.png" @click.stop="modelFn('1')">
-			<img class="right_arrow" src="../../static/right_arrow.png">
-		</div>
-	</van-list>
+		</van-list>
+	</div>
 	<div class="bottom_box">
 		<div class="all_delete" v-if="listArray.length > 0" @click.stop="modelFn('2')">清空记录</div>
 		<div class="smyym_button">
@@ -65,7 +67,7 @@
 	export default{
 		data(){
 			return{
-				listArray:['','','','',''],		//列表
+				listArray:['','','','','','','',''],		//列表
 				loading:false,
 				finished:false,
 				showModel:false,			//是否显示弹窗
@@ -142,6 +144,10 @@
 	display: flex;
 	flex-direction: column;
 	padding: 15rem;
+	.top_content{
+		flex:1;
+		overflow-y: scroll;
+	}
 	.yyj_gly{
 		width: 100%;
 		height: 260rem;
@@ -156,8 +162,6 @@
 		}
 	}
 	.van_list{
-		flex:1;
-		overflow-y: scroll;
 		.yy_item{
 			margin-bottom: 6rem;
 			width: 100%;

@@ -117,7 +117,7 @@
 	align-items: center;
 	.yyj_gly{
 		width: 100%;
-		height: 86rem;
+		height: 120rem;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-around;
