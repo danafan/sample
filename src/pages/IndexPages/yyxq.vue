@@ -52,10 +52,10 @@
 			}
 		},
 		created(){
-			//页面类型（0: 绑定 1: 在库中 2、借用中 3、已报损 4、已处理）
-			this.page_type = this.$route.query.type;
 			//样衣码
 			this.sku_code = this.$route.query.sku_code;
+			//页面类型（0: 绑定 1: 在库中 2、借用中 3、已报损 4、已处理）
+			this.page_type = this.$route.query.type;
 			//批次id
 			this.batch_id = this.$route.query.batch_id;
 			//获取商品详情
@@ -64,10 +64,14 @@
 		methods:{
 			//获取商品详情
 			getGoodsInfo(){
-				let arg = {
-					sku_code:this.sku_code,
-					batch_id:this.batch_id,
-					type:this.page_type
+				var arg = {
+					sku_code:this.sku_code
+				}
+				if(this.page_type){
+					arg.type == this.page_type;
+				}
+				if(this.batch_id){
+					arg.batch_id == this.batch_id;
 				}
 				resource.getGoodsInfo(arg).then(res => {
 					this.yyInfo = res.data;

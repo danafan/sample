@@ -2,71 +2,146 @@
 	<div class="container">
 		<div class="search_box" v-if="page_type == 'jyjl'">
 			<img class="search_icon" src="../../static/search_icon.png">
-			<input class="search_input" type="text" placeholder="搜索借样人" v-model="jyr">
+			<input class="search_input" @change="searchFn" type="text" placeholder="搜索借样人" v-model="jyr">
 		</div>
 		<div class="tab_row">
-			<div class="tab_item djy" :class="{'active_item':tab_index == 1}" @click="checkTab(1)">
+			<div class="tab_item djy" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">
 				待借用
+				<div class="num" :class="{'active_num':tab_index == 0}" v-if="page_type == 'jyjl'">{{unreturnnum}}</div>
 			</div>
-			<div class="tab_item" :class="{'active_item':tab_index == 2}" @click="checkTab(2)">
+			<div class="tab_item" :class="{'active_item':tab_index == 1}" @click="checkTab(1)">
 				已借用
 			</div>
-			<div class="tab_item yjj" :class="{'active_item':tab_index == 3}" @click="checkTab(3)">
+			<div class="tab_item yjj" :class="{'active_item':tab_index == 2}" @click="checkTab(2)">
 				已拒绝
 			</div>
 		</div>
 		<van-list v-model:loading="loading" :finished="finished" @load="loadMore" class="van_list"
 		>
-		<div class="record_item" v-for="item in record_list" @click="goJyxq">
+		<div class="record_item" v-for="item in listArray" @click="goJyxq(item.lending_id)">
 			<div class="first_row">
-				<div class="name">蜂鸟的样衣记录</div>
-				<div class="date">05/11/12:45</div>
+				<div class="name">{{item.user_name}}的样衣记录</div>
+				<div class="date">{{item.apply_time}}</div>
 			</div>
-			<div class="num_row" v-if="tab_index == 2">
-				<div>总数：53</div>
-				<div>已还：23</div>
-				<div>待还：11</div>
-				<div>报损：22</div>
+			<div class="num_row" v-if="tab_index == 1">
+				<div>总数：{{item.total_num}}</div>
+				<div>已还：{{item.return_num}}</div>
+				<div>待还：{{item.un_return_num}}</div>
+				<div>报损：{{item.loss_num}}</div>
 			</div>
 		</div>
 	</van-list>
 </div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
 				jyr:"",				//借样人
-				tab_index:1,		//当前选中的tab下标
-				loading:false,
+				tab_index:0,		//当前选中的tab下标
+				unreturnnum:0,		//获取待借用记录数量
+				page:1,
+				pagesize:10,				
+				listArray:[],				//列表
+				loading:true,
 				finished:false,
-				record_list:10,		//列表
 				page_type:'',		//页面来源
 			}
 		},
 		created(){
 			//页面来源
 			this.page_type = this.$route.query.page_type;
+			if(this.page_type == 'wdjy'){	//我的借样列表	
+				this.myLendingList();
+			}else{		//借样记录
+				this.lendingList();
+				//获取待借用记录数量
+				this.unNeturnNum();
+			}
 		},
 		methods:{
 			//切换选中tab
 			checkTab(index){
 				this.tab_index = index;
+				this.page = 1;
+				this.listArray = [];
+				this.loading = true;
+				this.finished = false;
+				if(this.page_type == 'wdjy'){	//我的借样列表	
+					this.myLendingList();
+				}else{		//借样记录
+					this.lendingList();
+				}
 			},
-			//加载更多
+			//搜索
+			searchFn(){
+				this.page = 1;
+				this.listArray = [];
+				this.loading = true;
+				this.finished = false;
+				if(this.page_type == 'wdjy'){	//我的借样列表	
+					this.myLendingList();
+				}else{		//借样记录
+					this.lendingList();
+				}
+			},
+			//获取更多
 			loadMore(){
-
+				this.page += 1;
+				if(this.page_type == 'wdjy'){	//我的借样列表	
+					this.myLendingList();
+				}else{		//借样记录
+					this.lendingList();
+				}
+			},
+			//获取待借用记录数量
+			unNeturnNum(){
+				resource.unNeturnNum().then(res => {
+					this.unreturnnum = res.data;
+				})
+			},
+			//我的借样列表
+			myLendingList(){
+				let arg = {
+					status:this.tab_index,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.myLendingList(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},
+			//借样记录列表
+			lendingList(){
+				let arg = {
+					status:this.tab_index,
+					user_name:this.jyr,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.lendingList(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
 			},
 			//借样详情
-			goJyxq(){
-				if(this.tab_index == 1){	//待借样
+			goJyxq(lending_id){
+				if(this.tab_index == 0){	//待借样
 					if(this.page_type == 'wdjy'){	//我的借样
-						this.$router.push('/jyxq?type=' + this.tab_index);
+						this.$router.push('/jyxq?type=' + this.tab_index + '&lending_id=' + lending_id);
 					}else{	//借样记录
-						this.$router.push('/jyjlxq');
+						this.$router.push('/jyjlxq?lending_id=' + lending_id);
 					}
 				}else{
-					this.$router.push('/jyxq?type=' + this.tab_index);
+					this.$router.push('/jyxq?type=' + this.tab_index + '&lending_id=' + lending_id);
 				}
 				
 			}
@@ -114,9 +189,27 @@
 			line-height: 38rem;
 			font-size: 14rem;
 			color: #333333;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 		.djy{
 			border-radius: 19rem 0 0 19rem;
+			.num{
+				margin-left: 5rem;
+				height: 18rem;
+				line-height: 18rem;
+				border-radius: 9rem;
+				padding-left: 5rem;
+				padding-right: 5rem;
+				font-size: 13rem;
+				color: #ffffff;
+				background:#1572F9;
+			}
+			.active_num{
+				background-color: #ffffff;
+				color: #333333;
+			}
 		}
 		.yjj{
 			border-radius: 0 19rem 19rem 0;

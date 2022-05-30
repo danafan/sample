@@ -3,8 +3,8 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div class="lable">借样人：</div>
-				<div class="value" @click="showPopup = true">
-					<div class="yyj_txt" :class="{'default_txt':jyr != ''}">{{jyr == ''?'选择借样人':jyr}}</div>
+				<div class="value" @click="checkJyr">
+					<div class="yyj_txt" :class="{'default_txt':user_name != ''}">{{user_name == ''?'选择借样人':user_name}}</div>
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
 			</div>
@@ -23,14 +23,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- 借样人 -->
-		<van-popup v-model:show="showPopup" position="bottom" round>
-			<div class="list">
-				<div class="item" :class="{'active_item':jyrIndex == index}" v-for="(item,index) in jyr_list" @click="checkJyr(index)">{{item}}</div>
-			</div>
-			<div class="padding_box"></div>
-			<div class="item" @click="showPopup = false">取消</div>
-		</van-popup>
 		<!-- 预计归还时间 -->
 		<van-popup v-model:show="showDate" position="bottom" round>
 			<van-datetime-picker
@@ -56,20 +48,19 @@
 	</div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	import BigButton from '../../components/big_button.vue'
 	export default{
 		data(){
 			return{
-				showPopup:false,		//借样人弹窗
-				jyr_list:['借样人1','借样人2','借样人3','借样人4','借样人5'],
-				jyrIndex:0,				//
-				jyr:"",					//选择的借样人
+				user_name:"韩阳",
+				user_id:"15262575868677723",
 				showDate:false,			//归还时间弹窗
 				minDate: new Date(),
 				ghsj_date:"",
 				ghsj:"",				//选择的预计归还时间
 				showJyyy:false,			//借样原因弹窗
-				jyyy_list:['原因1','原因2','原因3','原因4','原因5'],
+				jyyy_list:['拍照','直播','设计'],
 				jyyyIndex:0,				//
 				jyyy:"",					//选择的借样原因
 				remark:"",				//备注
@@ -78,9 +69,9 @@
 		methods:{
 			//切换借样人
 			checkJyr(index){
-				this.jyrIndex = index;
-				this.jyr = this.jyr_list[this.jyrIndex];
-				this.showPopup = false;
+				// this.jyrIndex = index;
+				// this.jyr = this.jyr_list[this.jyrIndex];
+				// this.showPopup = false;
 			},
 			//归还时间确认
 			confirmDate(){
@@ -101,7 +92,33 @@
 			},
 			//发起借样
 			callBack(){
-				this.$router.push('/success?value=' + '已发起借样&img_url=jy');
+				if(this.user_name == ''){
+					this.$toast('请选择借样人');
+					return;
+				}
+				if(this.ghsj == ''){
+					this.$toast('请选择预计归还时间');
+					return;
+				}
+				if(this.jyyy == ''){
+					this.$toast('请选择借样原因');
+					return;
+				}
+				if(this.remark == ''){
+					this.$toast('请输入备注');
+					return;
+				}
+				let arg = {
+					user_name:this.user_name,
+					user_id:this.user_id,
+					return_time:this.ghsj,
+					reason:this.jyyy,
+					remark:this.remark
+				}
+				resource.lendingApply(arg).then(res => {
+					this.$toast(res.msg);
+					this.$router.push('/success?value=' + '已发起借样&img_url=jy');
+				})
 			}
 		},
 		components:{

@@ -1,46 +1,24 @@
 <template>
 	<div class="container">
 		<div class="top_content">
-			<div class="yyj_gly">
-				<div class="row">
-					<div>事业部：</div>
-					<div>0001</div>
-				</div>
-				<div class="row">
-					<div>借衣人：</div>
-					<div>王芳芳</div>
-				</div>
-				<div class="row">
-					<div>提交人：</div>
-					<div>第五样衣间</div>
-				</div>
-				<div class="row">
-					<div>预计归还时间：</div>
-					<div>2019-09-04 12：00</div>
-				</div>
-				<div class="row">
-					<div>借用原因：</div>
-					<div>2019-09-04 12：00</div>
-				</div>
-				<div class="row">
-					<div>备注：</div>
-					<div>2019-09-04 12：00</div>
-				</div>
-				<div class="row">
-					<div>申请时间：</div>
-					<div>2019-09-04 12：00</div>
-				</div>
-			</div>
+			<div class="info_row">事业部：{{lendingInfo.dept_name}}</div>
+			<div class="info_row">借样人：{{lendingInfo.user_name}}</div>
+			<div class="info_row">提交人：{{lendingInfo.apply_user_name}}</div>
+			<div class="info_row">预计归还时间：{{lendingInfo.return_time}}</div>
+			<div class="info_row">借用原因：{{lendingInfo.reason}}</div>
+			<div class="info_row">备注：{{lendingInfo.remark}}</div>
+			<div class="info_row">申请时间：{{lendingInfo.apply_time}}</div>
 			<van-list v-model:loading="loading"
 			:finished="finished"
 			@load="loadMore"
+			finished-text="没有更多了"
 			class="van_list"
 			>
 			<div class="yy_item" v-for="item in listArray" @click="goDetail">
-				<img class="yy_img" src="../../static/index_back.png">
+				<img class="yy_img" :src="item.domain + item.image">
 				<div class="yy_content">
-					<div class="yy_row">样衣码：2376452734</div>
-					<div class="yy_row">款式编码：2376452734</div>
+					<div class="yy_row">样衣码：{{item.sku_code}}</div>
+					<div class="yy_row" v-if="item.i_id">款式编码：{{item.i_id}}</div>
 				</div>
 				<img class="delete_icon" src="../../static/delete_icon.png" @click.stop="modelFn('1')">
 				<img class="right_arrow" src="../../static/right_arrow.png">
@@ -64,35 +42,88 @@
 </template>
 <script>
 	import DialogModel from '../../components/dialog_model.vue'
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				listArray:['','','','','','','',''],		//列表
-				loading:false,
+				lending_id:"",			//批次id
+				lendingInfo:{},			//借样详情
+				page:1,
+				pagesize:10,				
+				listArray:[],				//列表
+				loading:true,
 				finished:false,
 				showModel:false,			//是否显示弹窗
 				value:"",			//弹窗内容
 				model_type:"text",	//弹窗类型（text:文字；input:输入框）
+				input_value:"",		//拒绝原因
 			}
 		},
+		created(){
+			//批次id
+			this.lending_id = this.$route.query.lending_id;
+			//借样详情
+			this.lendingDetail();
+			//已借用的列表
+			this.getGoodsList();
+		},
 		methods:{
+			//借样详情
+			lendingDetail(){
+				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
+					this.lendingInfo = res.data;
+				})
+			},
+			//获取更多
+			loadMore(){
+				this.page += 1;
+				//获取已绑定的商品列表
+				this.getGoodsList();
+			},
+			//已借用的列表
+			getGoodsList(){
+				let arg = {
+					batch_id:this.lending_id,
+					type:'2',
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.getGoodsList(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},
 			//点击询问
 			modelFn(type){	//1:删除单条；2:全部清空；3:借样
 				this.model_type = 'text'
-				this.showModel = true;
 				this.modelType = type;
 				switch(this.modelType){
 					case '1':
 					this.value = '确认删除该条记录？';
+					this.showModel = true;
 					break;
 					case '2':
 					this.value = '确定要全部清空历史记录吗？';
+					this.showModel = true;
 					break;
 					case '3':
-					this.value = '即将借出123件商品？';
+					if(this.listArray.length == 0){
+						this.$toast('暂时还没有商品哦!');
+						return;
+					}
+					this.value = `即将借出${this.listArray.length}件商品？`;
+					this.showModel = true;
 					break;
 					case '4':
+					if(this.listArray.length == 0){
+						this.$toast('暂时还没有商品哦!');
+						return;
+					}
 					this.model_type = 'input';
+					this.showModel = true;
 					break;
 				}
 			},
@@ -111,7 +142,8 @@
 							console.log('清除全部记录')
 							break;
 							case '3':
-							this.$router.push('/success?value=' + '借样成功' + '&img_url=success');
+							//借样审批
+							this.lendingAdd();
 							break;
 						}
 					}
@@ -120,18 +152,38 @@
 						this.showModel = false;
 					}else{
 						this.showModel = false;
-						console.log(v.input_value)
-						this.$router.push('/success?value=' + '借样拒绝' + '&img_url=jyjj');
+						this.input_value = v.input_value;
+						if(this.input_value == ''){
+							this.$toast('请输入拒绝原因');
+							return;
+						}
+						//借样审批
+						this.lendingAdd();
 					}
 				}
+			},
+			//借样审批
+			lendingAdd(){
+				var arg = {
+					lending_id:this.lending_id
+				}
+				if(this.modelType == '3'){
+					arg.type = 1;
+				}else if(this.modelType == '4'){
+					arg.type = 0;
+					arg.reason = this.input_value;
+				}
+				resource.lendingAdd(arg).then(res => {
+					if(this.modelType == '3'){
+						this.$router.replace('/success?value=' + '借样成功' + '&img_url=success');
+					}else if(this.modelType == '4'){
+						this.$router.replace('/success?value=' + '借样拒绝' + '&img_url=jyjj');
+					}
+				})
 			},
 			//点击进入详情
 			goDetail(){
 				this.$router.push('/yyxq');
-			},
-			//获取更多
-			loadMore(){
-
 			}
 		},
 		components:{
@@ -148,19 +200,24 @@
 		flex:1;
 		overflow-y: scroll;
 	}
-	.yyj_gly{
-		width: 100%;
-		height: 260rem;
-		display:flex;
-		flex-direction: column;
-		justify-content: space-around;
-		.row{
-			display:flex;
-			align-items: center;
-			font-size: 14rem;
-			color: #000000;
-		}
+	.info_row{
+		margin-top: 15rem;
+		font-size: 14rem;
+		color: #000000;
 	}
+	// .yyj_gly{
+	// 	width: 100%;
+	// 	height: 260rem;
+	// 	display:flex;
+	// 	flex-direction: column;
+	// 	justify-content: space-around;
+	// 	.row{
+	// 		display:flex;
+	// 		align-items: center;
+	// 		font-size: 14rem;
+	// 		color: #000000;
+	// 	}
+	// }
 	.van_list{
 		.yy_item{
 			margin-bottom: 6rem;

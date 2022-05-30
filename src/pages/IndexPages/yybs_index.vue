@@ -17,11 +17,11 @@
 		</div>
 		<div class="image_lable">上传报损位置图：</div>
 		<div class="image_list">
-			<div class="image_box" v-for="(item,index) in image_list" @click="deleteImg(index)">
-				<img class="image" :src="item">
-				<img class="close_icon" src='../../static/close_icon.png'>
+			<div class="image_box" v-for="(item,index) in image_list">
+				<img class="image" :src="domain + item">
+				<img class="close_icon" src='../../static/close_icon.png' @click="deleteImg(item,index)">
 			</div>
-			<UploadImage @uploadCallBack="uploadCallBack"></UploadImage>
+			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
 		</div>
 		<BigButton button_txt="报损" @callback="callBack"></BigButton>
 		<van-popup v-model:show="showPopup" position="bottom" round>
@@ -34,18 +34,26 @@
 	</div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	import UploadImage from '../../components/upload_img.vue'
 	import BigButton from '../../components/big_button.vue'
 	export default{
 		data(){
 			return{
+				sku_code:"",
+				batch_id:"",
 				showPopup:false,		//选择报损原因
-				bsyy_list:['原因1','原因2','原因3','原因4','原因5','原因6','原因7'],
+				bsyy_list:['丢失','烫坏','找不到了'],
 				activeIndex:0,	//当前选中的报损原因
 				bsyy:"",			//选择的报损原因
 				ysjz:"",			//原始价值
+				domain:"",
 				image_list:[],		//图片列表
 			}
+		},
+		created(){
+			this.sku_code = this.$route.query.sku_code;
+			this.batch_id = this.$route.query.batch_id;
 		},
 		methods:{
 			//切换报损原因
@@ -57,20 +65,40 @@
 			//上传图片回调
 			uploadCallBack(files){
 				for(var i = 0;i < files.length;i ++){
-					var fr = new FileReader();
-					fr.onload = (e) => {
-						this.image_list.push(e.target.result);
-					};
-					fr.readAsDataURL(files[i]);
+					if(this.image_list.length + files.length > 6){
+						this.$toast('图片最多不能超过6张！')
+					}else{
+						resource.uploadImage({file:files[i]}).then(res => {
+							this.domain = res.data.domain;
+							this.image_list.push(res.data.name);
+						})
+					}
+					
 				}
 			},
 			//删除图片
-			deleteImg(index){
-				this.image_list.splice(index,1);
+			deleteImg(item,index){
+				resource.deleteImage({name:item}).then(res => {
+					this.image_list.splice(index,1);
+				})
 			},
-			//添加
+			//报损
 			callBack(){
-				this.$router.push('/success?value=' + '已报损&img_url=bs');
+				if(this.bsyy == ''){
+					this.$toast('请选择报损原因!');
+					return;
+				}
+				let arg = {
+					sku_code:this.sku_code,
+					batch_id:this.batch_id,
+					type:'3',
+					reason:this.bsyy,
+					price:this.ysjz,
+					images:this.image_list.join(','),
+				}
+				resource.scanGoods(arg).then(res => {
+					this.$router.push('/success?value=' + '已报损&img_url=bs');
+				})
 			}
 		},
 		components:{

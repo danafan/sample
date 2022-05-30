@@ -10,6 +10,13 @@ let path = {
 	bindGoods:'binding/bindgoods',					//样衣码和商品绑定接口
 	removeGoods:'binding/remove',					//删除商品
 	getGoodsInfo:'binding/goodsinfo',				//获取样衣详情
+	lendingApply:'lending/apply',					//发起借样
+	myLendingList:'lending/mylendinglist',			//我的借样列表
+	lendingList:'lending/lendinglist',				//借样记录列表
+	unNeturnNum:'lending/unreturnnum',				//获取待借用记录数量
+	lendingDetail:'lending/detail',					//借样详情
+	lendingAdd:'lending/add',						//借样批次提交接口
+	scanGoods:'index/scangoods',					//扫码录入样衣
 }						
 export default{
 	//测试登录
@@ -55,6 +62,34 @@ export default{
 	//获取样衣详情
 	getGoodsInfo(params){
 		return http.get(path.getGoodsInfo, params)
+	},
+	//发起借样
+	lendingApply(params){
+		return http.post(path.lendingApply, params)
+	},
+	//我的借样
+	myLendingList(params){
+		return http.get(path.myLendingList, params)
+	},
+	//借样记录
+	lendingList(params){
+		return http.get(path.lendingList, params)
+	},
+	//获取待借用记录数量
+	unNeturnNum(params){
+		return http.get(path.unNeturnNum, params)
+	},
+	//借样详情
+	lendingDetail(params){
+		return http.get(path.lendingDetail, params)
+	},
+	//借样批次提交接口
+	lendingAdd(params){
+		return http.post(path.lendingAdd, params)
+	},
+	//扫码录入样衣
+	scanGoods(params){
+		return http.post(path.scanGoods, params)
 	},
 }
 

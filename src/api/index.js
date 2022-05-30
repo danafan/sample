@@ -35,13 +35,13 @@ instance.interceptors.response.use(response => {
  if (error.response) {
   switch (error.response.status) {
     case 404:
-    window.alert('参数错误');
+    Toast('参数错误');
     break;
     case 500:
-    window.alert('服务器故障');
+    Toast('服务器故障');
     break;
     case 504:
-    window.alert('没有网络');
+    Toast('没有网络');
     break;
   }
 }
