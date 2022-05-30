@@ -2,22 +2,22 @@
 	<div class="container">
 		<div class="bd_row">
 			<div class="row_label">样衣码：</div>
-			<div class="row_label">861273612837</div>
+			<div class="row_label">{{yym}}</div>
 		</div>
 		<div class="img_box">
 			<div class="row_label">上传照片：</div>
 			<div class="img_toast">（至少上传一张照片，上限上传数量为六张）</div>
 		</div>
 		<div class="image_list">
-			<div class="image_box" v-for="(item,index) in image_list" @click="deleteImg(index)">
-				<img class="image" :src="item">
-				<img class="close_icon" src='../../static/close_icon.png'>
+			<div class="image_box" v-for="(item,index) in image_list">
+				<img class="image" :src="domain + item">
+				<img class="close_icon" src='../../static/close_icon.png' @click="deleteImg(item,index)">
 			</div>
-			<UploadImage @uploadCallBack="uploadCallBack"></UploadImage>
+			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
 		</div>
 		<div class="bd_row">
 			<div class="row_label">商品编码：</div>
-			<div class="scan_txt" :class="{'spbm_color':spbm != ''}">{{spbm == ''?'扫码':spbm}}</div>
+			<div class="scan_txt" :class="{'spbm_color':codeInfo.sku_id != ''}" @click="getCodeInfo">{{codeInfo.sku_id == ''?'扫码':codeInfo.sku_id}}</div>
 		</div>
 		<BigButton button_txt="添加" @callback="callBack"></BigButton>
 	</div>
@@ -25,31 +25,74 @@
 <script>
 	import UploadImage from '../../components/upload_img.vue'
 	import BigButton from '../../components/big_button.vue'
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
+				yym:"",				//样衣码
+				batch_id:"",		//批次id
+				domain:"",
 				image_list:[],		//图片列表
-				spbm:"",			//商品编码
+				codeInfo:{
+					sku_id:""
+				},					//商品信息
 			}
 		},
+		created(){
+			this.yym = this.$route.query.yym;
+			this.batch_id = this.$route.query.batch_id
+		},
 		methods:{
+			//根据扫描的商品编码获取商品信息
+			getCodeInfo(){
+				let arg = {
+					code:'22T2M738701402' + Math.floor(Math.random()*10000+1)
+				}
+				resource.getCodeInfo(arg).then(res => {
+					this.codeInfo = res.data;
+				})
+			},
 			//上传图片回调
 			uploadCallBack(files){
 				for(var i = 0;i < files.length;i ++){
-					var fr = new FileReader();
-					fr.onload = (e) => {
-						this.image_list.push(e.target.result);
-					};
-					fr.readAsDataURL(files[i]);
+					if(this.image_list.length + files.length > 6){
+						this.$toast('图片最多不能超过6张！')
+					}else{
+						resource.uploadImage({file:files[i]}).then(res => {
+							this.domain = res.data.domain;
+							this.image_list.push(res.data.name);
+						})
+					}
+					
 				}
 			},
 			//删除图片
-			deleteImg(index){
-				this.image_list.splice(index,1);
+			deleteImg(item,index){
+				resource.deleteImage({name:item}).then(res => {
+					this.image_list.splice(index,1);
+				})
 			},
 			//添加
 			callBack(){
-				console.log('添加')
+				if(this.image_list.length == 0){
+					this.$toast('至少上传1张图片!');
+					return;
+				}
+				var arg = {
+					batch_id:this.batch_id,
+					images:this.image_list.join(','),
+					sku_code:this.yym,
+				}
+				if(this.codeInfo.sku_id != ''){
+					arg.supplier_i_id = this.codeInfo.supplier_i_id,
+					arg.i_id = this.codeInfo.i_id,
+					arg.sku_id = this.codeInfo.sku_id,
+					arg.unique_no = this.codeInfo.unique_no
+				}
+				resource.bindGoods(arg).then(res => {
+					this.$toast(res.msg);
+					this.$router.go(-1);
+				})
 			}
 		},
 		components:{
