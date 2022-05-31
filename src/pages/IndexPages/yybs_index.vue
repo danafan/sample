@@ -90,14 +90,16 @@
 				}
 				let arg = {
 					sku_code:this.sku_code,
-					batch_id:this.batch_id,
 					type:'3',
 					reason:this.bsyy,
 					price:this.ysjz,
 					images:this.image_list.join(','),
 				}
+				if(this.batch_id){
+					arg.batch_id = this.batch_id;
+				}
 				resource.scanGoods(arg).then(res => {
-					this.$router.push('/success?value=' + '已报损&img_url=bs');
+					this.$router.replace('/success?value=' + '已报损&img_url=bs');
 				})
 			}
 		},

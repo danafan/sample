@@ -1,34 +1,79 @@
 <template>
 	<div class="container">
-		<van-list v-model:loading="loading"
+		<van-list  v-model:loading="loading"
 		:finished="finished"
 		@load="loadMore"
+		finished-text="没有更多了"
 		class="van_list"
 		>
 		<div class="item" @click="goZcxq" v-for="item in listArray">
-			<div class="item_label">折价记录</div>
-			<div class="item_value">05/11/12:45</div>
+			<div class="item_label">归还记录</div>
+			<div class="item_value">{{item.apply_time}}</div>
 		</div>
 	</van-list>
 </div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				listArray:['','','','','','','','','','','','','','',''],		//列表
-				loading:false,
+				listArray:[],		//列表
+				loading:true,
 				finished:false,
+				page:1,
+				pagesize:10,
 				page_type:"",			//页面来源
 			}
 		},
 		created(){
 			this.page_type = this.$route.query.page_type;
+			if(this.page_type == 'ghjl'){	//归还记录
+				this.returnRecord();
+			}else{
+				//处理记录
+				this.handleRecord();
+			}
+			
 		},
 		methods:{
 			//加载更多
 			loadMore(){
-
+				this.page += 1;
+				if(this.page_type == 'ghjl'){	//归还记录
+					this.returnRecord();
+				}else{
+					//处理记录
+					this.handleRecord();
+				}
+			},
+			//归还记录
+			returnRecord(){
+				let arg = {
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.returnRecord(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},	
+			//处理记录
+			handleRecord(){
+				let arg = {
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.handleRecord(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
 			},
 			//跳转详情
 			goZcxq(){

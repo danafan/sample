@@ -25,11 +25,17 @@ instance.interceptors.response.use(response => {
   switch (response.data.code) {
     case 1:
     return response.data;
-    default:
+    case 0:
     Toast(response.data.msg);
+    default:
+    // Toast.clear();
+    // console.log(response.data.msg)
+    // Toast(response.data.msg);
+    
     // sessionStorage.clear();
     // router.replace("/login");
   }
+
 },error => {
  Toast.clear();
  if (error.response) {

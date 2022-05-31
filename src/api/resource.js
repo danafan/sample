@@ -17,6 +17,12 @@ let path = {
 	lendingDetail:'lending/detail',					//借样详情
 	lendingAdd:'lending/add',						//借样批次提交接口
 	scanGoods:'index/scangoods',					//扫码录入样衣
+	returnAdd:'return/add',							//进入归还界面
+	bindingRecord:'binding/bindinglist',			//绑定记录
+	returnRecord:'return/list',						//归还记录
+	bindingDetail:'binding/detail',					//绑定记录详情
+	handleRecord:'handle/list',						//处理记录
+	handleAdd:'handle/add',							//进入处理界面
 }						
 export default{
 	//测试登录
@@ -90,6 +96,38 @@ export default{
 	//扫码录入样衣
 	scanGoods(params){
 		return http.post(path.scanGoods, params)
+	},
+	//进入归还界面
+	getReturnAdd(params){
+		return http.get(path.returnAdd, params)
+	},
+	//归还提交
+	postReturnAdd(params){
+		return http.post(path.returnAdd, params)
+	},
+	//绑定记录
+	bindingRecord(params){
+		return http.get(path.bindingRecord, params)
+	},
+	//归还记录
+	returnRecord(params){
+		return http.get(path.returnRecord, params)
+	},
+	//绑定记录详情
+	bindingDetail(params){
+		return http.get(path.bindingDetail, params)
+	},
+	//处理记录
+	handleRecord(params){
+		return http.get(path.handleRecord, params)
+	},
+	//进入处理页面
+	getHandleAdd(params){
+		return http.get(path.handleAdd, params)
+	},
+	//处理提交
+	postHandleAdd(params){
+		return http.post(path.handleAdd, params)
 	},
 }
 

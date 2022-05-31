@@ -3,15 +3,16 @@
 		<div class="yy_img_list">
 			<img class="yy_img" :src="item" @click="preImg(index)" v-for="(item,index) in new_images">
 		</div>
-		<div class="info_row" v-if="page_type == '0'">样衣码：{{yyInfo.sku_code}}</div>
-		<div class="info_row" v-if="page_type == '0'">款式编码：{{yyInfo.i_id}}</div>
-		<div class="info_row" v-if="page_type == '0'">商品编码：{{yyInfo.sku_id}}</div>
-		<div class="info_row" v-if="page_type == '0'">供应商款号：{{yyInfo.supplier_i_id}}</div>
-		<!-- <div class="info_row" v-if="page_type == 'yybd'">样衣码：234234234</div>
-		<div class="info_row" v-if="page_type == 'yygh'">样衣状态：借用中</div>
-		<div class="info_row" v-if="page_type == 'yygh'">提交人：哈哈哈</div>
-		<div class="info_row" v-if="page_type == 'yygh'">借样原因：拍照</div>
-		<div class="info_row" v-if="page_type == 'yygh'">备注：这就是备注</div> -->
+		<div class="info_row">样衣码：{{yyInfo.sku_code}}</div>
+		<div class="info_row">款式编码：{{yyInfo.i_id}}</div>
+		<div class="info_row">商品编码：{{yyInfo.sku_id}}</div>
+		<div class="info_row">供应商款号：{{yyInfo.supplier_i_id}}</div>
+		<div class="info_row">样衣状态：{{yyInfo.clothes_status}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.finish_time}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">借样人：{{yyInfo.user_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">提交人：{{yyInfo.apply_user_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">管理员：{{yyInfo.admin_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">借样原因：{{yyInfo.reason}}</div>
 		<van-image-preview v-model:show="showPreImg" :images="new_images" :start-position="activeIndex">
 		</van-image-preview>
 	</div>
@@ -47,14 +48,14 @@
 				new_images:[],		//图片列表
 				activeIndex:0,		//预览当前图片下标
 				page_type:"",		//页面类型
-				sku_code:"",			//样衣码
-				batch_id:"",			//批次id
+				sku_code:"",		//样衣码
+				batch_id:"",		//批次id
 			}
 		},
 		created(){
 			//样衣码
 			this.sku_code = this.$route.query.sku_code;
-			//页面类型（0: 绑定 1: 在库中 2、借用中 3、已报损 4、已处理）
+			//页面类型（0: 已绑定，1: 在库中 2、借用中 3、已报损 4、已处理）
 			this.page_type = this.$route.query.type;
 			//批次id
 			this.batch_id = this.$route.query.batch_id;
@@ -68,10 +69,10 @@
 					sku_code:this.sku_code
 				}
 				if(this.page_type){
-					arg.type == this.page_type;
+					arg.type = this.page_type;
 				}
 				if(this.batch_id){
-					arg.batch_id == this.batch_id;
+					arg.batch_id = this.batch_id;
 				}
 				resource.getGoodsInfo(arg).then(res => {
 					this.yyInfo = res.data;
@@ -84,9 +85,6 @@
 			preImg(index){
 				this.showPreImg = true;
 				this.activeIndex = index;
-			},
-			onLoad(){
-
 			}
 		}
 	}

@@ -3,35 +3,55 @@
 		<van-list v-model:loading="loading"
 		:finished="finished"
 		@load="loadMore"
+		finished-text="没有更多了"
 		class="van_list"
 		>
-		<div class="bdjl_item" v-for="item in listArray" @click="goDetail">
+		<div class="bdjl_item" v-for="item in listArray" @click="goDetail(item.binding_id)">
 			<div class="item_left">
-				<div class="code">00001</div>
-				<div>人员姓名</div>
+				<div class="code">{{item.binding_id}}</div>
+				<div>{{item.user_name}}</div>
 			</div>
-			<div class="item_right">05/11/12:45</div>
+			<div class="item_right">{{item.add_time}}</div>
 		</div>
 	</van-list>
 </div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				listArray:['','',''],		//列表
-				loading:false,
+				listArray:[],		//列表
+				loading:true,
 				finished:false,
+				page:1,
+				pagesize:10
 			}
 		},
+		created(){
+			//获取绑定记录
+			this.bindingRecord();
+		},
 		methods:{
+			//获取绑定记录
+			bindingRecord(){
+				resource.bindingRecord().then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},
 			//点击进入详情
-			goDetail(){
-				this.$router.push('/bdjlxq');
+			goDetail(batch_id){
+				this.$router.push('/bdjlxq?batch_id=' + batch_id);
 			},
 			//获取更多
 			loadMore(){
-
+				this.page += 1;
+				//获取已绑定的商品列表
+				this.bindingRecord();
 			}
 		}
 	}
@@ -41,6 +61,9 @@
 	padding-left: 20rem;
 	padding-right: 20rem;
 	.van_list{
+		flex:1;
+		overflow-y: scroll;
+		width: 100%;
 		.bdjl_item{
 			width: 100%;
 			height: 70rem;

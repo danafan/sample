@@ -3,31 +3,32 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div>入库批次：</div>
-				<div>0001</div>
+				<div>{{batch_id}}</div>
 			</div>
 			<div class="row">
-				<div>管理员：</div>
-				<div>王芳芳</div>
+				<div>责任人：</div>
+				<div>{{topInfo.user_name}}</div>
 			</div>
 			<div class="row">
 				<div>样衣间：</div>
-				<div>第五样衣间</div>
+				<div>{{topInfo.room_name}}</div>
 			</div>
 			<div class="row">
 				<div>入库时间：</div>
-				<div>2019-09-04 12：00</div>
+				<div>{{topInfo.finish_time}}</div>
 			</div>
 		</div>
 		<van-list v-model:loading="loading"
 		:finished="finished"
 		@load="loadMore"
+		finished-text="没有更多了"
 		class="van_list"
 		>
-		<div class="yy_item" v-for="item in listArray" @click="goDetail">
-			<img class="yy_img" src="../../static/index_back.png">
+		<div class="yy_item" v-for="item in listArray" @click="goDetail(item.sku_code)">
+			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
-				<div class="yy_row">样衣码：2376452734</div>
-				<div class="yy_row">款式编码：2376452734</div>
+				<div class="yy_row">样衣码：{{item.sku_code}}</div>
+				<div class="yy_row" v-if="item.i_id">款式编码：{{item.i_id}}</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
@@ -35,22 +36,59 @@
 </div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				listArray:['','',''],		//列表
-				loading:false,
+				topInfo:{},			//顶部信息
+				batch_id:"",				//批次ID
+				listArray:[],		//列表
+				loading:true,
 				finished:false,
+				page:1,
+				pagesize:10
 			}
 		},
+		created(){
+			//批次ID
+			this.batch_id = this.$route.query.batch_id;
+			//获取商品列表
+			this.getGoodsList();
+			//绑定记录详情
+			this.bindingDetail();
+		},
 		methods:{
+			//绑定记录详情
+			bindingDetail(){
+				resource.bindingDetail({binding_id:this.batch_id}).then(res => {
+					this.topInfo = res.data;
+				})
+			},
+			//获取商品列表
+			getGoodsList(){
+				let arg = {
+					batch_id:this.batch_id,
+					type:0,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.getGoodsList(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},
 			//点击进入详情
-			goDetail(){
-				this.$router.push('/yyxq');
+			goDetail(sku_code){
+				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=0&' + 'batch_id=' + this.batch_id);
 			},
 			//获取更多
 			loadMore(){
-
+				this.page += 1;
+				//获取已绑定的商品列表
+				this.getGoodsList();
 			}
 		}
 	}

@@ -14,20 +14,20 @@
 			finished-text="没有更多了"
 			class="van_list"
 			>
-			<div class="yy_item" v-for="item in listArray" @click="goDetail">
+			<div class="yy_item" v-for="(item,index) in listArray" @click="goDetail(item.sku_code)">
 				<img class="yy_img" :src="item.domain + item.image">
 				<div class="yy_content">
 					<div class="yy_row">样衣码：{{item.sku_code}}</div>
 					<div class="yy_row" v-if="item.i_id">款式编码：{{item.i_id}}</div>
 				</div>
-				<img class="delete_icon" src="../../static/delete_icon.png" @click.stop="modelFn('1')">
+				<img class="delete_icon" src="../../static/delete_icon.png" @click.stop="modelFn('1',item.sku_code,)">
 				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
 		</van-list>
 	</div>
 	<div class="bottom_box">
 		<div class="all_delete" v-if="listArray.length > 0" @click.stop="modelFn('2')">清空记录</div>
-		<div class="smyym_button">
+		<div class="smyym_button" @click="scanCode">
 			<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
 			<div class="scan_text">扫描样衣码</div>
 		</div>
@@ -54,6 +54,8 @@
 				loading:true,
 				finished:false,
 				showModel:false,			//是否显示弹窗
+				sku_code:"",				//点击单条删除的sku_code
+				goods_index:"",				//点击单条删除的index
 				value:"",			//弹窗内容
 				model_type:"text",	//弹窗类型（text:文字；input:输入框）
 				input_value:"",		//拒绝原因
@@ -72,6 +74,20 @@
 			lendingDetail(){
 				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
 					this.lendingInfo = res.data;
+				})
+			},
+			//扫描样衣码
+			scanCode(){
+				let arg = {
+					sku_code:37,
+					batch_id:this.lending_id,
+					type:'2'
+				}
+				resource.scanGoods(arg).then(res => {
+					this.page = 1;
+					this.listArray = [];
+					//获取已绑定的商品列表
+					this.getGoodsList();
 				})
 			},
 			//获取更多
@@ -97,12 +113,14 @@
 				})
 			},
 			//点击询问
-			modelFn(type){	//1:删除单条；2:全部清空；3:借样
+			modelFn(type,sku_code,index){	//1:删除单条；2:全部清空；3:借样
 				this.model_type = 'text'
 				this.modelType = type;
 				switch(this.modelType){
 					case '1':
 					this.value = '确认删除该条记录？';
+					this.sku_code = sku_code;
+					this.goods_index = index;
 					this.showModel = true;
 					break;
 					case '2':
@@ -118,10 +136,6 @@
 					this.showModel = true;
 					break;
 					case '4':
-					if(this.listArray.length == 0){
-						this.$toast('暂时还没有商品哦!');
-						return;
-					}
 					this.model_type = 'input';
 					this.showModel = true;
 					break;
@@ -136,10 +150,13 @@
 						this.showModel = false;
 						switch(this.modelType){
 							case '1':
-							console.log('删除单条记录')
+							//删除商品
+							this.removeGoods();
 							break;
 							case '2':
-							console.log('清除全部记录')
+							//删除商品
+							this.removeGoods();
+							break;
 							break;
 							case '3':
 							//借样审批
@@ -162,6 +179,25 @@
 					}
 				}
 			},
+			//删除商品
+			removeGoods(){
+				var arg = {
+					batch_id:this.lending_id,
+					type:'2'
+				}
+				if(this.modelType == '1'){
+					arg.sku_code = this.sku_code;
+				}
+				resource.removeGoods(arg).then(res => {
+					this.$toast(res.msg);
+					if(this.modelType == '1'){
+						this.listArray.splice(this.goods_index,1);
+					}else{
+						this.page = 1;
+						this.listArray = [];
+					}
+				})
+			},
 			//借样审批
 			lendingAdd(){
 				var arg = {
@@ -182,8 +218,9 @@
 				})
 			},
 			//点击进入详情
-			goDetail(){
-				this.$router.push('/yyxq');
+			goDetail(sku_code){
+				//在库中
+				this.$router.push('/yyxq?type=1&sku_code=' + sku_code + '&batch_id=' + this.lending_id);
 			}
 		},
 		components:{
@@ -199,57 +236,43 @@
 	.top_content{
 		flex:1;
 		overflow-y: scroll;
-	}
-	.info_row{
-		margin-top: 15rem;
-		font-size: 14rem;
-		color: #000000;
-	}
-	// .yyj_gly{
-	// 	width: 100%;
-	// 	height: 260rem;
-	// 	display:flex;
-	// 	flex-direction: column;
-	// 	justify-content: space-around;
-	// 	.row{
-	// 		display:flex;
-	// 		align-items: center;
-	// 		font-size: 14rem;
-	// 		color: #000000;
-	// 	}
-	// }
-	.van_list{
-		.yy_item{
-			margin-bottom: 6rem;
-			width: 100%;
-			height: 100rem;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			.yy_img{
-				margin-right: 15rem;
-				width: 70rem;
-				height: 70rem;
-			}
-			.yy_content{
-				flex:1;
-				height: 70rem;
+		.info_row{
+			margin-top: 15rem;
+			font-size: 14rem;
+			color: #000000;
+		}
+		.van_list{
+			.yy_item{
+				margin-bottom: 6rem;
+				width: 100%;
+				height: 100rem;
 				display: flex;
-				flex-direction: column;
-				justify-content: space-around;
-				.yy_row{
-					font-size: 14rem;
-					color: #000000;
+				align-items: center;
+				.yy_img{
+					margin-right: 15rem;
+					width: 70rem;
+					height: 70rem;
 				}
-			}
-			.delete_icon{
-				width: 18rem;
-				height: 20rem;
-			}
-			.right_arrow{
-				margin-left: 15rem;
-				width: 12rem;
-				height: 24rem;
+				.yy_content{
+					flex:1;
+					height: 70rem;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+					.yy_row{
+						font-size: 14rem;
+						color: #000000;
+					}
+				}
+				.delete_icon{
+					width: 18rem;
+					height: 20rem;
+				}
+				.right_arrow{
+					margin-left: 15rem;
+					width: 12rem;
+					height: 24rem;
+				}
 			}
 		}
 	}
@@ -308,7 +331,7 @@
 				color: #ffffff;
 			}
 		}
-		
+
 	}
 }
 </style>

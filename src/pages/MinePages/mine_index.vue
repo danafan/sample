@@ -10,7 +10,7 @@
 		<div class="option_item" @click="$router.push('/bdjl_index')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/bdjl_icon.png">
-				<div class="option_label">绑定记录</div>
+				<div class="option_label">入库记录</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
