@@ -1,7 +1,7 @@
-const path = require('path');
-function resolve (dir) {
-    return path.join(__dirname, dir)
-}
+// const path = require('path');
+// function resolve (dir) {
+//     return path.join(__dirname, dir)
+// }
 module.exports = {	
 	devServer: {
 		proxy: {
@@ -13,10 +13,10 @@ module.exports = {
 			}
 		}
 	},
-	assetsDir: "web",
-	lintOnSave: true,
-	chainWebpack: (config)=>{
-		config.resolve.alias
-		.set('vendor',resolve('./src/vendor'))
-	}
+	assetsDir: "clothes",
+	// lintOnSave: true,
+	// chainWebpack: (config)=>{
+	// 	config.resolve.alias
+	// 	.set('vendor',resolve('./src/vendor'))
+	// }
 }

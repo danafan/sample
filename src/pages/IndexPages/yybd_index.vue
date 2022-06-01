@@ -75,6 +75,7 @@
 		data(){
 			return{
 				user_name:"",				//责任人
+				user_id:"",					//责任人ID
 				admin_name:"",				//管理员
 				showPopup:false,			//选择样衣间弹窗
 				room_list:[],				//样衣间列表
@@ -96,6 +97,11 @@
 				page_type:"yybd",			//页面来源
 			}
 		},
+		computed:{
+         	userInfo(){
+         		return this.$store.state.userInfo;
+         	}
+         },
 		created(){
 			//页面来源
 			this.page_type = this.$route.query.type;
@@ -120,7 +126,8 @@
 			getbBindingInfo(){
 				resource.getbBindingInfo().then(res => {
 					this.bindingInfo = res.data;
-					this.user_name = this.bindingInfo.user_name;
+					this.user_name = this.userInfo.user_name;
+					this.user_id = this.userInfo.userid;
 					this.room_name = this.bindingInfo.room_name;
 					this.room_id = this.bindingInfo.room_id;
 					//获取商品列表
@@ -277,34 +284,31 @@
 			checkZrr(){
 				dd.ready(() => {
 					dd.biz.contact.complexPicker({
-	    			title:"选择责任人",            //标题
-	    			corpId:"ding7828fff434921f5b",              //企业的corpId
-	    			multiple:false,            //是否多选
-	    			limitTips:"超出了",          //超过限定人数返回提示
-	    			maxUsers:1000,            //最大可选人数
-	    			pickedUsers:[],            //已选用户
-	    			pickedDepartments:[],          //已选部门
-	    			disabledUsers:[],            //不可选用户
-	    			disabledDepartments:[],        //不可选部门
-	    			requiredUsers:[],            //必选用户（不可取消选中状态）
-	    			requiredDepartments:[],        //必选部门（不可取消选中状态）
-	    			appId:158,              //微应用Id，企业内部应用查看AgentId
-	    			permissionType:"xxx",          //可添加权限校验
-	    			responseUserOnly:false,        //返回人，或者返回人和部门
-	    			startWithDepartmentId:0 ,   //仅支持0和-1
-	    			onSuccess: (result) => {
-	    				this.$toast(result.users[0].name)
-				        /**
-				        {
-				            selectedCount:1,                              //选择人数
-				            users:[{"name":"","avatar":"","emplId ":""}]，//返回选人的列表，列表中的对象包含name（用户名），avatar（用户头像），emplId（用户工号）三个字段
-				            departments:[{"id":,"name":"","number":}]//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
-				        }
-				        */
-				    },
-				    onFail : (err) => {}
-				});
-				});
+						title: "选择责任人",
+						corpId: "ding7828fff434921f5b",
+						multiple: false,
+						limitTips: "超出了",
+						maxUsers: 1000,
+						pickedUsers: [],
+						pickedDepartments: [],
+						disabledUsers: [],
+						disabledDepartments: [],
+						requiredUsers: [],
+						requiredDepartments: [],
+						appId: 1664876526,
+						permissionType: "GLOBAL",
+						responseUserOnly: true,
+						startWithDepartmentId: 0,
+						onSuccess : function(res) {
+							// 调用成功时回调
+							console.log(res)
+						},
+						onFail : function(err) {
+							// 调用失败时回调
+							console.log(err)
+						}
+					});
+				})
 			},
 			//点击进入详情
 			goDetail(sku_code){

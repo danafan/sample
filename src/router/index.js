@@ -81,17 +81,17 @@ const router = new Router({
 	},
 	{
 		path: '/bdjl_index',
-		name:"绑定记录",
+		name:"入库记录",
 		component: bdjl_index
 	},
 	{
 		path: '/bdjlxq',
-		name:"绑定记录详情",
+		name:"入库记录详情",
 		component: bdjlxq
 	},
 	{
 		path: '/wdjy_index',
-		name:"我的借样",
+		name:"我的借样/借样记录",
 		component: wdjy_index
 	},
 	{
@@ -106,12 +106,12 @@ const router = new Router({
 	},
 	{
 		path: '/zcjl_index',
-		name:"折价和归还记录首页",
+		name:"折价记录/归还记录",
 		component: zcjl_index
 	},
 	{
 		path: '/zcxq',
-		name:"折价和归还记录详情页",
+		name:"折价详情/归还详情",
 		component: zcxq
 	},
 	{
@@ -121,7 +121,7 @@ const router = new Router({
 	},
 	{
 		path: '/success',
-		name:"成功",
+		name:"提示",
 		component: success
 	},
 	]

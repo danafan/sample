@@ -10,17 +10,75 @@
 	export default {
 		name: 'app',
 		created(){
-			dd.ready(() => {
-				dd.runtime.permission.requestAuthCode({
-        			corpId: "ding7828fff434921f5b", 
-        			onSuccess:  (info) => {
-                  		let code = info.code // 通过该免登授权码可以获取用户身份
-                  		//登录
-						this.login(code);
-                  	}});
-			});
+			//获取钉钉鉴权信息
+			this.getConfig();
+		},
+		watch:{
+			$route(to,from){
+				let router = this.$route;
+				let path = router.path;
+				let query = router.query;
+				let name = router.name;
+				if(path == '/wdjy_index'){
+					if(query.page_type == 'wdjy'){
+						document.title = '我的借样';
+					}else{
+						document.title = '借样记录';
+					}
+				}else{
+					document.title=router.name;
+				}
+			}
 		},
 		methods:{
+			//获取钉钉鉴权信息
+			getConfig(){
+				resource.getConfig().then(res => {
+					let data = res.data;
+					//钉钉鉴权
+					this.dingAuth(data);
+				})
+			},
+			//钉钉鉴权
+			dingAuth(data){
+				data.url = `${location.origin}`;
+				// data.url = 'https://house.92nu.com';
+				data.corp_id = 'ding7828fff434921f5b';
+				resource.dingAuth(data).then(res => {
+					//钉钉鉴权
+					this.ddConfig(data);
+				})
+			},
+			//钉钉鉴权
+			ddConfig(data){
+				dd.config({
+					    agentId: data.agentId, // 必填，微应用ID
+					    corpId: data.corpId,//必填，企业ID
+					    timeStamp: data.timeStamp, // 必填，生成签名的时间戳
+					    nonceStr: data.nonceStr, // 必填，自定义固定字符串。
+					    signature: data.signature, // 必填，签名
+					    jsApiList : [
+					    'biz.contact.complexPicker'
+					    ] // 必填，需要使用的jsapi列表，注意：不要带dd。
+					});
+				dd.error(function (err) {
+					alert('dd error: ' + JSON.stringify(err));
+				})//该方法必须带上，用来捕获鉴权出现的异常信息，否则不方便排查出现的问题
+				//钉钉获取code
+				this.getDingCode();
+			},
+			//钉钉获取code
+			getDingCode(){
+				dd.ready(() => {
+					dd.runtime.permission.requestAuthCode({
+						corpId: "ding7828fff434921f5b", 
+						onSuccess:  (info) => {
+                  		let code = info.code // 通过该免登授权码可以获取用户身份
+                  		//登录
+                  		this.login(code);
+                  	}});
+				});
+			},
 			//登录
 			login(code){
 				resource.login({code:code}).then(res => {

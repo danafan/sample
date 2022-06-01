@@ -1,6 +1,8 @@
 import http from './request.js'
 let path = {	
-	login:'login/login',						//登录
+	getConfig:'ding/getConfig',						//获取钉钉鉴权信息
+	dingAuth:'ding/auth',							//钉钉鉴权
+	login:'login/login',							//登录
 	uploadImage:'common/addimage',					//上传图片
 	deleteImage:'common/delimage',					//删除图片
 	ajaxRooms:'ajaxrooms',							//获取样衣间列表
@@ -32,6 +34,14 @@ let path = {
 	ajaxTypeList:'index/ajaxtypelist',				//ajax获取类型列表接口
 }								
 export default{
+	//获取钉钉鉴权信息
+	getConfig(params){
+		return http.get(path.getConfig, params)
+	},
+	//钉钉鉴权
+	dingAuth(params){
+		return http.get(path.dingAuth, params)
+	},
 	//登录
 	login(params){
 		return http.get(path.login, params)
