@@ -56,7 +56,7 @@
 			return{
 				topInfo:{},							//顶部信息
 				showPopup:false,					//选择处理状态
-				clzt_list:['内销','外销',],		//处理状态列表
+				clzt_list:[],			//处理状态列表
 				clzt:"",							//选中的处理状态
 				clztIndex:0,						//当前选中的下标
 				loading:false,
@@ -75,8 +75,16 @@
 		created(){
 			//进入处理界面
 			this.handleAdd();
+			//获取报损原因
+			this.ajaxTypeList();
 		},
 		methods:{
+			//获取处理类型
+			ajaxTypeList(){
+				resource.ajaxTypeList({type:'handle_type'}).then(res => {
+					this.clzt_list = res.data;
+				})
+			},
 			//进入处理界面
 			handleAdd(){
 				resource.getHandleAdd().then(res => {
@@ -153,6 +161,7 @@
 			//处理提交
 			postHandleAdd(){
 				let arg = {
+					handle_id:this.topInfo.handle_id,
 					room_id:this.topInfo.room_id,
 					type:this.clztIndex + 1
 				}
@@ -179,7 +188,7 @@
 			//点击扫描样衣码
 			scanYyCode(){
 				let arg = {
-					sku_code:58,
+					sku_code:51,
 					batch_id:this.topInfo.handle_id,
 					type:'4'
 				}

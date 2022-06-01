@@ -1,50 +1,78 @@
 <template>
 	<div class="container">
 		<div class="tab_box">
-			<div class="tab_item left" :class="{'active_back':active_index == '1'}" @click="checkTab('1')">
+			<div class="tab_item left" :class="{'active_back':active_index == '0'}" @click="checkTab('0')">
 				未完成
-				<div class="num" :class="{'active_num':active_index == '1'}">4</div>
+				<div class="num" :class="{'active_num':active_index == '0'}">{{unchecknum}}</div>
 			</div>
-			<div class="tab_item right" :class="{'active_back':active_index == '2'}" @click="checkTab('2')">
+			<div class="tab_item right" :class="{'active_back':active_index == '1'}" @click="checkTab('1')">
 				已完成
 			</div>
 		</div>
 		<van-list v-model:loading="loading"
 		:finished="finished"
 		@load="loadMore"
+		finished-text="没有更多了"
 		class="van_list"
 		>
-		<div class="task_item" v-for="item in task_list" @click="goPdxq">
-			<div class="item_lable">您有新的盘点任务待完成</div>
-			<div class="item_value">05/11/12:45</div>
+		<div class="task_item" v-for="item in task_list" @click="goPdxq(item.check_id)">
+			<div class="item_lable">您有新的盘点任务{{item.check_status == '0'?'待完成':'已完成'}}</div>
+			<div class="item_value">{{item.add_time}}</div>
 		</div>
 	</van-list>
 
 </div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				active_index:'1',		//tab选中
-				task_list:20,			//列表
+				active_index:'0',		//tab选中
+				task_list:[],			//列表
 				loading:false,			//是否加载中
 				finished:false,			//是否是最后一页
+				page:0,
+				pagesize:10,
+				unchecknum:0,			//未完成的数量
 			}
 		},
 		methods:{
+			//加载更多
+			loadMore(){
+				this.page += 1;
+				//盘点记录列表
+				this.checkList();
+			},
+			//盘点记录列表
+			checkList(){
+				let arg = {
+					status:this.active_index,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.checkList(arg).then(res => {
+					this.loading = false;
+					this.unchecknum = res.data.total;
+					this.task_list = [...this.task_list,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
+			},
 			//切换顶部tab
 			checkTab(type){
 				this.active_index = type;
+				this.page = 1;
+				this.task_list = [];
+				//盘点记录列表
+				this.checkList();
 			},
 			//盘点详情
-			goPdxq(){
-				this.$router.push('/pdxq_index');
-			},
-			//加载更多
-			loadMore(){
-				console.log('加载更多')
+			goPdxq(batch_id){
+				this.$router.push('/pdxq_index?type=' + this.active_index + '&batch_id=' + batch_id);
 			}
+			
 		}
 	}
 </script>

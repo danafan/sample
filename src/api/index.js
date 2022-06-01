@@ -27,13 +27,9 @@ instance.interceptors.response.use(response => {
     return response.data;
     case 0:
     Toast(response.data.msg);
+    break;
     default:
-    // Toast.clear();
-    // console.log(response.data.msg)
-    // Toast(response.data.msg);
-    
-    // sessionStorage.clear();
-    // router.replace("/login");
+    return;
   }
 
 },error => {

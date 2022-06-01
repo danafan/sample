@@ -39,7 +39,7 @@
 		methods:{
 			//扫码报损
 			yybsFn(){
-				this.$router.push('/yybs_index?sku_code=' + 58);
+				this.$router.push('/yybs_index?sku_code=' + 20);
 			}
 		}
 	}

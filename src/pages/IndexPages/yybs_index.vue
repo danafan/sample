@@ -43,7 +43,7 @@
 				sku_code:"",
 				batch_id:"",
 				showPopup:false,		//选择报损原因
-				bsyy_list:['丢失','烫坏','找不到了'],
+				bsyy_list:[],
 				activeIndex:0,	//当前选中的报损原因
 				bsyy:"",			//选择的报损原因
 				ysjz:"",			//原始价值
@@ -54,8 +54,16 @@
 		created(){
 			this.sku_code = this.$route.query.sku_code;
 			this.batch_id = this.$route.query.batch_id;
+			//获取报损原因
+			this.ajaxTypeList();
 		},
 		methods:{
+			//获取报损原因
+			ajaxTypeList(){
+				resource.ajaxTypeList({type:'loss_reason'}).then(res => {
+					this.bsyy_list = res.data;
+				})
+			},
 			//切换报损原因
 			checkBsyy(index){
 				this.activeIndex = index;

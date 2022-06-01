@@ -275,11 +275,11 @@
 			},
 			//点击选择责任人
 			checkZrr(){
-				dd.ready(function() {
+				dd.ready(() => {
 					dd.biz.contact.complexPicker({
-	    			title:"测试标题",            //标题
-	    			corpId:"xxx",              //企业的corpId
-	    			multiple:true,            //是否多选
+	    			title:"选择责任人",            //标题
+	    			corpId:"ding7828fff434921f5b",              //企业的corpId
+	    			multiple:false,            //是否多选
 	    			limitTips:"超出了",          //超过限定人数返回提示
 	    			maxUsers:1000,            //最大可选人数
 	    			pickedUsers:[],            //已选用户
@@ -292,7 +292,8 @@
 	    			permissionType:"xxx",          //可添加权限校验
 	    			responseUserOnly:false,        //返回人，或者返回人和部门
 	    			startWithDepartmentId:0 ,   //仅支持0和-1
-	    			onSuccess: function(result) {
+	    			onSuccess: (result) => {
+	    				this.$toast(result.users[0].name)
 				        /**
 				        {
 				            selectedCount:1,                              //选择人数
@@ -301,7 +302,7 @@
 				        }
 				        */
 				    },
-				    onFail : function(err) {}
+				    onFail : (err) => {}
 				});
 				});
 			},

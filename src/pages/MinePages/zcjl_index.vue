@@ -6,8 +6,8 @@
 		finished-text="没有更多了"
 		class="van_list"
 		>
-		<div class="item" @click="goZcxq" v-for="item in listArray">
-			<div class="item_label">归还记录</div>
+		<div class="item" @click="goZcxq(page_type == 'ghjl'?item.return_id:item.handle_id)" v-for="item in listArray">
+			<div class="item_label">{{page_type == 'ghjl'?'归还记录':'处理记录'}}</div>
 			<div class="item_value">{{item.apply_time}}</div>
 		</div>
 	</van-list>
@@ -76,8 +76,8 @@
 				})
 			},
 			//跳转详情
-			goZcxq(){
-				this.$router.push('/zcxq?page_type=' + this.page_type);
+			goZcxq(batch_id){
+				this.$router.push('/zcxq?page_type=' + this.page_type + '&batch_id=' + batch_id);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 import http from './request.js'
 let path = {	
-	testLogin:'login/test_login',					//测试登录
+	login:'login/login',						//登录
 	uploadImage:'common/addimage',					//上传图片
 	deleteImage:'common/delimage',					//删除图片
 	ajaxRooms:'ajaxrooms',							//获取样衣间列表
@@ -23,11 +23,18 @@ let path = {
 	bindingDetail:'binding/detail',					//绑定记录详情
 	handleRecord:'handle/list',						//处理记录
 	handleAdd:'handle/add',							//进入处理界面
-}						
+	handleDetail:'handle/detail',					//处理记录详情头部信息
+	returnDetail:'return/detail',					//归还记录头部信息
+	checkList:'check/list',							//盘点记录列表
+	checkDetail:'check/detail',						//盘点记录详情头部信息
+	checkGoodsList:'check/goodslist',				//盘点记录详情商品列表
+	checkScanGoods:'check/scangoods',				//扫码盘点
+	ajaxTypeList:'index/ajaxtypelist',				//ajax获取类型列表接口
+}								
 export default{
-	//测试登录
-	testLogin(params){
-		return http.get(path.testLogin, params)
+	//登录
+	login(params){
+		return http.get(path.login, params)
 	},
 	//上传图片
 	uploadImage(params){
@@ -128,6 +135,34 @@ export default{
 	//处理提交
 	postHandleAdd(params){
 		return http.post(path.handleAdd, params)
+	},
+	//处理记录详情头部信息
+	handleDetail(params){
+		return http.get(path.handleDetail, params)
+	},
+	//归还记录头部信息
+	returnDetail(params){
+		return http.get(path.returnDetail, params)
+	},
+	//盘点记录列表
+	checkList(params){
+		return http.get(path.checkList, params)
+	},
+	//盘点记录详情头部信息
+	checkDetail(params){
+		return http.get(path.checkDetail, params)
+	},
+	//盘点记录详情商品列表
+	checkGoodsList(params){
+		return http.get(path.checkGoodsList, params)
+	},
+	//扫码盘点接口
+	checkScanGoods(params){
+		return http.get(path.checkScanGoods, params)
+	},
+	//ajax获取类型列表接口
+	ajaxTypeList(params){
+		return http.get(path.ajaxTypeList, params)
 	},
 }
 

@@ -3,85 +3,123 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div>我的应盘总样衣：</div>
-				<div>9</div>
+				<div>{{topInfo.total_num}}</div>
 			</div>
 			<div class="row">
 				<div>计划完成日期：</div>
-				<div>2022-08-18</div>
+				<div>{{topInfo.plan_finish_time}}</div>
 			</div>
 		</div>
 		<div class="tab_box">
-			<div class="tab_item left" :class="{'active_back':active_index == '1'}" @click="checkTab('1')">
+			<div class="tab_item left" :class="{'active_back':active_index == '0'}" @click="checkTab('0')">
 				未盘
-				<div class="num" :class="{'active_num':active_index == '1'}">4</div>
+				<div class="num" :class="{'active_num':active_index == '0'}">{{topInfo.uncheck_num}}</div>
 			</div>
-			<div class="tab_item right" :class="{'active_back':active_index == '2'}" @click="checkTab('2')">
+			<div class="tab_item right" :class="{'active_back':active_index == '1'}" @click="checkTab('1')">
 				已盘
-				<div class="num" :class="{'active_num':active_index == '2'}">4</div>
+				<div class="num" :class="{'active_num':active_index == '1'}">{{topInfo.checked_num}}</div>
 			</div>
 		</div>
-		<van-list v-model:loading="loading" :finished="finished" @load="loadMore" class="van_list">
-			<div class="yy_item" v-for="item in listArray">
-				<img class="yy_img" src="../../static/index_back.png">
-				<div class="yy_content">
-					<div class="yy_row">样衣码：2376452734</div>
-					<div class="yy_row">款式编码：2376452734</div>
-				</div>
-				<img class="bs_icon" src="../../static/bs_icon.png" @click="showPopup = true" v-if="active_index == '1'">
+		<van-list v-model:loading="loading"
+		:finished="finished"
+		@load="loadMore"
+		finished-text="没有更多了" class="van_list">
+		<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1">
+			<img class="yy_img" :src="item.domain + item.image">
+			<div class="yy_content">
+				<div class="yy_row">样衣码：{{item.sku_code}}</div>
+				<div class="yy_row" v-if="item.i_id">款式编码：{{item.i_id}}</div>
 			</div>
-		</van-list>
-		<div class="bottom">
-			<div class="button" @click="scanYyCode">
-				<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
-				<div class="scan_text">扫一扫</div>
-			</div>
+			<img class="bs_icon" src="../../static/bs_icon.png" @click="bsFn(item.sku_code)" v-if="active_index == '0'">
 		</div>
-		<van-popup v-model:show="showPopup" position="bottom" round>
-			<div class="list">
-				<div class="item" :class="{'active_item':bsyyIndex == index}" v-for="(item,index) in bsyy_list" @click="checkBsyy(index)">{{item}}</div>
-			</div>
-			<div class="padding_box"></div>
-			<div class="item" @click="showPopup = false">取消</div>
-		</van-popup>
+	</van-list>
+	<div class="bottom" v-if="type == '0'">
+		<div class="button" @click="scanYyCode">
+			<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
+			<div class="scan_text">扫一扫</div>
+		</div>
 	</div>
+</div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
 		data(){
 			return{
-				active_index:"1",		//切换下标
+				type:"",				//0:未完成；1:已完成
+				batch_id:"",			//批次ID
+				topInfo:{},				//头部信息
+				active_index:"0",		//切换下标
 				loading:false,
 				finished:false,
-				listArray:20,			//列表
-				showPopup:false,		//报损原因弹窗
-				bsyy_list:['原因1','原因2','原因3','原因4','原因5','原因6'],	//原因列表
-				bsyyIndex:0,		
-				bsyy:"",		//选中的报损原因
+				page:0,
+				pagesize:10,
+				listArray:[],			//列表
 			}
 		},
+		created(){
+			this.type = this.$route.query.type;
+			this.batch_id = this.$route.query.batch_id;
+			//获取头部信息
+			this.checkDetail();
+		},
 		methods:{
+			//获取头部信息
+			checkDetail(){
+				resource.checkDetail({check_id:this.batch_id}).then(res => {
+					this.topInfo = res.data;
+				})
+			},
 			//切换选中
 			checkTab(type){
 				this.active_index = type;
+				this.page = 1;
+				this.listArray = [];
+				//商品列表
+				this.checkGoodsList();
 			},
 			//扫一扫
 			scanYyCode(){
-
+				let arg = {
+					sku_code:2,
+					batch_id:this.batch_id
+				}
+				resource.checkScanGoods(arg).then(res => {
+					this.$toast(res.msg);
+					this.page = 1;
+					this.listArray = [];
+					//获取已绑定的商品列表
+					this.checkGoodsList();
+					//获取头部信息
+					this.checkDetail();
+				})
 			},
 			//点击报损
-			bsFn(){
-
+			bsFn(sku_code){
+				//添加
+				this.$router.push('/yybs_index?sku_code=' + sku_code + '&batch_id=' + this.batch_id);
 			},
 			//加载更多
 			loadMore(){
-
+				this.page += 1;
+				//商品列表
+				this.checkGoodsList();
 			},
-			//切换报损原因
-			checkBsyy(index){
-				this.bsyyIndex = index;
-				this.showPopup = false;
-				//添加
-				this.$router.push('/yybs_index');
+			//商品列表
+			checkGoodsList(){
+				let arg = {
+					batch_id:this.batch_id,
+					status:this.active_index,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.checkGoodsList(arg).then(res => {
+					this.loading = false;
+					this.listArray = [...this.listArray,...res.data.data];
+					if(this.page == res.data.last_page){
+						this.finished = true;
+					}
+				})
 			}
 		}
 	}

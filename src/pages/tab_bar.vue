@@ -22,6 +22,7 @@
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	export default{
 		data(){
 			return{
@@ -40,8 +41,22 @@
 		methods:{
 			//切换导航
 			checkTab(tab){
-				this.activeIndex = `/${tab}`;
-				this.$router.push(`/${tab}`)
+				if(tab == 'scan'){	//扫码
+					dd.ready(() => {
+						dd.biz.util.scan({
+							onSuccess: (data) => {
+								this.$toast(data);
+							},
+							onFail : (err) => {
+								console.log(err)
+							}
+						})
+					})
+				}else{
+					this.activeIndex = `/${tab}`;
+					this.$router.push(`/${tab}`)
+				}
+				
 			}
 		}
 	}

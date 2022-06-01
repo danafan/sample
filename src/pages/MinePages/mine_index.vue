@@ -3,8 +3,8 @@
 		<div class="top_back">
 			<img class="mine_back" src="../../static/mine_back.png">
 			<div class="mine_back my_info">
-				<div class="margin_bottom">所属部门：新兴事业部</div>
-				<div>姓名：王一一</div>
+				<div class="margin_bottom">所属部门：{{userInfo.dept_name}}</div>
+				<div>姓名：{{userInfo.user_name}}</div>
 			</div>
 		</div>
 		<div class="option_item" @click="$router.push('/bdjl_index')">
@@ -53,7 +53,11 @@
 </template>
 <script>
 	export default{
-		
+		computed:{
+         	userInfo(){
+         		return this.$store.state.userInfo;
+         	}
+         },
 	}
 </script>
 <style lang="less" scoped>
