@@ -78,10 +78,12 @@
 					arg.batch_id = this.batch_id;
 				}
 				resource.getGoodsInfo(arg).then(res => {
+					if(res.code == 1){
 					this.yyInfo = res.data;
 					this.yyInfo.images.map(item => {
 						this.new_images.push(this.yyInfo.domain + item);
 					});
+				}
 				})
 			},
 			//预览图片

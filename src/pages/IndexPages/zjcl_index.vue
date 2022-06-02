@@ -86,15 +86,19 @@
 			//获取处理类型
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'handle_type'}).then(res => {
+					if(res.code == 1){
 					this.clzt_list = res.data;
+				}
 				})
 			},
 			//进入处理界面
 			handleAdd(){
 				resource.getHandleAdd().then(res => {
+					if(res.code == 1){
 					this.topInfo = res.data;
 					//获取已绑定的商品列表
 					this.getGoodsList();
+				}
 				})
 			},
 			//获取更多
@@ -114,12 +118,14 @@
 					pagesize:this.pagesize
 				}
 				resource.getGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.total_num = res.data.total;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//点击询问
@@ -170,7 +176,9 @@
 					type:this.clztIndex + 1
 				}
 				resource.postHandleAdd(arg).then(res => {
+					if(res.code == 1){
 					this.$router.push('/success?value=' + '已处理' + '&img_url=success');
+				}
 				})
 			},
 			//删除商品
@@ -181,8 +189,10 @@
 					type:'4',
 				}
 				resource.removeGoods(arg).then(res => {
+					if(res.code == 1){
 					this.$toast(res.msg);
 					this.listArray.splice(this.goods_index,1);
+				}
 				})
 			},
 			//点击进入详情
@@ -201,11 +211,13 @@
 								type:'4'
 							}
 							resource.scanGoods(arg).then(res => {
+								if(res.code == 1){
 								this.$toast(res.msg);
 								this.page = 1;
 								this.listArray = [];
 								//获取已绑定的商品列表
 								this.getGoodsList();
+							}
 							})
 						},
 						onFail : (err) => {

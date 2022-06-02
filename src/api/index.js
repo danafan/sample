@@ -28,11 +28,8 @@ instance.interceptors.response.use(response => {
   switch (response.data.code) {
     case 1:
     return response.data;
-    case 0:
-    console.log(response.data.msg)
-    Toast(response.data.msg);
-    break;
     default:
+    Toast(response.data.msg);
     return;
   }
 

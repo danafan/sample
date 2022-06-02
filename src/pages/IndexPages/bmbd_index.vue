@@ -17,12 +17,13 @@
 		</div>
 		<div class="bd_row">
 			<div class="row_label">商品编码：</div>
-			<div class="scan_txt" :class="{'spbm_color':codeInfo.sku_id != ''}" @click="getCodeInfo">{{codeInfo.sku_id == ''?'扫码':codeInfo.sku_id}}</div>
+			<div class="scan_txt" @click="getCodeInfo">{{codeInfo.sku_id == ''?'扫码':codeInfo.sku_id}}</div>
 		</div>
 		<BigButton button_txt="添加" @callback="callBack"></BigButton>
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	import UploadImage from '../../components/upload_img.vue'
 	import BigButton from '../../components/big_button.vue'
 	import resource from '../../api/resource.js'
@@ -45,12 +46,25 @@
 		methods:{
 			//根据扫描的商品编码获取商品信息
 			getCodeInfo(){
-				let arg = {
-					code:'22T2M738701402' + Math.floor(Math.random()*10000+1)
-				}
-				resource.getCodeInfo(arg).then(res => {
-					this.codeInfo = res.data;
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = data.text.split('=')[1];
+							let arg = {
+								code:sku_code
+							}
+							resource.getCodeInfo(arg).then(res => {
+								if(res.code == 1){
+									this.codeInfo = res.data;
+								}
+							})
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
+					})
 				})
+				
 			},
 			//上传图片回调
 			uploadCallBack(files){
@@ -59,8 +73,10 @@
 						this.$toast('图片最多不能超过6张！')
 					}else{
 						resource.uploadImage({file:files[i]}).then(res => {
+							if(res.code == 1){
 							this.domain = res.data.domain;
 							this.image_list.push(res.data.name);
+						}
 						})
 					}
 					
@@ -69,7 +85,9 @@
 			//删除图片
 			deleteImg(item,index){
 				resource.deleteImage({name:item}).then(res => {
+					if(res.code == 1){
 					this.image_list.splice(index,1);
+				}
 				})
 			},
 			//添加
@@ -90,8 +108,10 @@
 					arg.unique_no = this.codeInfo.unique_no
 				}
 				resource.bindGoods(arg).then(res => {
+					if(res.code == 1){
 					this.$toast(res.msg);
 					this.$router.go(-1);
+				}
 				})
 			}
 		},
@@ -129,9 +149,6 @@
 	.scan_txt{
 		font-size: 14rem;
 		color: #2C82FF;
-	}
-	.spbm_color{
-		color: #333333;
 	}
 	.image_list{
 		width: 100%;

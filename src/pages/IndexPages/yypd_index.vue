@@ -54,12 +54,14 @@
 					pagesize:this.pagesize
 				}
 				resource.checkList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.unchecknum = res.data.total;
 					this.task_list = [...this.task_list,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//切换顶部tab

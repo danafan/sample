@@ -10,9 +10,9 @@
 	export default {
 		name: 'app',
 		created(){
-			this.$router.push('/index');
+			// this.$router.push('/index');
 			//获取钉钉鉴权信息
-			// this.getConfig();
+			this.getConfig();
 		},
 		watch:{
 			$route(to,from){
@@ -62,9 +62,11 @@
 			//获取钉钉鉴权信息
 			getConfig(){
 				resource.getConfig().then(res => {
-					let data = res.data;
-					//钉钉鉴权
-					this.dingAuth(data);
+					if(res.code == 1){
+						let data = res.data;
+						//钉钉鉴权
+						this.dingAuth(data);
+					}
 				})
 			},
 			//钉钉鉴权
@@ -109,8 +111,10 @@
 			//登录
 			login(code){
 				resource.login({code:code}).then(res => {
-					this.$store.commit('setUserInfo',res.data);
-					this.$router.push('/index');
+					if(res.code == 1){
+						this.$store.commit('setUserInfo',res.data);
+						this.$router.push('/index');
+					}
 				})
 			}
 		}

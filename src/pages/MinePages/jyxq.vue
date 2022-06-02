@@ -81,7 +81,9 @@
 			//借样详情
 			lendingDetail(){
 				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
+					if(res.code == 1){
 					this.lendingInfo = res.data;
+				}
 				})
 			},
 			//获取更多
@@ -102,11 +104,13 @@
 					arg.return_status = this.active_index;
 				}
 				resource.getGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//样衣报损

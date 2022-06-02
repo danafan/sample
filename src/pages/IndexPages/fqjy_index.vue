@@ -79,9 +79,11 @@
 			//获取借样原因
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'lending_reason'}).then(res => {
+					if(res.code == 1){
 					this.jyyy_list = res.data;
 					this.user_name = this.userInfo.user_name;
 					this.user_id = this.userInfo.userid;
+				}
 				})
 			},
 			//切换借样人
@@ -154,8 +156,10 @@
 					remark:this.remark
 				}
 				resource.lendingApply(arg).then(res => {
+					if(res.code == 1){
 					this.$toast(res.msg);
 					this.$router.push('/success?value=' + '已发起借样&img_url=jy');
+				}
 				})
 			}
 		},

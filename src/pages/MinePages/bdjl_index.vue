@@ -39,11 +39,13 @@
 			//获取绑定记录
 			bindingRecord(){
 				resource.bindingRecord().then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//点击进入详情

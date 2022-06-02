@@ -57,11 +57,13 @@
 					pagesize:this.pagesize
 				}
 				resource.returnRecord(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},	
 			//处理记录
@@ -71,11 +73,13 @@
 					pagesize:this.pagesize
 				}
 				resource.handleRecord(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//跳转详情

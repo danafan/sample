@@ -64,7 +64,9 @@
 			//绑定记录详情
 			bindingDetail(){
 				resource.bindingDetail({binding_id:this.batch_id}).then(res => {
+					if(res.code == 1){
 					this.topInfo = res.data;
+				}
 				})
 			},
 			//获取商品列表
@@ -76,11 +78,13 @@
 					pagesize:this.pagesize
 				}
 				resource.getGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//点击进入详情

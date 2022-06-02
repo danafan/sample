@@ -70,7 +70,9 @@
 			//获取头部信息
 			checkDetail(){
 				resource.checkDetail({check_id:this.batch_id}).then(res => {
+					if(res.code == 1){
 					this.topInfo = res.data;
+				}
 				})
 			},
 			//切换选中
@@ -92,6 +94,7 @@
 								batch_id:this.batch_id
 							}
 							resource.checkScanGoods(arg).then(res => {
+								if(res.code == 1){
 								this.$toast(res.msg);
 								this.page = 1;
 								this.listArray = [];
@@ -99,6 +102,7 @@
 								this.checkGoodsList();
 								//获取头部信息
 								this.checkDetail();
+							}
 							})
 						},
 						onFail : (err) => {
@@ -127,11 +131,13 @@
 					pagesize:this.pagesize
 				}
 				resource.checkGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			}
 		},

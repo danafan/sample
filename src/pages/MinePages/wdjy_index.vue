@@ -101,7 +101,9 @@
 			//获取待借用记录数量
 			unNeturnNum(){
 				resource.unNeturnNum().then(res => {
+					if(res.code == 1){
 					this.unreturnnum = res.data;
+				}
 				})
 			},
 			//我的借样列表
@@ -112,11 +114,13 @@
 					pagesize:this.pagesize
 				}
 				resource.myLendingList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//借样记录列表
@@ -128,11 +132,13 @@
 					pagesize:this.pagesize
 				}
 				resource.lendingList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//借样详情

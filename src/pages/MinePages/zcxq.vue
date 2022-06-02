@@ -77,13 +77,17 @@
 			//处理记录头部信息
 			handleDetail(){
 				resource.handleDetail({handle_id:this.batch_id}).then(res => {
-					this.topInfo = res.data;
+					if(res.code == 1){
+						this.topInfo = res.data;
+					}
 				})
 			},
 			//归还记录头部信息
 			returnDetail(){
 				resource.returnDetail({return_id:this.batch_id}).then(res => {
-					this.topInfo = res.data;
+					if(res.code == 1){
+						this.topInfo = res.data;
+					}
 				})
 			},
 			//加载更多
@@ -101,10 +105,12 @@
 					pagesize:this.pagesize
 				}
 				resource.getGoodsList(arg).then(res => {
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+					if(res.code == 1){
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
 				})
 			},

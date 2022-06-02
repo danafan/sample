@@ -112,6 +112,7 @@
 			//获取样衣间列表
 			getAjaxRooms(){
 				resource.ajaxRooms().then(res => {
+					if(res.code == 1){
 					this.room_list = res.data;
 					if(this.page_type == 'yybd'){	//样衣绑定
 						//进入绑定页面获取批次信息
@@ -120,25 +121,30 @@
 						//进入归还页面获取批次信息
 						this.getReturnInfo();
 					}
+				}
 				})
 			},
 			//进入绑定页面获取批次信息
 			getbBindingInfo(){
 				resource.getbBindingInfo().then(res => {
+					if(res.code == 1){
 					this.bindingInfo = res.data;
 					this.user_name = this.userInfo.user_name;
 					this.user_id = this.userInfo.userid;
 					//获取商品列表
 					this.getGoodsList();
+				}
 				})
 			},
 			//进入归还页面获取批次信息
 			getReturnInfo(){
 				resource.getReturnAdd().then(res => {
+					if(res.code == 1){
 					this.returnInfo = res.data;
 					this.admin_name = this.returnInfo.admin_name;
 					//获取商品列表
 					this.getGoodsList();
+				}
 				})
 			},
 			//获取更多
@@ -157,12 +163,14 @@
 					pagesize:this.pagesize
 				}
 				resource.getGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.total_num = res.data.total;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//点击询问
@@ -240,11 +248,13 @@
 					arg.room_name = this.room_name;
 				}
 				resource.postbBinding(arg).then(res => {
+					if(res.code == 1){
 					if(this.room_id != ''){
 						this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
 					}else{
 						this.$router.push('/success?value=' + '借样成功' + '&showBut=1&img_url=jy');
 					}
+				}
 				})
 			},
 			//归还提交
@@ -255,7 +265,9 @@
 					return_id:this.returnInfo.return_id
 				}
 				resource.postReturnAdd(arg).then(res => {
+					if(res.code == 1){
 					this.$router.replace('/success?value=' + '归还成功' + '&img_url=gh');
+				}
 				})
 			},
 			//删除商品
@@ -269,6 +281,7 @@
 					arg.sku_code = this.sku_code;
 				}
 				resource.removeGoods(arg).then(res => {
+					if(res.code == 1){
 					this.$toast(res.msg);
 					if(this.modelType == '1'){
 						this.listArray.splice(this.goods_index,1);
@@ -276,6 +289,7 @@
 						this.page = 1;
 						this.listArray = [];
 					}
+				}
 				})
 			},
 			//点击选择责任人
@@ -328,11 +342,13 @@
 									type:'1'
 								}
 								resource.scanGoods(arg).then(res => {
+									if(res.code == 1){
 									this.$toast(res.msg);
 									this.page = 1;
 									this.listArray = [];
 									//获取已绑定的商品列表
 									this.getGoodsList();
+								}
 								})
 							}
 						},

@@ -61,7 +61,9 @@
 			//获取报损原因
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'loss_reason'}).then(res => {
+					if(res.code == 1){
 					this.bsyy_list = res.data;
+				}
 				})
 			},
 			//切换报损原因
@@ -77,8 +79,10 @@
 						this.$toast('图片最多不能超过6张！')
 					}else{
 						resource.uploadImage({file:files[i]}).then(res => {
+							if(res.code == 1){
 							this.domain = res.data.domain;
 							this.image_list.push(res.data.name);
+						}
 						})
 					}
 					
@@ -87,7 +91,9 @@
 			//删除图片
 			deleteImg(item,index){
 				resource.deleteImage({name:item}).then(res => {
+					if(res.code == 1){
 					this.image_list.splice(index,1);
+				}
 				})
 			},
 			//报损
@@ -107,7 +113,9 @@
 					arg.batch_id = this.batch_id;
 				}
 				resource.scanGoods(arg).then(res => {
+					if(res.code == 1){
 					this.$router.replace('/success?value=' + '已报损&img_url=bs');
+				}
 				})
 			}
 		},

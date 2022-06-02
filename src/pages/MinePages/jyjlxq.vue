@@ -77,7 +77,9 @@
 			//借样详情
 			lendingDetail(){
 				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
+					if(res.code == 1){
 					this.lendingInfo = res.data;
+				}
 				})
 			},
 			//扫描样衣码
@@ -92,7 +94,7 @@
 								type:'2'
 							}
 							resource.scanGoods(arg).then(res => {
-								if(res){
+								if(res.code == 1){
 									this.page = 1;
 									this.listArray = [];
 									//获取已绑定的商品列表
@@ -122,11 +124,13 @@
 					pagesize:this.pagesize
 				}
 				resource.getGoodsList(arg).then(res => {
+					if(res.code == 1){
 					this.loading = false;
 					this.listArray = [...this.listArray,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;
 					}
+				}
 				})
 			},
 			//点击询问
@@ -206,6 +210,7 @@
 					arg.sku_code = this.sku_code;
 				}
 				resource.removeGoods(arg).then(res => {
+					if(res.code == 1){
 					this.$toast(res.msg);
 					if(this.modelType == '1'){
 						this.listArray.splice(this.goods_index,1);
@@ -213,6 +218,7 @@
 						this.page = 1;
 						this.listArray = [];
 					}
+				}
 				})
 			},
 			//借样审批
@@ -227,11 +233,13 @@
 					arg.reason = this.input_value;
 				}
 				resource.lendingAdd(arg).then(res => {
+					if(res.code == 1){
 					if(this.modelType == '3'){
 						this.$router.replace('/success?value=' + '借样成功' + '&img_url=success');
 					}else if(this.modelType == '4'){
 						this.$router.replace('/success?value=' + '借样拒绝' + '&img_url=jyjj');
 					}
+				}
 				})
 			},
 			//点击进入详情
