@@ -113,7 +113,7 @@
 			getAjaxRooms(){
 				resource.ajaxRooms().then(res => {
 					if(res.code == 1){
-					this.room_list = res.data;
+						this.room_list = res.data;
 					if(this.page_type == 'yybd'){	//样衣绑定
 						//进入绑定页面获取批次信息
 						this.getbBindingInfo();
@@ -122,30 +122,30 @@
 						this.getReturnInfo();
 					}
 				}
-				})
+			})
 			},
 			//进入绑定页面获取批次信息
 			getbBindingInfo(){
 				resource.getbBindingInfo().then(res => {
 					if(res.code == 1){
-					this.bindingInfo = res.data;
-					this.user_name = this.userInfo.user_name;
-					this.user_id = this.userInfo.userid;
+						this.bindingInfo = res.data;
+						this.user_name = this.userInfo.user_name;
+						this.user_id = this.userInfo.userid;
 					//获取商品列表
 					this.getGoodsList();
 				}
-				})
+			})
 			},
 			//进入归还页面获取批次信息
 			getReturnInfo(){
 				resource.getReturnAdd().then(res => {
 					if(res.code == 1){
-					this.returnInfo = res.data;
-					this.admin_name = this.returnInfo.admin_name;
+						this.returnInfo = res.data;
+						this.admin_name = this.returnInfo.admin_name;
 					//获取商品列表
 					this.getGoodsList();
 				}
-				})
+			})
 			},
 			//获取更多
 			loadMore(){
@@ -164,13 +164,13 @@
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.total_num = res.data.total;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.total_num = res.data.total;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//点击询问
@@ -188,12 +188,16 @@
 					this.showModel = true;
 					break;
 					case '3':
-					if(this.room_id != ''){
-						this.value = `即将入库${this.total_num}件商品？`;
-						this.showModel = true;
+					if(this.total_num == 0){
+						this.$toast('暂时没有商品哦！');
 					}else{
-						//底部提交(样衣绑定)
-						this.postbBinding();
+						if(this.room_id != ''){
+							this.value = `即将入库${this.total_num}件商品？`;
+							this.showModel = true;
+						}else{
+							this.value = `即将借样${this.total_num}件商品？`;
+							this.showModel = true;
+						}
 					}
 					break;
 					case '4':
@@ -249,12 +253,12 @@
 				}
 				resource.postbBinding(arg).then(res => {
 					if(res.code == 1){
-					if(this.room_id != ''){
-						this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
-					}else{
-						this.$router.push('/success?value=' + '借样成功' + '&showBut=1&img_url=jy');
+						if(this.room_id != ''){
+							this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
+						}else{
+							this.$router.push('/success?value=' + '借样成功' + '&showBut=1&img_url=jy');
+						}
 					}
-				}
 				})
 			},
 			//归还提交
@@ -266,8 +270,8 @@
 				}
 				resource.postReturnAdd(arg).then(res => {
 					if(res.code == 1){
-					this.$router.replace('/success?value=' + '归还成功' + '&img_url=gh');
-				}
+						this.$router.replace('/success?value=' + '归还成功' + '&img_url=gh');
+					}
 				})
 			},
 			//删除商品
@@ -282,14 +286,14 @@
 				}
 				resource.removeGoods(arg).then(res => {
 					if(res.code == 1){
-					this.$toast(res.msg);
-					if(this.modelType == '1'){
-						this.listArray.splice(this.goods_index,1);
-					}else{
-						this.page = 1;
-						this.listArray = [];
+						this.$toast(res.msg);
+						if(this.modelType == '1'){
+							this.listArray.splice(this.goods_index,1);
+						}else{
+							this.page = 1;
+							this.listArray = [];
+						}
 					}
-				}
 				})
 			},
 			//点击选择责任人
@@ -343,13 +347,13 @@
 								}
 								resource.scanGoods(arg).then(res => {
 									if(res.code == 1){
-									this.$toast(res.msg);
-									this.page = 1;
-									this.listArray = [];
+										this.$toast(res.msg);
+										this.page = 1;
+										this.listArray = [];
 									//获取已绑定的商品列表
 									this.getGoodsList();
 								}
-								})
+							})
 							}
 						},
 						onFail : (err) => {

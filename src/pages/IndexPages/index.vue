@@ -5,7 +5,7 @@
 			<div class="title">德儿电子商务样衣系统</div>
 			<div class="card_box">
 				<div class="list_box">
-					<div class="item" @click="$router.push('/yybd_index?type=yybd')">
+					<div class="item" @click="$router.push('/yybd_index?page_type=yybd')">
 						<img class="item_icon" src="../../static/yybd_icon.png">
 						<div class="item_lable">样衣绑定</div>
 					</div>
@@ -13,7 +13,7 @@
 						<img class="item_icon" src="../../static/fqjy_icon.png">
 						<div class="item_lable">发起借样</div>
 					</div>
-					<div class="item" @click="$router.push('/yybd_index?type=yygh')">
+					<div class="item" @click="$router.push('/yybd_index?page_type=yygh')">
 						<img class="item_icon" src="../../static/yygh_icon.png">
 						<div class="item_lable">样衣归还</div>
 					</div>
@@ -35,11 +35,23 @@
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	export default{
 		methods:{
 			//扫码报损
 			yybsFn(){
-				this.$router.push('/yybs_index?sku_code=' + 20);
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = data.text.split('=')[1];
+							this.$router.push('/yybs_index?sku_code=' + sku_code);
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
+					})
+				})
+				
 			}
 		}
 	}
