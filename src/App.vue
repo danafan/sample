@@ -41,12 +41,11 @@
 			},
 			//钉钉鉴权
 			dingAuth(data){
-				data.url = `${location.origin}`;
-				// data.url = 'https://house.92nu.com';
+				data.url = window.location.href;
 				data.corp_id = 'ding7828fff434921f5b';
 				resource.dingAuth(data).then(res => {
 					//钉钉鉴权
-					this.ddConfig(data);
+					this.ddConfig(res.data);
 				})
 			},
 			//钉钉鉴权

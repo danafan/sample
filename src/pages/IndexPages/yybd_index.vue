@@ -300,8 +300,7 @@
 						responseUserOnly: true,
 						startWithDepartmentId: 0,
 						onSuccess : function(res) {
-							// 调用成功时回调
-							console.log(res)
+							alert(JSON.stringify(res));
 						},
 						onFail : function(err) {
 							// 调用失败时回调

@@ -22,6 +22,9 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(response => {
   Toast.clear();
+  if(response.data.status == 1){
+    return response.data;
+  }
   switch (response.data.code) {
     case 1:
     return response.data;

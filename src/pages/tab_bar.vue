@@ -45,7 +45,7 @@
 					dd.ready(() => {
 						dd.biz.util.scan({
 							onSuccess: (data) => {
-								this.$toast(data.text);
+								alert(data.text);
 							},
 							onFail : (err) => {
 								console.log(err)
