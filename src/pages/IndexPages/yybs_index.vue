@@ -44,7 +44,7 @@
 				batch_id:"",
 				showPopup:false,		//选择报损原因
 				bsyy_list:[],
-				activeIndex:0,	//当前选中的报损原因
+				activeIndex:999,	//当前选中的报损原因
 				bsyy:"",			//选择的报损原因
 				ysjz:"",			//原始价值
 				domain:"",

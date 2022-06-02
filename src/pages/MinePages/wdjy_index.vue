@@ -16,7 +16,12 @@
 				已拒绝
 			</div>
 		</div>
-		<van-list v-model:loading="loading" :finished="finished" @load="loadMore" class="van_list"
+		<van-list v-model:loading="loading"
+		 :finished="finished"
+		  @load="loadMore"
+		  finished-text="没有更多了"
+		   class="van_list"
+		   v-if="listArray.length > 0"
 		>
 		<div class="record_item" v-for="item in listArray" @click="goJyxq(item.lending_id)">
 			<div class="first_row">
@@ -31,10 +36,12 @@
 			</div>
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -80,11 +87,7 @@
 				this.listArray = [];
 				this.loading = true;
 				this.finished = false;
-				if(this.page_type == 'wdjy'){	//我的借样列表	
-					this.myLendingList();
-				}else{		//借样记录
-					this.lendingList();
-				}
+				this.lendingList();
 			},
 			//获取更多
 			loadMore(){
@@ -145,6 +148,9 @@
 				}
 				
 			}
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>
@@ -173,6 +179,7 @@
 			border: none;
 			outline: none;
 			font-size: 14rem;
+			padding-left: 5rem;
 		}
 	}
 	.tab_row{

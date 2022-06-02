@@ -5,16 +5,19 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="van_list"
+		v-if="listArray.length > 0"
 		>
 		<div class="item" @click="goZcxq(page_type == 'ghjl'?item.return_id:item.handle_id)" v-for="item in listArray">
 			<div class="item_label">{{page_type == 'ghjl'?'归还记录':'处理记录'}}</div>
 			<div class="item_value">{{item.apply_time}}</div>
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -79,6 +82,9 @@
 			goZcxq(batch_id){
 				this.$router.push('/zcxq?page_type=' + this.page_type + '&batch_id=' + batch_id);
 			}
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

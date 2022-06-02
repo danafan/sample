@@ -10,8 +10,9 @@
 	export default {
 		name: 'app',
 		created(){
+			this.$router.push('/index');
 			//获取钉钉鉴权信息
-			this.getConfig();
+			// this.getConfig();
 		},
 		watch:{
 			$route(to,from){
@@ -19,18 +20,45 @@
 				let path = router.path;
 				let query = router.query;
 				let name = router.name;
-				if(path == '/wdjy_index'){
-					if(query.page_type == 'wdjy'){
-						document.title = '我的借样';
+				if(path == '/yybd_index'){
+					if(query.page_type == 'yybd'){
+						this.setTabBarTitle('样衣绑定')
 					}else{
-						document.title = '借样记录';
+						this.setTabBarTitle('样衣归还')
+					}
+				}else if(path == '/wdjy_index'){
+					if(query.page_type == 'wdjy'){
+						this.setTabBarTitle('我的借样')
+					}else{
+						this.setTabBarTitle('借样记录')
+					}
+				}else if(path == '/zcjl_index'){
+					if(query.page_type == 'cljl'){
+						this.setTabBarTitle('处理记录')
+					}else{
+						this.setTabBarTitle('归还记录')
+					}
+				}else if(path == '/zcxq'){
+					if(query.page_type == 'cljl'){
+						this.setTabBarTitle('处理记录详情')
+					}else{
+						this.setTabBarTitle('归还记录详情')
 					}
 				}else{
-					document.title=router.name;
+					this.setTabBarTitle(router.name)
 				}
 			}
 		},
 		methods:{
+			//设置标题栏文字
+			setTabBarTitle(title){
+				dd.biz.navigation.setTitle({
+   					 title : title,//控制标题文本，空字符串表示显示默认文本
+   					 onSuccess : function(result) {
+   					 },
+   					 onFail : function(err) {}
+   					});
+			},
 			//获取钉钉鉴权信息
 			getConfig(){
 				resource.getConfig().then(res => {

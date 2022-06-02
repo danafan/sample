@@ -45,7 +45,8 @@
 					dd.ready(() => {
 						dd.biz.util.scan({
 							onSuccess: (data) => {
-								alert(data.text);
+								let sku_code = data.text.split('=')[1];
+								this.$router.push('/yyxq?sku_code=' + sku_code)
 							},
 							onFail : (err) => {
 								console.log(err)

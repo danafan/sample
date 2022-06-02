@@ -14,17 +14,19 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="van_list"
+		v-if="task_list.length > 0"
 		>
 		<div class="task_item" v-for="item in task_list" @click="goPdxq(item.check_id)">
 			<div class="item_lable">您有新的盘点任务{{item.check_status == '0'?'待完成':'已完成'}}</div>
 			<div class="item_value">{{item.add_time}}</div>
 		</div>
 	</van-list>
-
+	<EmptyPage v-if="task_list.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -73,6 +75,9 @@
 				this.$router.push('/pdxq_index?type=' + this.active_index + '&batch_id=' + batch_id);
 			}
 			
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

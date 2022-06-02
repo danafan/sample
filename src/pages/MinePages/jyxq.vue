@@ -20,9 +20,9 @@
 			<van-list v-model:loading="loading"
 			:finished="finished"
 			@load="loadMore"
-			finished-text="没有更多了" v-if="yy_type == 1"
+			finished-text="没有更多了" v-if="yy_type == 1 && listArray.length > 0"
 			>
-			<div class="yy_item" v-for="item in listArray" :key="item.sku_code">
+			<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1">
 				<img class="yy_img" :src="item.domain + item.image">
 				<div class="yy_content">
 					<div class="yy_row">样衣码：{{item.sku_code}}</div>
@@ -34,12 +34,14 @@
 				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)">
 			</div>
 		</van-list>
+		
 	</div>
-
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -72,7 +74,6 @@
 				this.active_index = index;
 				this.page = 1;
 				this.listArray = [];				
-				this.loading = false;
 				this.finished = true;
 				//已借用的列表
 				this.getGoodsList();
@@ -112,6 +113,9 @@
 			goYybs(item){
 				this.$router.push('/yybs_index?sku_code=' + item.sku_code + '&batch_id=' + item.batch_id)
 			},
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

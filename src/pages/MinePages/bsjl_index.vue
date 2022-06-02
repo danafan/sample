@@ -5,6 +5,7 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="van_list"
+		v-if="listArray.length > 0"
 		>
 		<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1">
 			<img class="yy_img" :src="item.domain + item.image">
@@ -14,10 +15,12 @@
 			</div>
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -51,6 +54,9 @@
 				})
 			},
 			
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

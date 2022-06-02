@@ -13,8 +13,9 @@
 			@load="loadMore"
 			finished-text="没有更多了"
 			class="van_list"
+			v-if="listArray.length > 0"
 			>
-			<div class="yy_item" v-for="(item,index) in listArray" @click="goDetail(item.sku_code)">
+			<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
 				<img class="yy_img" :src="item.domain + item.image">
 				<div class="yy_content">
 					<div class="yy_row">样衣码：{{item.sku_code}}</div>
@@ -25,6 +26,7 @@
 			</div>
 		</van-list>
 	</div>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 	<div class="bottom_box">
 		<div class="all_delete" v-if="listArray.length > 0" @click.stop="modelFn('2')">清空记录</div>
 		<div class="smyym_button" @click="scanCode">
@@ -41,7 +43,9 @@
 </div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	import DialogModel from '../../components/dialog_model.vue'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	import resource from '../../api/resource.js'
 	export default{
 		data(){
@@ -78,16 +82,29 @@
 			},
 			//扫描样衣码
 			scanCode(){
-				let arg = {
-					sku_code:37,
-					batch_id:this.lending_id,
-					type:'2'
-				}
-				resource.scanGoods(arg).then(res => {
-					this.page = 1;
-					this.listArray = [];
-					//获取已绑定的商品列表
-					this.getGoodsList();
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = data.text.split('=')[1];
+							let arg = {
+								sku_code:sku_code,
+								batch_id:this.lending_id,
+								type:'2'
+							}
+							resource.scanGoods(arg).then(res => {
+								if(res){
+									this.page = 1;
+									this.listArray = [];
+									//获取已绑定的商品列表
+									this.getGoodsList();
+								};
+
+							})
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
+					})
 				})
 			},
 			//获取更多
@@ -224,7 +241,8 @@
 			}
 		},
 		components:{
-			DialogModel
+			DialogModel,
+			EmptyPage
 		}
 	}
 </script>

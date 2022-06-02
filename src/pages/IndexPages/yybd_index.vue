@@ -29,8 +29,9 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="yy_list"
+		v-if="listArray.length > 0"
 		>
-		<div class="yy_item" v-for="(item,index) in listArray" @click="goDetail(item.sku_code)">
+		<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>
@@ -40,36 +41,34 @@
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 	<div class="bottom_box">
 		<div class="all_delete" @click="modelFn('2')" v-if="page_type == 'yybd' && listArray.length > 0">全部清空</div>
 		<div class="button_box">
-			<!-- 样衣绑定 -->
-			<div class="button" @click="scanYyCode" v-if="page_type == 'yybd'">
+			<div class="button" @click="scanYyCode">
 				<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
 				<div class="scan_text">扫描样衣码</div>
 			</div>
+			<!-- 样衣绑定 -->
 			<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">提交</div>
 			<!-- 样衣归还 -->
-			<div class="button" @click="scanYyCode" v-if="page_type == 'yygh'">
-				<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
-				<div class="scan_text">扫码</div>
-			</div>
 			<div class="button rk_button" @click="modelFn('4')" v-if="page_type == 'yygh'">归还</div>
 		</div>
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 	<van-popup v-model:show="showPopup" position="bottom" round>
 		<div class="list">
-			<div class="item" :class="{'active_item':item.room_id == room_id}" v-for="(item,index) in room_list" @click="checkYyj(item.room_id,item.room_name)">{{item.room_name}}</div>
+			<div class="item" :class="{'active_item':roomIndex == index}" v-for="(item,index) in room_list" @click="checkYyj(index)">{{item.room_name}}</div>
 		</div>
 		<div class="padding_box"></div>
-		<div class="item" @click="showPopup = false">取消</div>
+		<div class="item" @click="checkYyj(999)">清空</div>
 	</van-popup>
 </div>
 </template>
 <script>
 	import * as dd from 'dingtalk-jsapi'; // 此方式为整体加载，也可按需进行加载
 	import DialogModel from '../../components/dialog_model.vue'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	import resource from '../../api/resource.js'
 	export default{
 		data(){
@@ -79,6 +78,7 @@
 				admin_name:"",				//管理员
 				showPopup:false,			//选择样衣间弹窗
 				room_list:[],				//样衣间列表
+				roomIndex:999,				//选中的样衣间下标
 				room_name:"",				//选中的样衣间名称
 				room_id:"",					//选中的样衣间id 
 				bindingInfo:{},				//获取页面批次信息(绑定页面)
@@ -98,10 +98,10 @@
 			}
 		},
 		computed:{
-         	userInfo(){
-         		return this.$store.state.userInfo;
-         	}
-         },
+			userInfo(){
+				return this.$store.state.userInfo;
+			}
+		},
 		created(){
 			//页面来源
 			this.page_type = this.$route.query.type;
@@ -128,8 +128,6 @@
 					this.bindingInfo = res.data;
 					this.user_name = this.userInfo.user_name;
 					this.user_id = this.userInfo.userid;
-					this.room_name = this.bindingInfo.room_name;
-					this.room_id = this.bindingInfo.room_id;
 					//获取商品列表
 					this.getGoodsList();
 				})
@@ -139,8 +137,6 @@
 				resource.getReturnAdd().then(res => {
 					this.returnInfo = res.data;
 					this.admin_name = this.returnInfo.admin_name;
-					this.room_name = this.returnInfo.room_name;
-					this.room_id = this.returnInfo.room_id;
 					//获取商品列表
 					this.getGoodsList();
 				})
@@ -232,10 +228,12 @@
 						}
 					}
 				},
-			//底部提交(样衣绑定)
+			//绑定提交
 			postbBinding(){
 				var arg = {
-					binding_id:this.bindingInfo.binding_id
+					binding_id:this.bindingInfo.binding_id,
+					user_name:this.user_name,
+					user_id:this.user_id
 				}
 				if(this.room_id != ''){
 					arg.room_id = this.room_id;
@@ -300,7 +298,9 @@
 						responseUserOnly: true,
 						startWithDepartmentId: 0,
 						onSuccess : function(res) {
-							alert(JSON.stringify(res));
+							//责任人
+							this.user_name = res.users[0].name;
+							this.user_id = res.users[0].emplId;
 						},
 						onFail : function(err) {
 							// 调用失败时回调
@@ -315,32 +315,49 @@
 			},
 			//点击扫描样衣码
 			scanYyCode(){
-				if(this.page_type == 'yybd'){	//样衣绑定
-					this.$router.push('/bmbd_index?yym=' + Math.floor(Math.random()*100+8) + '&batch_id=' + this.bindingInfo.binding_id);
-				}else{	//样衣归还
-					let arg = {
-						sku_code:24,
-						batch_id:this.returnInfo.return_id,
-						type:'1'
-					}
-					resource.scanGoods(arg).then(res => {
-						this.$toast(res.msg);
-						this.page = 1;
-						this.listArray = [];
-						//获取已绑定的商品列表
-						this.getGoodsList();
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = data.text.split('=')[1];
+							if(this.page_type == 'yybd'){	//样衣绑定
+								this.$router.push('/bmbd_index?yym=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
+							}else{	//样衣归还
+								let arg = {
+									sku_code:sku_code,
+									batch_id:this.returnInfo.return_id,
+									type:'1'
+								}
+								resource.scanGoods(arg).then(res => {
+									this.$toast(res.msg);
+									this.page = 1;
+									this.listArray = [];
+									//获取已绑定的商品列表
+									this.getGoodsList();
+								})
+							}
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
 					})
-				}
+				})
 			},
 			//切换样衣间
-			checkYyj(room_id,room_name){
-				this.room_name = room_name;
-				this.room_id = room_id;
+			checkYyj(index){
+				this.roomIndex = index;
+				if(index > this.room_list.length - 1){
+					this.room_name = "";
+					this.room_id = "";
+				}else{
+					this.room_name = this.room_list[index].room_name;
+					this.room_id = this.room_list[index].room_id;
+				}
 				this.showPopup = false;
 			}
 		},
 		components:{
-			DialogModel
+			DialogModel,
+			EmptyPage
 		}
 	}
 </script>

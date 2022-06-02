@@ -23,6 +23,7 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="van_list"
+		v-if="listArray.length > 0"
 		>
 		<div class="yy_item" v-for="item in listArray" @click="goDetail(item.sku_code)">
 			<img class="yy_img" :src="item.domain + item.image">
@@ -33,10 +34,12 @@
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -90,6 +93,9 @@
 				//获取已绑定的商品列表
 				this.getGoodsList();
 			}
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

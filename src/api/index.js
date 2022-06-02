@@ -29,6 +29,7 @@ instance.interceptors.response.use(response => {
     case 1:
     return response.data;
     case 0:
+    console.log(response.data.msg)
     Toast(response.data.msg);
     break;
     default:

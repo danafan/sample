@@ -5,6 +5,7 @@
 		@load="loadMore"
 		finished-text="没有更多了"
 		class="van_list"
+		v-if="listArray.length > 0"
 		>
 		<div class="bdjl_item" v-for="item in listArray" @click="goDetail(item.binding_id)">
 			<div class="item_left">
@@ -14,10 +15,12 @@
 			<div class="item_right">{{item.add_time}}</div>
 		</div>
 	</van-list>
+	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
+	import EmptyPage from '../CommonPages/empty_page.vue'
 	export default{
 		data(){
 			return{
@@ -53,6 +56,9 @@
 				//获取已绑定的商品列表
 				this.bindingRecord();
 			}
+		},
+		components:{
+			EmptyPage
 		}
 	}
 </script>

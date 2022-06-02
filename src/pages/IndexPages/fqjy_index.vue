@@ -53,25 +53,67 @@
 	export default{
 		data(){
 			return{
-				user_name:"韩阳",
-				user_id:"15262575868677723",
+				user_name:"",			//借样人
+				user_id:"",
 				showDate:false,			//归还时间弹窗
 				minDate: new Date(),
 				ghsj_date:"",
 				ghsj:"",				//选择的预计归还时间
 				showJyyy:false,			//借样原因弹窗
-				jyyy_list:['拍照','直播','设计'],
-				jyyyIndex:0,				//
+				jyyy_list:[],			//借样原因
+				jyyyIndex:999,				//
 				jyyy:"",					//选择的借样原因
-				remark:"",				//备注
+				remark:"",					//备注
 			}
 		},
+		computed:{
+			userInfo(){
+				return this.$store.state.userInfo;
+			}
+		},
+		created(){
+			//获取借样原因
+			this.ajaxTypeList();
+		},
 		methods:{
+			//获取借样原因
+			ajaxTypeList(){
+				resource.ajaxTypeList({type:'lending_reason'}).then(res => {
+					this.jyyy_list = res.data;
+					this.user_name = this.userInfo.user_name;
+					this.user_id = this.userInfo.userid;
+				})
+			},
 			//切换借样人
 			checkJyr(index){
-				// this.jyrIndex = index;
-				// this.jyr = this.jyr_list[this.jyrIndex];
-				// this.showPopup = false;
+				dd.ready(() => {
+					dd.biz.contact.complexPicker({
+						title: "选择借样人",
+						corpId: "ding7828fff434921f5b",
+						multiple: false,
+						limitTips: "超出了",
+						maxUsers: 1000,
+						pickedUsers: [],
+						pickedDepartments: [],
+						disabledUsers: [],
+						disabledDepartments: [],
+						requiredUsers: [],
+						requiredDepartments: [],
+						appId: 1664876526,
+						permissionType: "GLOBAL",
+						responseUserOnly: true,
+						startWithDepartmentId: 0,
+						onSuccess : function(res) {
+							//责任人
+							this.user_name = res.users[0].name;
+							this.user_id = res.users[0].emplId;
+						},
+						onFail : function(err) {
+							// 调用失败时回调
+							console.log(err)
+						}
+					});
+				})
 			},
 			//归还时间确认
 			confirmDate(){
@@ -87,7 +129,7 @@
 			//切换借样原因
 			checkJyyy(index){
 				this.jyyyIndex = index;
-				this.jyyy = this.jyyy_list[this.jyyyIndex];
+				this.jyyy = this.jyyy_list[index];
 				this.showJyyy = false;
 			},
 			//发起借样
@@ -102,10 +144,6 @@
 				}
 				if(this.jyyy == ''){
 					this.$toast('请选择借样原因');
-					return;
-				}
-				if(this.remark == ''){
-					this.$toast('请输入备注');
 					return;
 				}
 				let arg = {

@@ -8,11 +8,15 @@
 		<div class="info_row">商品编码：{{yyInfo.sku_id}}</div>
 		<div class="info_row">供应商款号：{{yyInfo.supplier_i_id}}</div>
 		<div class="info_row">样衣状态：{{yyInfo.clothes_status}}</div>
-		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.finish_time}}</div>
+		<div class="info_row" v-if="yyInfo.status == '1'">样衣间：{{yyInfo.room_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '1'">责任人：{{yyInfo.user_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样人：{{yyInfo.user_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.apply_time}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">提交人：{{yyInfo.apply_user_name}}</div>
-		<div class="info_row" v-if="yyInfo.status == '2'">管理员：{{yyInfo.admin_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2' || yyInfo.status == '4'">管理员：{{yyInfo.admin_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样原因：{{yyInfo.reason}}</div>
+		<div class="info_row" v-if="yyInfo.status == '3'">报损时间：{{yyInfo.add_time}}</div>
+		<div class="info_row" v-if="yyInfo.status == '3'">报损人：{{yyInfo.user_name}}</div>
 		<van-image-preview v-model:show="showPreImg" :images="new_images" :start-position="activeIndex">
 		</van-image-preview>
 	</div>
@@ -36,7 +40,6 @@
 		color: #000000;
 	}
 }
-
 </style>
 <script>
 	import resource from '../../api/resource.js'
