@@ -17,11 +17,11 @@
 			</div>
 		</div>
 		<van-list v-model:loading="loading"
-		 :finished="finished"
-		  @load="loadMore"
-		  finished-text="没有更多了"
-		   class="van_list"
-		   v-if="listArray.length > 0"
+		:finished="finished"
+		@load="loadMore"
+		finished-text="没有更多了"
+		class="van_list"
+		v-if="listArray.length > 0"
 		>
 		<div class="record_item" v-for="item in listArray" @click="goJyxq(item.lending_id)">
 			<div class="first_row">
@@ -56,16 +56,30 @@
 				page_type:'',		//页面来源
 			}
 		},
-		created(){
-			//页面来源
-			this.page_type = this.$route.query.page_type;
-			if(this.page_type == 'wdjy'){	//我的借样列表	
-				this.myLendingList();
-			}else{		//借样记录
-				this.lendingList();
-				//获取待借用记录数量
-				this.unNeturnNum();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/jyjlxq' || to.path == '/jyxq'){	//我的借样/借样记录首页缓存
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
 			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				//页面来源
+				this.page_type = this.$route.query.page_type;
+				this.tab_index = 0;
+				this.page = 1;
+				this.listArray = [];
+				if(this.page_type == 'wdjy'){	//我的借样列表	
+					this.myLendingList();
+				}else{		//借样记录
+					this.lendingList();
+					//获取待借用记录数量
+					this.unNeturnNum();
+				}
+			}
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//切换选中tab
@@ -102,8 +116,8 @@
 			unNeturnNum(){
 				resource.unNeturnNum().then(res => {
 					if(res.code == 1){
-					this.unreturnnum = res.data;
-				}
+						this.unreturnnum = res.data;
+					}
 				})
 			},
 			//我的借样列表
@@ -115,12 +129,12 @@
 				}
 				resource.myLendingList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//借样记录列表
@@ -133,12 +147,12 @@
 				}
 				resource.lendingList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//借样详情
@@ -164,58 +178,58 @@
 .container{
 	display: flex;
 	flex-direction: column;
-	padding: 8rem 12rem;
+	padding: 8px 12px;
 	.search_box{
 		background: #F8F8F8;
-		border-radius: 17rem;
+		border-radius: 17px;
 		width: 100%;
-		height: 34rem;
+		height: 34px;
 		display: flex;
 		align-items: center;
-		padding-left: 10rem;
-		padding-right: 10rem;
+		padding-left: 10px;
+		padding-right: 10px;
 		.search_icon{
-			margin-right: 5rem;
-			width: 19rem;
-			height: 19rem;
+			margin-right: 5px;
+			width: 19px;
+			height: 19px;
 		}
 		.search_input{
 			flex:1;
-			height: 30rem;
+			height: 30px;
 			border: none;
 			outline: none;
-			font-size: 14rem;
-			padding-left: 5rem;
+			font-size: 14px;
+			padding-left: 5px;
 		}
 	}
 	.tab_row{
-		margin-top: 10rem;
-		margin-bottom: 10rem;
+		margin-top: 10px;
+		margin-bottom: 10px;
 		width: 100%;
 		display: flex;
-		height: 38rem;
+		height: 38px;
 		.tab_item{
 			border:1px solid #B9D6FF;
 			flex:1;
 			text-align: center;
-			height: 38rem;
-			line-height: 38rem;
-			font-size: 14rem;
+			height: 38px;
+			line-height: 38px;
+			font-size: 14px;
 			color: #333333;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 		}
 		.djy{
-			border-radius: 19rem 0 0 19rem;
+			border-radius: 19px 0 0 19px;
 			.num{
-				margin-left: 5rem;
-				height: 18rem;
-				line-height: 18rem;
-				border-radius: 9rem;
-				padding-left: 5rem;
-				padding-right: 5rem;
-				font-size: 13rem;
+				margin-left: 5px;
+				height: 18px;
+				line-height: 18px;
+				border-radius: 9px;
+				padding-left: 5px;
+				padding-right: 5px;
+				font-size: 13px;
 				color: #ffffff;
 				background:#1572F9;
 			}
@@ -225,7 +239,7 @@
 			}
 		}
 		.yjj{
-			border-radius: 0 19rem 19rem 0;
+			border-radius: 0 19px 19px 0;
 		}
 		.active_item{
 			color: #ffffff;
@@ -237,13 +251,13 @@
 		overflow-y: scroll;
 		.record_item{
 			width: 100%;
-			height: 80rem;
+			height: 80px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			padding-left: 15rem;
-			padding-right: 15rem;
-			font-size: 14rem;
+			padding-left: 15px;
+			padding-right: 15px;
+			font-size: 14px;
 			.first_row{
 				display: flex;
 				align-items: center;
@@ -256,7 +270,7 @@
 				}
 			}
 			.num_row{
-				margin-top: 10rem;
+				margin-top: 10px;
 				color: #6FAAFF;
 				display: flex;
 				align-items: center;

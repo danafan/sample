@@ -124,19 +124,19 @@
 .container{
 	display: flex;
 	flex-direction: column;
-	padding-left: 30rem;
-	padding-right: 30rem;
+	padding-left: 30px;
+	padding-right: 30px;
 }
 .yyj_gly{
 	width: 100%;
-	padding-top:10rem;
-	padding-bottom:10rem;
+	padding-top:10px;
+	padding-bottom:10px;
 	.row{
-		padding-top: 5rem;
-		padding-bottom: 5rem;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		display:flex;
 		justify-content: space-between;
-		font-size: 14rem;
+		font-size: 14px;
 		color: #000000;
 	}
 }
@@ -144,25 +144,25 @@
 	flex:1;
 	overflow-y: scroll;
 	.yy_item{
-		margin-bottom: 6rem;
+		margin-bottom: 6px;
 		width: 100%;
-		height: 100rem;
+		height: 100px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.yy_img{
-			margin-right: 15rem;
-			width: 70rem;
-			height: 70rem;
+			margin-right: 15px;
+			width: 70px;
+			height: 70px;
 		}
 		.yy_content{
 			flex:1;
-			height: 70rem;
+			height: 70px;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-around;
 			.yy_row{
-				font-size: 14rem;
+				font-size: 14px;
 				color: #000000;
 			}
 		}

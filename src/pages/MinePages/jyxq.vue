@@ -125,10 +125,10 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding: 10rem 15rem;
+	padding: 10px 15px;
 	.info_row{
-		margin-top: 15rem;
-		font-size: 14rem;
+		margin-top: 15px;
+		font-size: 14px;
 		color: #000000;
 	}
 	.tab_row{
@@ -136,18 +136,18 @@
 		position: sticky;
 		top: 0;
 		width: 100%;
-		height: 50rem;
+		height: 50px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.tab_item{
 			border:1px solid #B9D6FF;
-			border-radius: 15rem;
-			width: 78rem;
+			border-radius: 15px;
+			width: 78px;
 			text-align: center;
-			height: 30rem;
-			line-height: 30rem;
-			font-size: 14rem;
+			height: 30px;
+			line-height: 30px;
+			font-size: 14px;
 			color: #333333;
 		}
 		.active_item{
@@ -156,28 +156,28 @@
 		}
 	}
 	.padding_div{
-		height: 15rem;
+		height: 15px;
 	}
 	.yy_item{
-		padding-left: 15rem;
-		padding-right: 15rem;
+		padding-left: 15px;
+		padding-right: 15px;
 		width: 100%;
-		height: 100rem;
+		height: 100px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.yy_img{
-			margin-right: 15rem;
-			width: 70rem;
-			height: 70rem;
+			margin-right: 15px;
+			width: 70px;
+			height: 70px;
 		}
 		.yy_content{
 			flex:1;
-			height: 70rem;
+			height: 70px;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-around;
-			font-size: 14rem;
+			font-size: 14px;
 			.yy_row{
 				color: #000000;
 			}
@@ -186,8 +186,8 @@
 			}
 		}
 		.bs_icon{
-			width: 24rem;
-			height: 24rem;
+			width: 24px;
+			height: 24px;
 		}
 	}
 }

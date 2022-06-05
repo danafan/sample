@@ -85,33 +85,33 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding-left: 20rem;
-	padding-right: 20rem;
+	padding-left: 20px;
+	padding-right: 20px;
 	display: flex;
 	flex-direction: column;
 	.tab_box{
-		margin-top: 10rem;
-		margin-bottom: 20rem;
+		margin-top: 10px;
+		margin-bottom: 20px;
 		display: flex;
-		height: 38rem;
+		height: 38px;
 		.tab_item{
 			background:#F9FBFC;
 			width: 50%;
-			height: 38rem;
+			height: 38px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 14rem;
+			font-size: 14px;
 			color: #333333;
 			.num{
-				margin-left: 6rem;
-				border-radius: 8rem;
+				margin-left: 6px;
+				border-radius: 8px;
 				background:#1572F9;
-				padding-left: 5rem;
-				padding-right: 5rem;
-				height: 16rem;
-				line-height: 16rem;
-				font-size: 12rem;
+				padding-left: 5px;
+				padding-right: 5px;
+				height: 16px;
+				line-height: 16px;
+				font-size: 12px;
 				color: #ffffff;
 			}
 			.active_num{
@@ -120,10 +120,10 @@
 			}
 		}
 		.left{
-			border-radius: 19rem 0 0 19rem;
+			border-radius: 19px 0 0 19px;
 		}
 		.right{
-			border-radius: 0 19rem 19rem 0;
+			border-radius: 0 19px 19px 0;
 		}
 		.active_back{
 			background: #1572F9;
@@ -135,11 +135,11 @@
 		overflow-y: scroll;
 		.task_item{
 			width: 100%;
-			height: 70rem;
+			height: 70px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 14rem;
+			font-size: 14px;
 			.item_lable{
 				color: #333333;
 			}

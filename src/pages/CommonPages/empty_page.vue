@@ -13,12 +13,12 @@
 	align-items: center;
 	justify-content: center;
 	.empty_icon{
-		margin-bottom: 10rem;
-		width: 80rem;
-		height: 80rem;
+		margin-bottom: 10px;
+		width: 80px;
+		height: 80px;
 	}
 	.toast{
-		font-size: 14rem;
+		font-size: 14px;
 		color: #666666;
 	}
 }

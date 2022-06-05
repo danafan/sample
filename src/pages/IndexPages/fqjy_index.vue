@@ -48,6 +48,7 @@
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	import resource from '../../api/resource.js'
 	import BigButton from '../../components/big_button.vue'
 	export default{
@@ -170,13 +171,13 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding:15rem 30rem;
+	padding:15rem 30px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	.yyj_gly{
 		width: 100%;
-		height: 120rem;
+		height: 120px;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-around;
@@ -186,7 +187,7 @@
 		display:flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: 14rem;
+		font-size: 14px;
 		color: #000000;
 		.value{
 			display:flex;
@@ -201,7 +202,7 @@
 				text-align: end;
 				border: none;
 				outline: none;
-				font-size: 14rem;
+				font-size: 14px;
 			}
 		}
 	}
@@ -209,7 +210,7 @@
 	
 	.padding_box{
 		width: 100%;
-		height: 8rem;
+		height: 8px;
 		background:#F2F2F2;
 	}
 	.list{
@@ -219,24 +220,24 @@
 	.item{
 		width: 100%;
 		text-align: center;
-		height: 56rem;
-		line-height: 56rem;
-		font-size: 17rem;
+		height: 56px;
+		line-height: 56px;
+		font-size: 17px;
 		color: #000000;
 	}
 	.active_item{
 		color: #2C82FF;
 	}
 	.remark_input{
-		margin-top: 20rem;
+		margin-top: 20px;
 		border:none;
 		outline: none;
-		border-radius: 6rem;
+		border-radius: 6px;
 		width: 100%;
-		height: 105rem;
+		height: 105px;
 		background:#FBFBFB;
-		font-size: 14rem;
-		padding:20rem;
+		font-size: 14px;
+		padding:20px;
 	}
 }
 

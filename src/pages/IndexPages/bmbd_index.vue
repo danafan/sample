@@ -123,13 +123,13 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding:15rem 30rem;
+	padding:15px 30px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	.bd_row{
 		width: 100%;
-		height: 50rem;
+		height: 50px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -137,30 +137,30 @@
 	.img_box{
 		width: 100%;
 		.img_toast{
-			margin-top: 2rem;
-			font-size: 12rem;
+			margin-top: 2px;
+			font-size: 12px;
 			color: rgba(0, 0, 0, 0.6);
 		}
 	}
 	.row_label{
-		font-size: 14rem;
+		font-size: 14px;
 		color: #000000;
 	}
 	.scan_txt{
-		font-size: 14rem;
+		font-size: 14px;
 		color: #2C82FF;
 	}
 	.image_list{
 		width: 100%;
-		margin-top: 10rem;
+		margin-top: 10px;
 		display: flex;
 		flex-wrap: wrap;
 		.image_box{
-			margin-right: 15rem;
-			margin-bottom: 15rem;
+			margin-right: 15px;
+			margin-bottom: 15px;
 			position: relative;
-			width: 88rem;
-			height: 88rem;
+			width: 88px;
+			height: 88px;
 			.image{
 				position: absolute;
 				width: 100%;
@@ -168,10 +168,10 @@
 			}
 			.close_icon{
 				position: absolute;
-				top: -5rem;
-				right: -5rem;
-				width: 11rem;
-				height: 11rem;
+				top: -5px;
+				right: -5px;
+				width: 11px;
+				height: 11px;
 			}
 		}
 	}

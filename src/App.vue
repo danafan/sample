@@ -1,6 +1,9 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+		<keep-alive>
+			<router-view v-if="$route.meta.keepAlive"></router-view>
+		</keep-alive>
+		<router-view v-if="!$route.meta.keepAlive"></router-view>
 	</div>
 </template>
 
@@ -10,9 +13,9 @@
 	export default {
 		name: 'app',
 		created(){
-			// this.$router.push('/index');
+			this.$router.push('/index');
 			//获取钉钉鉴权信息
-			this.getConfig();
+			// this.getConfig();
 		},
 		watch:{
 			$route(to,from){

@@ -64,7 +64,7 @@
 .top_back{
 	position: relative;
 	width: 100%;
-	height: 95rem;
+	height: 95px;
 	.mine_back{
 		position: absolute;
 		top: 0;
@@ -73,24 +73,23 @@
 		height: 100%;
 	}
 	.my_info{
-		padding-left: 20rem;
 		z-index: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		color: #ffffff;
-		font-size: 16rem;
+		font-size: 16px;
 		font-weight: 600;
 		.margin_bottom{
-			margin-bottom: 12rem;
+			margin-bottom: 12px;
 		}
 	}
 }
 .option_item{
-	padding-left: 15rem;
-	padding-right: 15rem;
-	height: 56rem;
+	padding-left: 15px;
+	padding-right: 15px;
+	height: 56px;
 	width: 100%;
 	display: flex;
 	align-items: center;
@@ -99,18 +98,18 @@
 		display: flex;
 		align-items: center;
 		.option_icon{
-			margin-right: 10rem;
-			height: 26rem;
-			width: 26rem;
+			margin-right: 10px;
+			height: 26px;
+			width: 26px;
 		}
 		.option_label{
-			font-size: 14rem;
+			font-size: 14px;
 			color: #333333;
 		}
 	}
 	.right_arrow{
-		width: 12rem;
-		height: 24rem;
+		width: 12px;
+		height: 24px;
 	}
 }
 </style>

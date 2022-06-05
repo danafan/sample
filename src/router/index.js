@@ -90,6 +90,10 @@ const router = new Router({
 	{
 		path: '/wdjy_index',
 		name:"我的借样/借样记录",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: wdjy_index
 	},
 	{
@@ -124,6 +128,33 @@ const router = new Router({
 	},
 	]
 })
+
+// 路由跳转前的钩子
+// router.beforeEach(function (to, from, next) {
+// 	if(to.path == '/jyjlxq' || to.path == '/jyxq'){	//我的借样/借样记录首页缓存
+// 		from.meta.keepAlive = true;
+// 	}else{
+// 		from.meta.keepAlive = false;
+// 	}
+//   next()
+// })
+// router.beforeEach((to,from,next)=>{
+//   if(to.matched.some(res=>res.meta.isLogin)){//判断是否需要登录
+//     if (sessionStorage['username']) {
+//       next();
+//     }else{
+//       next({
+//         path:"/login",
+//         query:{
+//           redirect:to.fullPath
+//         }
+//       });
+//     }
+//   }else{
+//     next()
+//   }
+// });
+
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
 	return originalPush.call(this, location).catch(err => err)

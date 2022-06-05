@@ -150,43 +150,43 @@
 .container{
 	display: flex;
 	flex-direction: column;
-	padding-left:20rem;
-	padding-right:20rem;
+	padding-left:20px;
+	padding-right:20px;
 	.yyj_gly{
-		padding: 10rem;
+		padding: 10px;
 		.row{
-			padding-top: 5rem;
-			padding-bottom: 5rem;
+			padding-top: 5px;
+			padding-bottom: 5px;
 			display:flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 14rem;
+			font-size: 14px;
 			color: #000000;
 		}
 	}
 	.tab_box{
-		margin-top: 15rem;
-		margin-bottom: 25rem;
+		margin-top: 15px;
+		margin-bottom: 25px;
 		display: flex;
-		height: 38rem;
+		height: 38px;
 		.tab_item{
 			background:#F9FBFC;
 			width: 50%;
-			height: 38rem;
+			height: 38px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 14rem;
+			font-size: 14px;
 			color: #333333;
 			.num{
-				margin-left: 6rem;
-				border-radius: 8rem;
+				margin-left: 6px;
+				border-radius: 8px;
 				background:#1572F9;
-				padding-left: 5rem;
-				padding-right: 5rem;
-				height: 16rem;
-				line-height: 16rem;
-				font-size: 12rem;
+				padding-left: 5px;
+				padding-right: 5px;
+				height: 16px;
+				line-height: 16px;
+				font-size: 12px;
 				color: #ffffff;
 			}
 			.active_num{
@@ -195,7 +195,7 @@
 			}
 		}
 		.left{
-			border-radius: 19rem 0 0 19rem;
+			border-radius: 19rem 0 0 19px;
 		}
 		.right{
 			border-radius: 0 19rem 19rem 0;
@@ -209,56 +209,56 @@
 		flex:1;
 		overflow-y: scroll;
 		.yy_item{
-			margin-bottom: 6rem;
-			padding-left: 15rem;
-			padding-right: 15rem;
+			margin-bottom: 6px;
+			padding-left: 15px;
+			padding-right: 15px;
 			width: 100%;
-			height: 100rem;
+			height: 100px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			.yy_img{
-				margin-right: 15rem;
-				width: 70rem;
-				height: 70rem;
+				margin-right: 15px;
+				width: 70px;
+				height: 70px;
 			}
 			.yy_content{
 				flex:1;
-				height: 70rem;
+				height: 70px;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-around;
 				.yy_row{
-					font-size: 14rem;
+					font-size: 14px;
 					color: #000000;
 				}
 			}
 			.bs_icon{
-				width: 24rem;
-				height: 24rem;
+				width: 24px;
+				height: 24px;
 			}
 		}
 	}
 	.bottom{
-		height: 70rem;
+		height: 70px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		.button{
-			border-radius: 20rem;
+			border-radius: 20px;
 			border:1px solid #2C82FF;
 			width: 100%;
-			height: 40rem;
+			height: 40px;
 			display:flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 14rem;
+			font-size: 14px;
 			font-weight: 500;
 			.bind_scan_icon{
-				margin-right: 4rem;
-				width: 14rem;
-				height: 14rem;
+				margin-right: 4px;
+				width: 14px;
+				height: 14px;
 			}
 			.scan_text{
 				color: #2C82FF;
@@ -272,9 +272,9 @@
 	.item{
 		width: 100%;
 		text-align: center;
-		height: 56rem;
-		line-height: 56rem;
-		font-size: 17rem;
+		height: 56px;
+		line-height: 56px;
+		font-size: 17px;
 		color: #000000;
 	}
 	.active_item{

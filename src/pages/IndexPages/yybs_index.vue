@@ -127,13 +127,13 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding:15rem 30rem;
+	padding:15px 30px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	.yyj_gly{
 		width: 100%;
-		height: 86rem;
+		height: 86px;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-around;
@@ -143,7 +143,7 @@
 		display:flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: 14rem;
+		font-size: 14px;
 		color: #000000;
 		.value{
 			display:flex;
@@ -158,29 +158,29 @@
 				text-align: end;
 				border: none;
 				outline: none;
-				font-size: 14rem;
+				font-size: 14px;
 			}
 		}
 	}
 	
 	.image_lable{
 		width: 100%;
-		margin-bottom: 10rem;
-		margin-top: 10rem;
-		font-size: 14rem;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		font-size: 14px;
 		color: #000000;
 	}
 	.image_list{
 		width: 100%;
-		margin-top: 10rem;
+		margin-top: 10px;
 		display: flex;
 		flex-wrap: wrap;
 		.image_box{
-			margin-right: 15rem;
-			margin-bottom: 15rem;
+			margin-right: 15px;
+			margin-bottom: 15px;
 			position: relative;
-			width: 88rem;
-			height: 88rem;
+			width: 88px;
+			height: 88px;
 			.image{
 				position: absolute;
 				width: 100%;
@@ -188,16 +188,16 @@
 			}
 			.close_icon{
 				position: absolute;
-				top: -5rem;
-				right: -5rem;
-				width: 11rem;
-				height: 11rem;
+				top: -5px;
+				right: -5px;
+				width: 11px;
+				height: 11px;
 			}
 		}
 	}
 	.padding_box{
 		width: 100%;
-		height: 8rem;
+		height: 8px;
 		background:#F2F2F2;
 	}
 	.list{
@@ -207,9 +207,9 @@
 	.item{
 		width: 100%;
 		text-align: center;
-		height: 56rem;
-		line-height: 56rem;
-		font-size: 17rem;
+		height: 56px;
+		line-height: 56px;
+		font-size: 17px;
 		color: #000000;
 	}
 	.active_item{

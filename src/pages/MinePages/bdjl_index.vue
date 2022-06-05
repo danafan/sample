@@ -66,25 +66,25 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding-left: 20rem;
-	padding-right: 20rem;
+	padding-left: 20px;
+	padding-right: 20px;
 	.van_list{
 		flex:1;
 		overflow-y: scroll;
 		width: 100%;
 		.bdjl_item{
 			width: 100%;
-			height: 70rem;
+			height: 70px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 14rem;
+			font-size: 14px;
 			.item_left{
 				color: #333333;
 				display: flex;
 				align-items: center;
 				.code{
-					margin-right: 15rem;
+					margin-right: 15px;
 				}
 			}
 			.item_right{

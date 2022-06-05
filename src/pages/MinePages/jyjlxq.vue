@@ -258,74 +258,74 @@
 .container{
 	display: flex;
 	flex-direction: column;
-	padding: 15rem;
+	padding: 15px;
 	.top_content{
 		flex:1;
 		overflow-y: scroll;
 		.info_row{
-			margin-top: 15rem;
-			font-size: 14rem;
+			margin-top: 15px;
+			font-size: 14px;
 			color: #000000;
 		}
 		.van_list{
 			.yy_item{
-				margin-bottom: 6rem;
+				margin-bottom: 6px;
 				width: 100%;
-				height: 100rem;
+				height: 100px;
 				display: flex;
 				align-items: center;
 				.yy_img{
-					margin-right: 15rem;
-					width: 70rem;
-					height: 70rem;
+					margin-right: 15px;
+					width: 70px;
+					height: 70px;
 				}
 				.yy_content{
 					flex:1;
-					height: 70rem;
+					height: 70px;
 					display: flex;
 					flex-direction: column;
 					justify-content: space-around;
 					.yy_row{
-						font-size: 14rem;
+						font-size: 14px;
 						color: #000000;
 					}
 				}
 				.delete_icon{
-					width: 18rem;
-					height: 20rem;
+					width: 18px;
+					height: 20px;
 				}
 				.right_arrow{
-					margin-left: 15rem;
-					width: 12rem;
-					height: 24rem;
+					margin-left: 15px;
+					width: 12px;
+					height: 24px;
 				}
 			}
 		}
 	}
 	.bottom_box{
 		.all_delete{
-			margin-top:15rem; 
-			margin-bottom:30rem; 
+			margin-top:15px; 
+			margin-bottom:30px; 
 			width: 100%;
 			text-align: center;
 			color: #428FFF;
-			font-size: 14rem;
+			font-size: 14px;
 		}
 		.smyym_button{
-			margin-bottom: 15rem;
-			border-radius: 20rem;
+			margin-bottom: 15px;
+			border-radius: 20px;
 			border:1px solid #2C82FF;
 			width: 100%;
-			height: 40rem;
+			height: 40px;
 			display:flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 14rem;
+			font-size: 14px;
 			font-weight: 500;
 			.bind_scan_icon{
-				margin-right: 4rem;
-				width: 14rem;
-				height: 14rem;
+				margin-right: 4px;
+				width: 14px;
+				height: 14px;
 			}
 			.scan_text{
 				color: #2C82FF;
@@ -333,19 +333,19 @@
 		}
 		.button_box{
 			width: 100%;
-			height: 70rem;
+			height: 70px;
 			display:flex;
 			align-items: center;
 			justify-content: space-around;
 			.button{
-				border-radius: 20rem;
+				border-radius: 20px;
 				border:1px solid #2C82FF;
-				width: 160rem;
-				height: 40rem;
+				width: 160px;
+				height: 40px;
 				display:flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 14rem;
+				font-size: 14px;
 				font-weight: 500;
 			}
 			.jj_button{

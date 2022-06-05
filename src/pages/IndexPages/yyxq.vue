@@ -23,20 +23,20 @@
 </template>
 <style lang="less" scoped>
 .container{
-	padding: 25rem 0 15rem 30rem;
+	padding: 25px 0 15px 30px;
 	.yy_img_list{
 		display: flex;
 		flex-wrap: wrap;
 		.yy_img{
-			margin-right: 30rem;
-			margin-bottom: 10rem;
-			width: 80rem;
-			height: 80rem;
+			margin-right: 30px;
+			margin-bottom: 10px;
+			width: 80px;
+			height: 80px;
 		}
 	}
 	.info_row{
-		margin-top: 15rem;
-		font-size: 14rem;
+		margin-top: 15px;
+		font-size: 14px;
 		color: #000000;
 	}
 }

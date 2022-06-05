@@ -43,12 +43,12 @@
 	align-items: center;
 	justify-content: center;
 	.success_icon{
-		margin-bottom: 20rem;
-		width: 184rem;
-		height: 156rem;
+		margin-bottom: 20px;
+		width: 184px;
+		height: 156px;
 	}
 	.toast{
-		font-size: 16rem;
+		font-size: 16px;
 		color: #000000;
 	}
 }

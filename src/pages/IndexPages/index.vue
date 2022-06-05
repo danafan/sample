@@ -59,39 +59,39 @@
 <style lang="less" scoped>
 .index_back{
 	width: 100%;
-	height: 190rem;
+	height: 190px;
 }
 .container{
 	.title{
-		margin-top: 58rem;
+		margin-top: 58px;
 		width: 100%;
 		text-align: center;
-		font-size: 24rem;
+		font-size: 24px;
 		color: #ffffff;
 		font-weight: 500;
 	}
 	.card_box{
-		padding-top: 52rem;
-		margin-top: 58rem;
+		padding-top: 52px;
+		margin-top: 58px;
 		background: #ffffff;
-		border-radius: 67rem 67rem 0 0;
+		border-radius: 67px 67px 0 0;
 		.list_box{
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;
 			.item{
-				margin-bottom: 40rem;
-				width: 120rem;
+				margin-bottom: 40px;
+				width: 120px;
 				display:flex;
 				flex-direction: column;
 				align-items: center;
 				.item_icon{
-					margin-bottom: 8rem;
-					width: 48rem;
-					height: 48rem;
+					margin-bottom: 8px;
+					width: 48px;
+					height: 48px;
 				}
 				.item_lable{
-					font-size: 14rem;
+					font-size: 14px;
 					color:#000000;
 				}
 			}

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/index.js'
-import '@/utils/rem'  
+import 'amfe-flexible'
 import './plugin.js'
 
 new Vue({

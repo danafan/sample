@@ -107,12 +107,12 @@
 .container{
 	display: flex;
 	flex-direction: column;
-	padding: 15rem;
+	padding: 15px;
 	.yyj_gly{
 		width: 100%;
-		height: 140rem;
-		padding-left:15rem;
-		padding-right:15rem;
+		height: 140px;
+		padding-left:15px;
+		padding-right:15px;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-around;
@@ -120,7 +120,7 @@
 			display:flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 14rem;
+			font-size: 14px;
 			color: #000000;
 		}
 	}
@@ -128,33 +128,33 @@
 		flex:1;
 		overflow-y: scroll;
 		.yy_item{
-			margin-bottom: 6rem;
-			padding-left: 15rem;
-			padding-right: 15rem;
+			margin-bottom: 6px;
+			padding-left: 15px;
+			padding-right: 15px;
 			width: 100%;
-			height: 100rem;
+			height: 100px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			.yy_img{
-				margin-right: 15rem;
-				width: 70rem;
-				height: 70rem;
+				margin-right: 15px;
+				width: 70px;
+				height: 70px;
 			}
 			.yy_content{
 				flex:1;
-				height: 70rem;
+				height: 70px;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-around;
 				.yy_row{
-					font-size: 14rem;
+					font-size: 14px;
 					color: #000000;
 				}
 			}
 			.right_arrow{
-				width: 12rem;
-				height: 24rem;
+				width: 12px;
+				height: 24px;
 			}
 		}
 	}

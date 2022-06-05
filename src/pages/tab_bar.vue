@@ -79,7 +79,7 @@
 		border-top:1px solid #E6E6E6; 
 		background: #fff;
 		width: 100%;
-		height: 49rem;
+		height: 49px;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
@@ -88,12 +88,12 @@
 			flex-direction: column;
 			align-items: center;
 			img{
-				margin-bottom: 4rem;
-				width: 20rem;
-				height: 20rem;
+				margin-bottom: 4px;
+				width: 20px;
+				height: 20px;
 			}
 			.tabTxt{
-				font-size: 10rem;
+				font-size: 10px;
 				color: #BBBBBB;
 			}
 			.tabTxtSel{

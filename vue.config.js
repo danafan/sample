@@ -11,7 +11,8 @@ module.exports = {
 				ws: true,
 				changOlrigin: true,		
 			}
-		}
+		},
+		host:"0.0.0.0",  
 	},
 	assetsDir: "clothes",
 	// lintOnSave: true,
