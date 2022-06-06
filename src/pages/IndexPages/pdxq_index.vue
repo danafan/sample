@@ -55,7 +55,7 @@
 				active_index:"0",		//切换下标
 				loading:false,
 				finished:false,
-				page:0,
+				page:1,
 				pagesize:10,
 				listArray:[],			//列表
 			}
@@ -65,6 +65,8 @@
 			this.batch_id = this.$route.query.batch_id;
 			//获取头部信息
 			this.checkDetail();
+			//商品列表
+			this.checkGoodsList();
 		},
 		methods:{
 			//获取头部信息
@@ -195,10 +197,10 @@
 			}
 		}
 		.left{
-			border-radius: 19rem 0 0 19px;
+			border-radius: 19px 0 0 19px;
 		}
 		.right{
-			border-radius: 0 19rem 19rem 0;
+			border-radius: 0 19px 19px 0;
 		}
 		.active_back{
 			background: #1572F9;

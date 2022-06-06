@@ -14,12 +14,12 @@
 	justify-content: center;
 	.empty_icon{
 		margin-bottom: 10px;
-		width: 80px;
-		height: 80px;
+		width: 184px;
+		height: 156px;
 	}
 	.toast{
-		font-size: 14px;
-		color: #666666;
+		font-size: 16px;
+		color: #000000;
 	}
 }
 </style>

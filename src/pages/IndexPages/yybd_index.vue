@@ -102,11 +102,35 @@
 				return this.$store.state.userInfo;
 			}
 		},
-		created(){
-			//页面来源
-			this.page_type = this.$route.query.page_type;
-			//获取样衣间列表
-			this.getAjaxRooms();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/yyxq' || to.path == '/bmbd_index'){	//样衣详情/样衣绑定
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
+			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				//页面来源
+				this.page_type = this.$route.query.page_type;
+				this.user_name = "";				//责任人
+				this.user_id = "";					//责任人ID
+				this.admin_name = "";				//管理员
+				this.showPopup = false;				//选择样衣间弹窗
+				this.room_list = [];				//样衣间列表
+				this.roomIndex = 999;				//选中的样衣间下标
+				this.room_name = "";				//选中的样衣间名称
+				this.room_id = "";					//选中的样衣间id 
+				this.bindingInfo = {};				//获取页面批次信息(绑定页面)
+				this.returnInfo = {};				//获取页面批次信息(归还页面)
+				this.page = 1;			
+				this.listArray = [];				//列表
+				this.total_num = 0;				//总数量
+				//获取样衣间列表
+				this.getAjaxRooms();
+			}
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//获取样衣间列表
@@ -289,9 +313,11 @@
 						this.$toast(res.msg);
 						if(this.modelType == '1'){
 							this.listArray.splice(this.goods_index,1);
+							this.total_num -= 1;
 						}else{
 							this.page = 1;
 							this.listArray = [];
+							this.total_num = 0;
 						}
 					}
 				})
@@ -315,7 +341,7 @@
 						permissionType: "GLOBAL",
 						responseUserOnly: true,
 						startWithDepartmentId: 0,
-						onSuccess : function(res) {
+						onSuccess : (res) => {
 							//责任人
 							this.user_name = res.users[0].name;
 							this.user_id = res.users[0].emplId;

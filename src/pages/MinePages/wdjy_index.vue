@@ -57,7 +57,7 @@
 			}
 		},
 		beforeRouteLeave(to,from,next){
-			if(to.path == '/jyjlxq' || to.path == '/jyxq'){	//我的借样/借样记录首页缓存
+			if(to.path == '/jyxq'){	//我的借样缓存
 				from.meta.isUseCache = true;
 			}else{
 				from.meta.isUseCache = false;
@@ -69,6 +69,8 @@
 				//页面来源
 				this.page_type = this.$route.query.page_type;
 				this.tab_index = 0;
+				this.unreturnnum = 0;
+				this.jyr = '';
 				this.page = 1;
 				this.listArray = [];
 				if(this.page_type == 'wdjy'){	//我的借样列表	

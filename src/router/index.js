@@ -40,6 +40,10 @@ const router = new Router({
 	{
 		path: '/yybd_index',
 		name:"样衣绑定/样衣归还",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: yybd_index
 	},
 	{
