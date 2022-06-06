@@ -1,6 +1,6 @@
 <template>
 	<div class="empty_container">
-		<img class="empty_icon" src="../../static/yypd_icon.png">
+		<img class="empty_icon" src="../../static/empty_icon.png">
 		<div class="toast">暂无数据</div>
 	</div>
 </template>

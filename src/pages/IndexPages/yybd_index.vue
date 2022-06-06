@@ -104,7 +104,7 @@
 		},
 		created(){
 			//页面来源
-			this.page_type = this.$route.query.type;
+			this.page_type = this.$route.query.page_type;
 			//获取样衣间列表
 			this.getAjaxRooms();
 		},

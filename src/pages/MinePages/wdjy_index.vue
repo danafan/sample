@@ -75,8 +75,6 @@
 					this.myLendingList();
 				}else{		//借样记录
 					this.lendingList();
-					//获取待借用记录数量
-					this.unNeturnNum();
 				}
 			}
 			this.$route.meta.isUseCache = false;
@@ -112,14 +110,6 @@
 					this.lendingList();
 				}
 			},
-			//获取待借用记录数量
-			unNeturnNum(){
-				resource.unNeturnNum().then(res => {
-					if(res.code == 1){
-						this.unreturnnum = res.data;
-					}
-				})
-			},
 			//我的借样列表
 			myLendingList(){
 				let arg = {
@@ -149,6 +139,9 @@
 					if(res.code == 1){
 						this.loading = false;
 						this.listArray = [...this.listArray,...res.data.data];
+						if(this.tab_index == 0){
+							this.unreturnnum = res.data.total;
+						}
 						if(this.page == res.data.last_page){
 							this.finished = true;
 						}

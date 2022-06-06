@@ -12,12 +12,12 @@
 	display: flex;
 	align-items:center;
 	justify-content:center;
-	width: 88rem;
-	height: 88rem;
+	width: 88px;
+	height: 88px;
 	position: relative;
 	.upload_icon{
-		width: 28rem;
-		height: 24rem;
+		width: 28px;
+		height: 24px;
 	}
 	.upload_file {
 		position: absolute;

@@ -34,10 +34,14 @@
 				task_list:[],			//列表
 				loading:false,			//是否加载中
 				finished:false,			//是否是最后一页
-				page:0,
+				page:1,
 				pagesize:10,
 				unchecknum:0,			//未完成的数量
 			}
+		},
+		created(){
+			//盘点记录列表
+			this.checkList();
 		},
 		methods:{
 			//加载更多
@@ -56,7 +60,9 @@
 				resource.checkList(arg).then(res => {
 					if(res.code == 1){
 					this.loading = false;
-					this.unchecknum = res.data.total;
+					if(this.active_index == '0'){
+						this.unchecknum = res.data.total;
+					}
 					this.task_list = [...this.task_list,...res.data.data];
 					if(this.page == res.data.last_page){
 						this.finished = true;

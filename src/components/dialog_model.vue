@@ -76,17 +76,17 @@
 	justify-content: center;
 	z-index: 2;
 	.model_content{
-		border-radius: 6rem;
+		border-radius: 6px;
 		background:#ffffff;
-		width: 290rem;
-		height: 140rem;
+		width: 290px;
+		height: 140px;
 		display: flex;
 		flex-direction: column;
 		font-weight: 600;
-		font-size: 15rem;
+		font-size: 15px;
 		color: #333333;
 		.input_box{
-			height: 110rem;
+			height: 110px;
 			width: 100%;
 			display: flex;
 			align-items: center;
@@ -94,12 +94,12 @@
 			.input{
 				border: none;
 				outline: none;
-				padding: 8rem 16rem;
-				width: 230rem;
-				height: 80rem;
+				padding: 8px 16px;
+				width: 230px;
+				height: 80px;
 				background: #F6F6F6;
-				border-radius: 6rem;
-				font-size: 14rem;
+				border-radius: 6px;
+				font-size: 14px;
 			}
 			.value{
 				width: 100%;
@@ -110,7 +110,7 @@
 			}
 		}
 		.button_list{
-			height: 40rem;
+			height: 40px;
 			display: flex;
 			align-items: center;
 			justify-content: space-around;

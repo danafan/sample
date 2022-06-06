@@ -15,7 +15,6 @@ let path = {
 	lendingApply:'lending/apply',					//发起借样
 	myLendingList:'lending/mylendinglist',			//我的借样列表
 	lendingList:'lending/lendinglist',				//借样记录列表
-	unNeturnNum:'lending/unreturnnum',				//获取待借用记录数量
 	lendingDetail:'lending/detail',					//借样详情
 	lendingAdd:'lending/add',						//借样批次提交接口
 	scanGoods:'index/scangoods',					//扫码录入样衣
@@ -97,10 +96,6 @@ export default{
 	//借样记录
 	lendingList(params){
 		return http.get(path.lendingList, params)
-	},
-	//获取待借用记录数量
-	unNeturnNum(params){
-		return http.get(path.unNeturnNum, params)
 	},
 	//借样详情
 	lendingDetail(params){

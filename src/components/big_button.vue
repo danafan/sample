@@ -24,18 +24,18 @@
 <style lang="less" scoped>
 .button{
 	width: 100%;
-	padding-left: 20rem;
-	padding-right: 20rem;
+	padding-left: 20px;
+	padding-right: 20px;
 	position: absolute;
-	bottom: 15rem;
+	bottom: 15px;
 	.button_container{
 		width: 100%;
 		text-align: center;
-		height: 40rem;
-		line-height: 40rem;
+		height: 40px;
+		line-height: 40px;
 		background: #2C82FF;
-		border-radius: 20rem;
-		font-size: 14rem;
+		border-radius: 20px;
+		font-size: 14px;
 		color: #ffffff;
 		font-weight: 500;
 	}

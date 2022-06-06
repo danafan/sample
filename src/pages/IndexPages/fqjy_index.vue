@@ -171,7 +171,7 @@
 </script>
 <style lang="less" scoped>
 .container{
-	padding:15rem 30px;
+	padding:1px 30px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

@@ -13,9 +13,9 @@
 	export default {
 		name: 'app',
 		created(){
-			this.$router.push('/index');
+			// this.$router.push('/index');
 			//获取钉钉鉴权信息
-			// this.getConfig();
+			this.getConfig();
 		},
 		watch:{
 			$route(to,from){
