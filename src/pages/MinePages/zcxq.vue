@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="yyj_gly" v-if="page_type == 'ghjl'">
 			<div class="row">
-				<div class="lable">样衣仓：</div>
+				<div class="lable">样衣间：</div>
 				<div class="value">{{topInfo.room_name}}</div>
 			</div>
 			<div class="row">

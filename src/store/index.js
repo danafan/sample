@@ -4,7 +4,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {  
-    userInfo:{}
+    userInfo:{
+      user_type:'1'
+    }
   },
   mutations: {
     //用户信息

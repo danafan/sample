@@ -110,7 +110,7 @@
 				resource.bindGoods(arg).then(res => {
 					if(res.code == 1){
 					this.$toast(res.msg);
-					this.$router.go(-1);
+					this.$router.replace('/yybd_index?isLoad=1');
 				}
 				})
 			}

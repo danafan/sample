@@ -13,9 +13,9 @@
 	export default {
 		name: 'app',
 		created(){
-			// this.$router.replace('/index');
+			this.$router.replace('/index');
 			//获取钉钉鉴权信息
-			this.getConfig();
+			// this.getConfig();
 		},
 		watch:{
 			$route(to,from){
@@ -118,7 +118,6 @@
 						this.$store.commit('setUserInfo',res.data);
 						// 处理直接扫码进入样衣详情页
 						let route = this.$route;
-						alert(JSON.stringify(route));
 						if(route.path == 'yyxq'){
 							this.$router.replace(route.fullPath);
 						}else{

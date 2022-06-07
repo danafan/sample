@@ -114,10 +114,9 @@
 			if(!this.$route.meta.isUseCache){
 				//页面来源
 				this.page_type = this.$route.query.page_type;
-				this.user_name = "";				//责任人
-				this.user_id = "";					//责任人ID
+				this.user_name = this.userInfo.user_name;	//责任人
+				this.user_id = this.userInfo.userid;		//责任人ID
 				this.admin_name = "";				//管理员
-				this.showPopup = false;				//选择样衣间弹窗
 				this.room_list = [];				//样衣间列表
 				this.roomIndex = 999;				//选中的样衣间下标
 				this.room_name = "";				//选中的样衣间名称
@@ -126,9 +125,18 @@
 				this.returnInfo = {};				//获取页面批次信息(归还页面)
 				this.page = 1;			
 				this.listArray = [];				//列表
-				this.total_num = 0;				//总数量
+				this.total_num = 0;					//总数量
 				//获取样衣间列表
 				this.getAjaxRooms();
+			}else{
+				//绑定成功之后刷新列表
+				if(this.$route.query.isLoad == '1'){
+					this.page = 1;			
+					this.listArray = [];				//列表
+					this.total_num = 0;					//总数量
+					//进入绑定页面获取批次信息
+					this.getbBindingInfo();
+				}
 			}
 			this.$route.meta.isUseCache = false;
 		},
@@ -153,12 +161,10 @@
 				resource.getbBindingInfo().then(res => {
 					if(res.code == 1){
 						this.bindingInfo = res.data;
-						this.user_name = this.userInfo.user_name;
-						this.user_id = this.userInfo.userid;
-					//获取商品列表
-					this.getGoodsList();
-				}
-			})
+						//获取商品列表
+						this.getGoodsList();
+					}
+				})
 			},
 			//进入归还页面获取批次信息
 			getReturnInfo(){

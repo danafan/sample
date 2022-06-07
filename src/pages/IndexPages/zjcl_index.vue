@@ -76,29 +76,40 @@
 				total_num:0
 			}
 		},
-		created(){
-			//进入处理界面
-			this.handleAdd();
-			//获取报损原因
-			this.ajaxTypeList();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/yyxq'){	//样衣详情
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
+			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				this.page = 1;
+				this.total_num = 0;
+				//进入处理界面
+				this.handleAdd();
+			}
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//获取处理类型
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'handle_type'}).then(res => {
 					if(res.code == 1){
-					this.clzt_list = res.data;
-				}
+						this.clzt_list = res.data;
+					}
 				})
 			},
 			//进入处理界面
 			handleAdd(){
 				resource.getHandleAdd().then(res => {
 					if(res.code == 1){
-					this.topInfo = res.data;
-					//获取已绑定的商品列表
-					this.getGoodsList();
-				}
+						this.topInfo = res.data;
+						//获取已绑定的商品列表
+						this.getGoodsList();
+					}
 				})
 			},
 			//获取更多
@@ -119,13 +130,13 @@
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.total_num = res.data.total;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.total_num = res.data.total;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//点击询问
@@ -177,8 +188,8 @@
 				}
 				resource.postHandleAdd(arg).then(res => {
 					if(res.code == 1){
-					this.$router.push('/success?value=' + '已处理' + '&img_url=success');
-				}
+						this.$router.push('/success?value=' + '已处理' + '&img_url=success');
+					}
 				})
 			},
 			//删除商品
@@ -190,9 +201,9 @@
 				}
 				resource.removeGoods(arg).then(res => {
 					if(res.code == 1){
-					this.$toast(res.msg);
-					this.listArray.splice(this.goods_index,1);
-				}
+						this.$toast(res.msg);
+						this.listArray.splice(this.goods_index,1);
+					}
 				})
 			},
 			//点击进入详情
@@ -212,13 +223,13 @@
 							}
 							resource.scanGoods(arg).then(res => {
 								if(res.code == 1){
-								this.$toast(res.msg);
-								this.page = 1;
-								this.listArray = [];
+									this.$toast(res.msg);
+									this.page = 1;
+									this.listArray = [];
 								//获取已绑定的商品列表
 								this.getGoodsList();
 							}
-							})
+						})
 						},
 						onFail : (err) => {
 							console.log(err)

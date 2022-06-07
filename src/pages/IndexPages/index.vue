@@ -13,7 +13,7 @@
 						<img class="item_icon" src="../../static/fqjy_icon.png">
 						<div class="item_lable">发起借样</div>
 					</div>
-					<div class="item" @click="$router.push('/yybd_index?page_type=yygh')">
+					<div class="item" @click="$router.push('/yybd_index?page_type=yygh')"  v-if="userInfo.user_type == '1'">
 						<img class="item_icon" src="../../static/yygh_icon.png">
 						<div class="item_lable">样衣归还</div>
 					</div>
@@ -21,7 +21,7 @@
 						<img class="item_icon" src="../../static/yypd_icon.png">
 						<div class="item_lable">样衣盘点</div>
 					</div>
-					<div class="item" @click="$router.push('/zjcl_index')">
+					<div class="item" @click="$router.push('/zjcl_index')" v-if="userInfo.user_type == '1'">
 						<img class="item_icon" src="../../static/zjcl_icon.png">
 						<div class="item_lable">样衣处理</div>
 					</div>
@@ -37,6 +37,11 @@
 <script>
 	import * as dd from 'dingtalk-jsapi';
 	export default{
+		computed:{
+			userInfo(){
+				return this.$store.state.userInfo;
+			}
+		},
 		methods:{
 			//扫码报损
 			yybsFn(){

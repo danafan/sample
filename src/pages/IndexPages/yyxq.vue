@@ -9,7 +9,7 @@
 		<div class="info_row">供应商款号：{{yyInfo.supplier_i_id}}</div>
 		<div class="info_row">样衣状态：{{yyInfo.clothes_status}}</div>
 		<div class="info_row" v-if="yyInfo.status == '1'">样衣间：{{yyInfo.room_name}}</div>
-		<div class="info_row" v-if="yyInfo.status == '1'">责任人：{{yyInfo.user_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '1'">责任人：{{yyInfo.admin_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样人：{{yyInfo.user_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.apply_time}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">提交人：{{yyInfo.apply_user_name}}</div>

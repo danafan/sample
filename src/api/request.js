@@ -56,8 +56,8 @@ export function middleWare(params,type) {
   
   //组织参数
   // var req = {...params,...{user_id:'16161349938228000'}};   
-  // var req = {...params,...{user_id:'15262575868677723'}};   
-  var req = {...params,...{}};   
+  var req = {...params,...{user_id:'15262575868677723'}};   
+  // var req = {...params,...{}};   
 
 
   var get_arr = [];

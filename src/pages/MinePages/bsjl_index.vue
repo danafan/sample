@@ -27,9 +27,13 @@
 				listArray:[],		//列表
 				loading:false,
 				finished:false,
-				page:0,
+				page:1,
 				pagesize:10
 			}
+		},
+		created(){
+			//获取已绑定的商品列表
+			this.getGoodsList();
 		},
 		methods:{
 			//加载更多

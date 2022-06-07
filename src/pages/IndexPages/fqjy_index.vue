@@ -106,7 +106,7 @@
 						permissionType: "GLOBAL",
 						responseUserOnly: true,
 						startWithDepartmentId: 0,
-						onSuccess : function(res) {
+						onSuccess : (res) => {
 							//责任人
 							this.user_name = res.users[0].name;
 							this.user_id = res.users[0].emplId;

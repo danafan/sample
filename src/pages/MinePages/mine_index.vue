@@ -21,21 +21,21 @@
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/wdjy_index?page_type=jyjl')">
+		<div class="option_item" @click="$router.push('/wdjy_index?page_type=jyjl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/jyjl_icon.png">
 				<div class="option_label">借样记录</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/zcjl_index?page_type=ghjl')">
+		<div class="option_item" @click="$router.push('/zcjl_index?page_type=ghjl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/ghjl_icon.png">
 				<div class="option_label">归还记录</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/zcjl_index?page_type=cljl')">
+		<div class="option_item" @click="$router.push('/zcjl_index?page_type=cljl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/zjjl_icon.png">
 				<div class="option_label">样衣处理</div>
@@ -54,10 +54,10 @@
 <script>
 	export default{
 		computed:{
-         	userInfo(){
-         		return this.$store.state.userInfo;
-         	}
-         },
+			userInfo(){
+				return this.$store.state.userInfo;
+			}
+		},
 	}
 </script>
 <style lang="less" scoped>

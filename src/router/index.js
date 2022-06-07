@@ -78,7 +78,11 @@ const router = new Router({
 	},
 	{
 		path: '/zjcl_index',
-		name:"折价处理",
+		name:"样衣处理",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: zjcl_index
 	},
 	{
