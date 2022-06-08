@@ -34,7 +34,6 @@
 				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)">
 			</div>
 		</van-list>
-		
 	</div>
 	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 </div>
@@ -47,26 +46,37 @@
 			return{
 				lending_id:"",			//借样ID
 				lendingInfo:{},			//借样详情
-				active_index:'',			//选中的下标
+				active_index:'',		//选中的下标
 				page:1,
 				pagesize:10,				
-				listArray:[],				//列表
+				listArray:[],			//列表
 				loading:false,
 				finished:true,
-				yy_type:0,			//详情类型（0:待借用；1:已借用；2:已拒绝）
+				yy_type:0,				//详情类型（0:待借用；1:已借用；2:已拒绝）
 			}
 		},
-		created(){
-			//借样ID
-			this.lending_id = this.$route.query.lending_id;
-			//详情类型（0:待借用；1:已借用；2:已拒绝）
-			this.yy_type = this.$route.query.type;
-			//借样详情
-			this.lendingDetail();
-			if(this.yy_type == 1){
-				//已借用的列表
-				this.getGoodsList();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/yybs_index'){	//样衣报损
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
 			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				//借样ID
+				this.lending_id = this.$route.query.lending_id;
+				//详情类型（0:待借用；1:已借用；2:已拒绝）
+				this.yy_type = this.$route.query.type;
+				//借样详情
+				this.lendingDetail();
+				if(this.yy_type == 1){
+					//已借用的列表
+					this.getGoodsList();
+				}
+			}
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//切换tab
@@ -82,8 +92,8 @@
 			lendingDetail(){
 				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
 					if(res.code == 1){
-					this.lendingInfo = res.data;
-				}
+						this.lendingInfo = res.data;
+					}
 				})
 			},
 			//获取更多
@@ -105,12 +115,12 @@
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//样衣报损

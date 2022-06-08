@@ -107,6 +107,10 @@ const router = new Router({
 	{
 		path: '/jyxq',
 		name:"借样详情",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: jyxq
 	},
 	{
