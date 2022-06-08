@@ -2,6 +2,10 @@
 	<div class="container">
 		<div class="yyj_gly">
 			<div class="row">
+				<div class="lable">样衣码：</div>
+				<div class="value">{{sku_code}}</div>
+			</div>
+			<div class="row">
 				<div class="lable">报损原因：</div>
 				<div class="value" @click="showPopup = true">
 					<div class="yyj_txt" :class="{'default_txt':bsyy != ''}">{{bsyy == ''?'选择报损原因':bsyy}}</div>
@@ -62,8 +66,8 @@
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'loss_reason'}).then(res => {
 					if(res.code == 1){
-					this.bsyy_list = res.data;
-				}
+						this.bsyy_list = res.data;
+					}
 				})
 			},
 			//切换报损原因
@@ -80,9 +84,9 @@
 					}else{
 						resource.uploadImage({file:files[i]}).then(res => {
 							if(res.code == 1){
-							this.domain = res.data.domain;
-							this.image_list.push(res.data.name);
-						}
+								this.domain = res.data.domain;
+								this.image_list.push(res.data.name);
+							}
 						})
 					}
 					
@@ -92,8 +96,8 @@
 			deleteImg(item,index){
 				resource.deleteImage({name:item}).then(res => {
 					if(res.code == 1){
-					this.image_list.splice(index,1);
-				}
+						this.image_list.splice(index,1);
+					}
 				})
 			},
 			//报损
@@ -114,8 +118,8 @@
 				}
 				resource.scanGoods(arg).then(res => {
 					if(res.code == 1){
-					this.$router.replace('/success?value=' + '已报损&img_url=bs');
-				}
+						this.$router.replace('/success?value=' + '已报损&img_url=bs');
+					}
 				})
 			}
 		},
@@ -133,7 +137,7 @@
 	align-items: center;
 	.yyj_gly{
 		width: 100%;
-		height: 86px;
+		height: 129px;
 		display:flex;
 		flex-direction: column;
 		justify-content: space-around;

@@ -100,7 +100,7 @@
 					page:this.page,
 					pagesize:this.pagesize
 				}
-				if(this.active_index != ''){
+				if(this.active_index !== ''){
 					arg.return_status = this.active_index;
 				}
 				resource.getGoodsList(arg).then(res => {

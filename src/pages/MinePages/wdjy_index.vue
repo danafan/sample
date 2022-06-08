@@ -78,6 +78,15 @@
 				}else{		//借样记录
 					this.lendingList();
 				}
+			}else{
+				this.page = 1;
+				this.listArray = [];
+				if(this.page_type == 'wdjy'){	
+					//我的借样
+					this.myLendingList();
+				}else{		//借样记录
+					this.lendingList();
+				}
 			}
 			this.$route.meta.isUseCache = false;
 		},

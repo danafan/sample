@@ -74,9 +74,9 @@
 					}else{
 						resource.uploadImage({file:files[i]}).then(res => {
 							if(res.code == 1){
-							this.domain = res.data.domain;
-							this.image_list.push(res.data.name);
-						}
+								this.domain = res.data.domain;
+								this.image_list.push(res.data.name);
+							}
 						})
 					}
 					
@@ -86,8 +86,8 @@
 			deleteImg(item,index){
 				resource.deleteImage({name:item}).then(res => {
 					if(res.code == 1){
-					this.image_list.splice(index,1);
-				}
+						this.image_list.splice(index,1);
+					}
 				})
 			},
 			//添加
@@ -109,9 +109,9 @@
 				}
 				resource.bindGoods(arg).then(res => {
 					if(res.code == 1){
-					this.$toast(res.msg);
-					this.$router.replace('/yybd_index?isLoad=1');
-				}
+						this.$toast(res.msg);
+						this.$router.replace('/yybd_index?page_type=yybd&isLoad=1');
+					}
 				})
 			}
 		},

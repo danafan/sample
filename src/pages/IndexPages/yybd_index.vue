@@ -111,9 +111,9 @@
 			next();
 		},
 		activated(){
+			//页面来源
+			this.page_type = this.$route.query.page_type;
 			if(!this.$route.meta.isUseCache){
-				//页面来源
-				this.page_type = this.$route.query.page_type;
 				this.user_name = this.userInfo.user_name;	//责任人
 				this.user_id = this.userInfo.userid;		//责任人ID
 				this.admin_name = "";				//管理员
@@ -172,10 +172,10 @@
 					if(res.code == 1){
 						this.returnInfo = res.data;
 						this.admin_name = this.returnInfo.admin_name;
-					//获取商品列表
-					this.getGoodsList();
-				}
-			})
+						//获取商品列表
+						this.getGoodsList();
+					}
+				})
 			},
 			//获取更多
 			loadMore(){
@@ -370,7 +370,8 @@
 						onSuccess: (data) => {
 							var sku_code = data.text.split('=')[1];
 							if(this.page_type == 'yybd'){	//样衣绑定
-								this.$router.push('/bmbd_index?yym=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
+								//验证样衣码接口
+								this.getSkuCodeInfo(sku_code);
 							}else{	//样衣归还
 								let arg = {
 									sku_code:sku_code,
@@ -382,16 +383,24 @@
 										this.$toast(res.msg);
 										this.page = 1;
 										this.listArray = [];
-									//获取已绑定的商品列表
-									this.getGoodsList();
-								}
-							})
+										//获取已绑定的商品列表
+										this.getGoodsList();
+									}
+								})
 							}
 						},
 						onFail : (err) => {
 							console.log(err)
 						}
 					})
+				})
+			},
+			//验证样衣码接口
+			getSkuCodeInfo(sku_code){
+				resource.getSkuCodeInfo({sku_code:sku_code}).then(res => {
+					if(res.code == '1'){
+						this.$router.push('/bmbd_index?yym=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
+					}
 				})
 			},
 			//切换样衣间

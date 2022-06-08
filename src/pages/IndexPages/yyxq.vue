@@ -11,9 +11,9 @@
 		<div class="info_row" v-if="yyInfo.status == '1'">样衣间：{{yyInfo.room_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '1'">责任人：{{yyInfo.admin_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样人：{{yyInfo.user_name}}</div>
-		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.apply_time}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2'">借样时间：{{yyInfo.finish_time}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">提交人：{{yyInfo.apply_user_name}}</div>
-		<div class="info_row" v-if="yyInfo.status == '2' || yyInfo.status == '4'">管理员：{{yyInfo.admin_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '2' || yyInfo.status == '4'">管理员：{{yyInfo.status == '2'?yyInfo.admin_name:yyInfo.user_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样原因：{{yyInfo.reason}}</div>
 		<div class="info_row" v-if="yyInfo.status == '3'">报损时间：{{yyInfo.add_time}}</div>
 		<div class="info_row" v-if="yyInfo.status == '3'">报损人：{{yyInfo.user_name}}</div>

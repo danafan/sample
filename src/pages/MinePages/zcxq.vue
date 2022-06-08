@@ -55,7 +55,7 @@
 				listArray:[],		//列表
 				loading:false,
 				finished:false,
-				page:0,
+				page:1,
 				pagesize:10,
 				page_type:"",			//页面来源
 				batch_id:"",		
@@ -72,6 +72,8 @@
 				//归还记录头部信息
 				this.returnDetail();
 			}
+			//获取已绑定的商品列表
+			this.getGoodsList()
 		},
 		methods:{
 			//处理记录头部信息
@@ -100,7 +102,7 @@
 			getGoodsList(){
 				let arg = {
 					batch_id:this.batch_id,
-					type:this.page_type == 'yygh'?'1':'4',
+					type:this.page_type == 'ghjl'?'1':'4',
 					page:this.page,
 					pagesize:this.pagesize
 				}
@@ -135,6 +137,7 @@
 		padding-top: 5px;
 		padding-bottom: 5px;
 		display:flex;
+		align-items: center;
 		justify-content: space-between;
 		font-size: 14px;
 		color: #000000;

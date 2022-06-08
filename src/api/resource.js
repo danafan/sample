@@ -31,6 +31,7 @@ let path = {
 	checkGoodsList:'check/goodslist',				//盘点记录详情商品列表
 	checkScanGoods:'check/scangoods',				//扫码盘点
 	ajaxTypeList:'index/ajaxtypelist',				//ajax获取类型列表接口
+	getSkuCodeInfo:'binding/getskucodeinfo',		//验证样衣码接口
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -168,6 +169,10 @@ export default{
 	//ajax获取类型列表接口
 	ajaxTypeList(params){
 		return http.get(path.ajaxTypeList, params)
+	},
+	//验证样衣码接口
+	getSkuCodeInfo(params){
+		return http.get(path.getSkuCodeInfo, params)
 	},
 }
 

@@ -88,8 +88,11 @@
 			if(!this.$route.meta.isUseCache){
 				this.page = 1;
 				this.total_num = 0;
+				this.listArray = [];
 				//进入处理界面
 				this.handleAdd();
+				//获取处理类型
+				this.ajaxTypeList();
 			}
 			this.$route.meta.isUseCache = false;
 		},
