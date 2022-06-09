@@ -79,7 +79,7 @@
 		padding-top: 52px;
 		margin-top: 58px;
 		background: #ffffff;
-		border-radius: 67px 67px 0 0;
+		border-radius: 36px 36px 0 0;
 		.list_box{
 			display: flex;
 			flex-wrap: wrap;

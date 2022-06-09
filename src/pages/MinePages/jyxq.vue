@@ -29,9 +29,9 @@
 					<div class="yy_row" v-if="item.i_id">款式编码：{{item.i_id}}</div>
 					<div class="status" v-if="item.return_status == 0">待还</div>
 					<div class="status" v-if="item.return_status == 1">已还</div>
-					<div class="status" v-if="item.return_status == 2">报损</div>
+					<div class="status" v-if="item.return_status == 2">已报损</div>
 				</div>
-				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)">
+				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)" v-if="item.return_status != 2">
 			</div>
 		</van-list>
 	</div>
@@ -73,6 +73,9 @@
 				this.lendingDetail();
 				if(this.yy_type == 1){
 					//已借用的列表
+					this.active_index = '';
+					this.page = 1;
+					this.listArray = [];	
 					this.getGoodsList();
 				}
 			}
