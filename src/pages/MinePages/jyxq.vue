@@ -31,7 +31,7 @@
 					<div class="status" v-if="item.return_status == 1">已还</div>
 					<div class="status" v-if="item.return_status == 2">已报损</div>
 				</div>
-				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)" v-if="item.return_status != 2">
+				<img class="bs_icon" src="../../static/bs_icon.png" @click="goYybs(item)" v-if="item.return_status == 0">
 			</div>
 		</van-list>
 	</div>
@@ -65,19 +65,19 @@
 		},
 		activated(){
 			if(!this.$route.meta.isUseCache){
-				//借样ID
-				this.lending_id = this.$route.query.lending_id;
-				//详情类型（0:待借用；1:已借用；2:已拒绝）
-				this.yy_type = this.$route.query.type;
-				//借样详情
-				this.lendingDetail();
-				if(this.yy_type == 1){
-					//已借用的列表
-					this.active_index = '';
-					this.page = 1;
-					this.listArray = [];	
-					this.getGoodsList();
-				}
+				this.active_index = '';
+			}
+			//借样ID
+			this.lending_id = this.$route.query.lending_id;
+			//详情类型（0:待借用；1:已借用；2:已拒绝）
+			this.yy_type = this.$route.query.type;
+			//借样详情
+			this.lendingDetail();
+			if(this.yy_type == 1){
+				//已借用的列表
+				this.page = 1;
+				this.listArray = [];	
+				this.getGoodsList();
 			}
 			this.$route.meta.isUseCache = false;
 		},

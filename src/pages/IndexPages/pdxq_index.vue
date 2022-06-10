@@ -73,8 +73,8 @@
 			checkDetail(){
 				resource.checkDetail({check_id:this.batch_id}).then(res => {
 					if(res.code == 1){
-					this.topInfo = res.data;
-				}
+						this.topInfo = res.data;
+					}
 				})
 			},
 			//切换选中
@@ -97,15 +97,15 @@
 							}
 							resource.checkScanGoods(arg).then(res => {
 								if(res.code == 1){
-								this.$toast(res.msg);
-								this.page = 1;
-								this.listArray = [];
+									this.$toast(res.msg);
+									this.page = 1;
+									this.listArray = [];
 								//获取已绑定的商品列表
 								this.checkGoodsList();
 								//获取头部信息
 								this.checkDetail();
 							}
-							})
+						})
 						},
 						onFail : (err) => {
 							console.log(err)
@@ -134,12 +134,12 @@
 				}
 				resource.checkGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			}
 		},

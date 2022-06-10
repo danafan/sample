@@ -58,10 +58,27 @@
 		created(){
 			this.sku_code = this.$route.query.sku_code;
 			this.batch_id = this.$route.query.batch_id;
-			//获取报损原因
-			this.ajaxTypeList();
+			//获取商品详情
+			this.getGoodsInfo()
 		},
 		methods:{
+			//获取商品详情
+			getGoodsInfo(){
+				var arg = {
+					sku_code:this.sku_code
+				}
+				resource.getGoodsInfo(arg).then(res => {
+					if((res.data.status != 1 && res.data.status != 2) || res.data.lock_status != 0){
+						this.$toast('该样衣当前还不能报损哦～');
+						setTimeout(()=>{
+							this.$router.go(-1);
+						},1500);
+					}else{
+						//获取报损原因
+						this.ajaxTypeList();
+					}
+				})
+			},
 			//获取报损原因
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'loss_reason'}).then(res => {
