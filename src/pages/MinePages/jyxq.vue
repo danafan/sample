@@ -128,7 +128,7 @@
 			},
 			//样衣报损
 			goYybs(item){
-				this.$router.push('/yybs_index?sku_code=' + item.sku_code + '&batch_id=' + item.batch_id)
+				this.$router.push('/yybs_index?sku_code=' + item.sku_code)
 			},
 		},
 		components:{

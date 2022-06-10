@@ -82,6 +82,8 @@
 				this.active_index = type;
 				this.page = 1;
 				this.listArray = [];
+				//获取头部信息
+				this.checkDetail();
 				//商品列表
 				this.checkGoodsList();
 			},
