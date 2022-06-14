@@ -70,9 +70,7 @@
 				resource.getGoodsInfo(arg).then(res => {
 					if((res.data.status != 1 && res.data.status != 2) || res.data.lock_status != 0){
 						this.$toast('该样衣当前还不能报损哦～');
-						setTimeout(()=>{
-							this.$router.go(-1);
-						},1500);
+						this.$router.go(-1);
 					}else{
 						//获取报损原因
 						this.ajaxTypeList();

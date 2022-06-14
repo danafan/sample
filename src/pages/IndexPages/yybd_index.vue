@@ -284,9 +284,9 @@
 				resource.postbBinding(arg).then(res => {
 					if(res.code == 1){
 						if(this.room_id != ''){
-							this.$router.push('/success?value=' + '入库成功' + '&showBut=1&img_url=success');
+							this.$router.replace('/success?value=入库成功&showBut=1&img_url=success');
 						}else{
-							this.$router.push('/success?value=' + '借样成功' + '&showBut=1&img_url=jy');
+							this.$router.replace('/success?value=借样成功&showBut=1&img_url=jy');
 						}
 					}
 				})
@@ -300,7 +300,7 @@
 				}
 				resource.postReturnAdd(arg).then(res => {
 					if(res.code == 1){
-						this.$router.replace('/success?value=' + '归还成功' + '&img_url=gh');
+						this.$router.replace('/success?value=归还成功&showBut=1&img_url=gh');
 					}
 				})
 			},
@@ -399,7 +399,7 @@
 			getSkuCodeInfo(sku_code){
 				resource.getSkuCodeInfo({sku_code:sku_code}).then(res => {
 					if(res.code == '1'){
-						this.$router.push('/bmbd_index?yym=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
+						this.$router.replace('/bmbd_index?yym=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
 					}
 				})
 			},

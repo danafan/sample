@@ -49,7 +49,7 @@
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = data.text.split('=')[1];
+							var sku_code = data.text;
 							let arg = {
 								code:sku_code
 							}

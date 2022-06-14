@@ -116,11 +116,9 @@
 				resource.login({code:code}).then(res => {
 					if(res.code == 1){
 						this.$store.commit('setUserInfo',res.data);
+						var route = this.$route;
 						// 处理直接扫码进入样衣详情页
-						let route = this.$route;
-						if(route.path == 'yyxq'){
-							this.$router.replace(route.fullPath);
-						}else{
+						if(route.path == '/'){
 							this.$router.replace('/index');
 						}
 					}

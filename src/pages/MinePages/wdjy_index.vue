@@ -25,7 +25,8 @@
 		>
 		<div class="record_item" v-for="item in listArray" @click="goJyxq(item.lending_id)">
 			<div class="first_row">
-				<div class="name">{{item.user_name}}的样衣记录</div>
+				<div class="name" v-if="userInfo.user_type == '1'">{{item.user_name}}的样衣记录</div>
+				<div class="name" v-else>样衣记录</div>
 				<div class="date">{{item.apply_time}}</div>
 			</div>
 			<div class="num_row" v-if="tab_index == 1">
@@ -89,6 +90,11 @@
 				}
 			}
 			this.$route.meta.isUseCache = false;
+		},
+		computed:{
+			userInfo(){
+				return this.$store.state.userInfo;
+			}
 		},
 		methods:{
 			//切换选中tab
