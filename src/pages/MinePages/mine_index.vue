@@ -10,9 +10,19 @@
 		<div class="option_item" @click="$router.push('/bdjl_index')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/bdjl_icon.png">
-				<div class="option_label">入库记录</div>
+				<div class="option_label">样衣绑定</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
+		</div>
+		<div class="option_item" @click="$router.push('/dbjl_index')">
+			<div class="option_left">
+				<img class="option_icon" src="../../static/dbjl_icon.png">
+				<div class="option_label">调拨记录</div>
+			</div>
+			<div class="arrow_box">
+				<div class="num" v-if="unreturnnum > 0">{{unreturnnum}}</div>
+				<img class="right_arrow" src="../../static/right_arrow.png">
+			</div>
 		</div>
 		<div class="option_item" @click="$router.push('/wdjy_index?page_type=wdjy')">
 			<div class="option_left">
@@ -26,7 +36,10 @@
 				<img class="option_icon" src="../../static/jyjl_icon.png">
 				<div class="option_label">借样记录</div>
 			</div>
-			<img class="right_arrow" src="../../static/right_arrow.png">
+			<div class="arrow_box">
+				<div class="num" v-if="unreturnnum > 0">{{unreturnnum}}</div>
+				<img class="right_arrow" src="../../static/right_arrow.png">
+			</div>
 		</div>
 		<div class="option_item" @click="$router.push('/zcjl_index?page_type=ghjl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
@@ -52,12 +65,28 @@
 	</div>
 </template>
 <script>
+	import resource from '../../api/resource.js'
 	export default{
+		created(){
+			//获取借样记录待借样数量
+			this.getWaitNum();
+		},
 		computed:{
 			userInfo(){
 				return this.$store.state.userInfo;
+			},
+			unreturnnum(){
+				return this.$store.state.unreturnnum;
 			}
 		},
+		methods:{
+			//获取借样记录待借样数量
+			getWaitNum(){
+				resource.getWaitNum().then(res => {
+					this.$store.commit('setUnReturnNum',res.data);
+				})
+			}
+		}
 	}
 </script>
 <style lang="less" scoped>
@@ -106,6 +135,21 @@
 			font-size: 14px;
 			color: #333333;
 		}
+	}
+	.arrow_box{
+		display: flex;
+		align-items: center;
+	}
+	.num{
+		margin-right: 5px;
+		height: 18px;
+		line-height: 18px;
+		border-radius: 9px;
+		padding-left: 5px;
+		padding-right: 5px;
+		font-size: 13px;
+		color: #ffffff;
+		background:red;
 	}
 	.right_arrow{
 		width: 12px;

@@ -15,11 +15,7 @@
 			</div>
 			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
 		</div>
-		<div class="bd_row">
-			<div class="row_label">商品编码：</div>
-			<div class="scan_txt" @click="getCodeInfo">{{codeInfo.sku_id == ''?'扫码':codeInfo.sku_id}}</div>
-		</div>
-		<BigButton button_txt="添加" @callback="callBack"></BigButton>
+		<BigButton button_txt="添加" @callback="callBack"/>
 	</div>
 </template>
 <script>
@@ -44,28 +40,6 @@
 			this.batch_id = this.$route.query.batch_id
 		},
 		methods:{
-			//根据扫描的商品编码获取商品信息
-			getCodeInfo(){
-				dd.ready(() => {
-					dd.biz.util.scan({
-						onSuccess: (data) => {
-							var sku_code = data.text;
-							let arg = {
-								code:sku_code
-							}
-							resource.getCodeInfo(arg).then(res => {
-								if(res.code == 1){
-									this.codeInfo = res.data;
-								}
-							})
-						},
-						onFail : (err) => {
-							console.log(err)
-						}
-					})
-				})
-				
-			},
 			//上传图片回调
 			uploadCallBack(files){
 				for(var i = 0;i < files.length;i ++){
@@ -79,7 +53,6 @@
 							}
 						})
 					}
-					
 				}
 			},
 			//删除图片
@@ -91,7 +64,7 @@
 				})
 			},
 			//添加
-			callBack(){
+			callBack(){		
 				if(this.image_list.length == 0){
 					this.$toast('至少上传1张图片!');
 					return;
@@ -145,10 +118,6 @@
 	.row_label{
 		font-size: 14px;
 		color: #000000;
-	}
-	.scan_txt{
-		font-size: 14px;
-		color: #2C82FF;
 	}
 	.image_list{
 		width: 100%;

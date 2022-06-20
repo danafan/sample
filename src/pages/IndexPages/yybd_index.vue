@@ -3,6 +3,13 @@
 		<div class="yyj_gly">
 			<!-- 样衣绑定 -->
 			<div class="row" v-if="page_type == 'yybd'">
+				<div class="lable">样衣来源：</div>
+				<div class="value" @click="showYyly = true">
+					<div class="yyj_txt default_txt">{{yyly_list[yylyIndex].name}}</div>
+					<img class="right_arrow" src="../../static/right_arrow.png">
+				</div>
+			</div>
+			<div class="row" v-if="page_type == 'yybd'">
 				<div class="lable">责任人：</div>
 				<div class="value" @click="checkZrr">
 					<div class="yyj_txt" :class="{'default_txt':user_name != ''}">{{user_name == ''?'选择责任人':user_name}}</div>
@@ -16,7 +23,7 @@
 					{{admin_name}}
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" v-if="(yylyIndex == 0 && page_type == 'yybd') || page_type == 'yygh'">
 				<div class="lable">样衣间：</div>
 				<div class="value" @click="showPopup = true">
 					<div class="yyj_txt" :class="{'default_txt':room_name != ''}">{{room_name == ''?'选择样衣间':room_name}}</div>
@@ -47,7 +54,9 @@
 		<div class="button_box">
 			<div class="button" @click="scanYyCode">
 				<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
-				<div class="scan_text">扫描样衣码</div>
+				<div class="scan_text" v-if="page_type == 'yybd' && yylyIndex == 0">扫描样衣码</div>
+				<div class="scan_text" v-if="page_type == 'yybd' && yylyIndex == 1">扫描唯一码</div>
+				<div class="scan_text" v-if="page_type == 'yygh'">扫一扫</div>
 			</div>
 			<!-- 样衣绑定 -->
 			<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">提交</div>
@@ -56,6 +65,15 @@
 		</div>
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
+	<!-- 样衣来源 -->
+	<van-popup v-model:show="showYyly" position="bottom" round>
+		<div class="list">
+			<div class="item" :class="{'active_item':yylyIndex == index}" v-for="(item,index) in yyly_list" @click="checkYyly(index)">{{item.name}}</div>
+		</div>
+		<div class="padding_box"></div>
+		<div class="item" @click="showYyly = false">关闭</div>
+	</van-popup>
+	<!-- 样衣间 -->
 	<van-popup v-model:show="showPopup" position="bottom" round>
 		<div class="list">
 			<div class="item" :class="{'active_item':roomIndex == index}" v-for="(item,index) in room_list" @click="checkYyj(index)">{{item.room_name}}</div>
@@ -95,6 +113,15 @@
 				value:"",					//弹窗内容
 				modelType:"",				//弹窗类型
 				page_type:"yybd",			//页面来源
+				showYyly:false,				//样衣来源弹窗
+				yyly_list:[{
+					name:'外部采购',
+					id:'1'
+				},{
+					name:'仓内调拨',
+					id:'2'
+				}],							//样衣来源列表
+				yylyIndex:0,				//选中的样衣来源下标
 			}
 		},
 		computed:{
@@ -146,15 +173,15 @@
 				resource.ajaxRooms().then(res => {
 					if(res.code == 1){
 						this.room_list = res.data;
-					if(this.page_type == 'yybd'){	//样衣绑定
-						//进入绑定页面获取批次信息
-						this.getbBindingInfo();
-					}else{							//样衣归还
-						//进入归还页面获取批次信息
-						this.getReturnInfo();
+						if(this.page_type == 'yybd'){	//样衣绑定
+							//进入绑定页面获取批次信息
+							this.getbBindingInfo();
+						}else{							//样衣归还
+							//进入归还页面获取批次信息
+							this.getReturnInfo();
+						}
 					}
-				}
-			})
+				})
 			},
 			//进入绑定页面获取批次信息
 			getbBindingInfo(){
@@ -359,6 +386,11 @@
 					});
 				})
 			},
+			//切换样衣来源
+			checkYyly(index){
+				this.yylyIndex = index;
+				this.showYyly = false;
+			},
 			//点击进入详情
 			goDetail(sku_code){
 				this.$router.push('/yyxq?sku_code=' + sku_code);
@@ -429,15 +461,17 @@
 	padding: 15px;
 	.yyj_gly{
 		width: 100%;
-		height: 86px;
+		// height: 129px;
 		padding-left:15px;
 		padding-right:15px;
-		display:flex;
-		flex-direction: column;
-		justify-content: space-around;
+		// display:flex;
+		// flex-direction: column;
+		// justify-content: space-around;
 		.row{
 			display:flex;
-			align-items: center;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			// align-items: center;
 			justify-content: space-between;
 			font-size: 14px;
 			color: #000000;

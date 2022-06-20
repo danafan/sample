@@ -14,6 +14,9 @@ const zjcl_index = resolve=>System.import('@/pages/IndexPages/zjcl_index')
 const mine_index = resolve=>System.import('@/pages/MinePages/mine_index')
 const bdjl_index = resolve=>System.import('@/pages/MinePages/bdjl_index')
 const bdjlxq = resolve=>System.import('@/pages/MinePages/bdjlxq')
+const dbjl_index = resolve=>System.import('@/pages/MinePages/dbjl_index')
+const dbjl_search = resolve=>System.import('@/pages/MinePages/dbjl_search')
+const dbjlxq = resolve=>System.import('@/pages/MinePages/dbjlxq')
 const wdjy_index = resolve=>System.import('@/pages/MinePages/wdjy_index')
 const zcjl_index = resolve=>System.import('@/pages/MinePages/zcjl_index')
 const zcxq = resolve=>System.import('@/pages/MinePages/zcxq')
@@ -94,6 +97,21 @@ const router = new Router({
 		path: '/bdjlxq',
 		name:"入库记录详情",
 		component: bdjlxq
+	},
+	{
+		path: '/dbjl_index',
+		name:"调拨记录",
+		component: dbjl_index
+	},
+	{
+		path: '/dbjl_search',
+		name:"调拨记录",
+		component: dbjl_search
+	},
+	{
+		path: '/dbjlxq',
+		name:"调拨记录详情",
+		component: dbjlxq
 	},
 	{
 		path: '/wdjy_index',

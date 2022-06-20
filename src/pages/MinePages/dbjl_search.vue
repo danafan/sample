@@ -1,13 +1,5 @@
 <template>
 	<div class="container">
-		<div class="tab_row">
-			<div class="tab_item dbjl" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">
-				调拨记录
-			</div>
-			<div class="tab_item rkjl" :class="{'active_item':tab_index == 1}" @click="checkTab(1)">
-				入库记录
-			</div>
-		</div>
 		<van-list v-model:loading="loading"
 		:finished="finished"
 		@load="loadMore"
@@ -32,7 +24,6 @@
 	export default{
 		data(){
 			return{
-				tab_index:0,		//默认调拨记录
 				listArray:[],		//列表
 				loading:true,
 				finished:false,
@@ -45,16 +36,6 @@
 			this.bindingRecord();
 		},
 		methods:{
-			//切换选中tab
-			checkTab(index){
-				this.tab_index = index;
-				this.page = 1;
-				this.listArray = [];
-				this.loading = true;
-				this.finished = false;
-				//借样记录
-				this.bindingRecord();
-			},
 			//获取绑定记录
 			bindingRecord(){
 				resource.bindingRecord().then(res => {
@@ -69,18 +50,19 @@
 			},
 			//点击进入详情
 			goDetail(batch_id){
-				if(this.tab_index == 0){		//调拨记录
-					this.$router.push('/dbjlxq?batch_id=' + batch_id);
-				}else{							//绑定记录
-					this.$router.push('/bdjlxq?batch_id=' + batch_id);
-				}
+				this.$router.push('/dbjlxq?batch_id=' + batch_id);
+				// if(this.tab_index == 0){		//调拨记录
+				// 	this.$router.push('/dbjlxq?batch_id=' + batch_id);
+				// }else{							//绑定记录
+				// 	this.$router.push('/bdjlxq?batch_id=' + batch_id);
+				// }
 			},
 			//获取更多
 			loadMore(){
 				this.page += 1;
 				//获取已绑定的商品列表
 				this.bindingRecord();
-			}
+			},
 		},
 		components:{
 			EmptyPage
@@ -91,35 +73,6 @@
 .container{
 	padding-left: 20px;
 	padding-right: 20px;
-	.tab_row{
-		margin-top: 10px;
-		margin-bottom: 10px;
-		width: 100%;
-		display: flex;
-		height: 38px;
-		.tab_item{
-			border:1px solid #B9D6FF;
-			flex:1;
-			text-align: center;
-			height: 38px;
-			line-height: 38px;
-			font-size: 14px;
-			color: #333333;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-		.dbjl{
-			border-radius: 19px 0 0 19px;
-		}
-		.rkjl{
-			border-radius: 0 19px 19px 0;
-		}
-		.active_item{
-			color: #ffffff;
-			background:#1572F9;
-		}
-	}
 	.van_list{
 		flex:1;
 		overflow-y: scroll;
