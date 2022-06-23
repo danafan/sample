@@ -309,10 +309,10 @@
 				},
 			//绑定提交
 			postbBinding(){
-				// if(!this.user_id){
-				// 	this.$toast('责任人不能为空!');
-				// 	return;
-				// }
+				if(!this.user_id){
+					this.$toast('责任人不能为空!');
+					return;
+				}
 				var arg = {
 					type:this.yylyIndex == 0?2:1,
 					binding_id:this.bindingInfo.binding_id,
@@ -412,32 +412,6 @@
 			},
 			//点击扫描样衣码
 			scanYyCode(){
-				// 549,22T2M878704604112
-				if(this.page_type == 'yybd'){	//样衣绑定
-								if(this.yylyIndex == 0){	//外部采购
-									//验证样衣码接口
-									this.getSkuCodeInfo(sku_code);
-								}else{	//内部调拨
-									//仓内调拨直接添加
-									this.callBack('22T2M878704604559');
-								}
-							}else{	//样衣归还
-								let arg = {
-									sku_code:'549',
-									batch_id:this.returnInfo.return_id,
-									type:'1'
-								}
-								resource.scanGoods(arg).then(res => {
-									if(res.code == 1){
-										this.$toast(res.msg);
-										this.page = 1;
-										this.listArray = [];
-										//获取已绑定的商品列表
-										this.getGoodsList();
-									}
-								})
-							}
-				return;
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
