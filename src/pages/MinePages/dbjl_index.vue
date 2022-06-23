@@ -42,7 +42,7 @@
 	export default{
 		data(){
 			return{
-				tab_index:0,		//默认调拨记录
+				tab_index:0,		//默认全部
 				listArray:[],		//列表
 				loading:true,
 				finished:false,
@@ -50,9 +50,25 @@
 				pagesize:10
 			}
 		},
-		created(){
-			//获取绑定记录
-			this.bindingRecord();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/dbjlxq'){	//样衣报损
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
+			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				this.tab_index = 0;
+			}
+			this.page = 1;
+			this.listArray = [];	
+			this.loading = true;
+			this.finished = false;
+			//获取调拨记录
+			this.transferList();
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//切换选中tab
@@ -62,12 +78,19 @@
 				this.listArray = [];
 				this.loading = true;
 				this.finished = false;
-				//借样记录
-				this.bindingRecord();
+				//获取调拨记录
+				this.transferList();
 			},
 			//获取绑定记录
-			bindingRecord(){
-				resource.bindingRecord().then(res => {
+			transferList(){
+				let arg = {
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				if(this.tab_index != 0){
+					arg.status = this.tab_index;
+				}
+				resource.transferList(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
 						this.listArray = [...this.listArray,...res.data.data];
@@ -79,32 +102,27 @@
 			},
 			//点击进入详情
 			goDetail(batch_id){
-				// if(this.tab_index == 0){		//调拨记录
-				// 	this.$router.push('/dbjlxq?batch_id=' + batch_id);
-				// }else{							//绑定记录
-				// 	this.$router.push('/bdjlxq?batch_id=' + batch_id);
-				// }
+				this.$router.push('/dbjlxq?batch_id=' + batch_id + '&page_type=index');
 			},
 			//获取更多
 			loadMore(){
 				this.page += 1;
 				//获取已绑定的商品列表
-				this.bindingRecord();
+				this.transferList();
 			},
 			//扫码查询
 			scanYyCode(){
-				this.$router.push('/dbjl_search');
-				// dd.ready(() => {
-				// 	dd.biz.util.scan({
-				// 		onSuccess: (data) => {
-				// 			var sku_code = data.text.split('=')[1];
-							
-				// 		},
-				// 		onFail : (err) => {
-				// 			console.log(err)
-				// 		}
-				// 	})
-				// })
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = data.text.split('=')[1];
+							this.$router.push('/dbjl_search?sku_code=' + sku_code);
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
+					})
+				})
 			},
 		},
 		components:{

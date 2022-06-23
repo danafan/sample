@@ -105,7 +105,7 @@
 				pagesize:10,				
 				listArray:[],				//列表
 				total_num:0,				//总数量
-				loading:true,
+				loading:false,
 				finished:false,
 				showModel:false,			//是否显示弹窗
 				sku_code:"",				//点击单条删除的sku_code
@@ -170,7 +170,10 @@
 		methods:{
 			//获取样衣间列表
 			getAjaxRooms(){
-				resource.ajaxRooms().then(res => {
+				let arg = {
+					is_return:this.page_type == 'yybd'?0:1
+				}
+				resource.ajaxRooms(arg).then(res => {
 					if(res.code == 1){
 						this.room_list = res.data;
 						if(this.page_type == 'yybd'){	//样衣绑定
@@ -206,9 +209,11 @@
 			},
 			//获取更多
 			loadMore(){
-				this.page += 1;
-				//获取已绑定的商品列表
-				this.getGoodsList();
+				if(this.page_type == 'yygh'){
+					this.page += 1;
+					//获取已绑定的商品列表
+					this.getGoodsList();
+				}
 			},
 			//获取已绑定的商品列表
 			getGoodsList(){
@@ -222,9 +227,14 @@
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
-						this.total_num = res.data.total;
-						this.listArray = [...this.listArray,...res.data.data];
-						if(this.page == res.data.last_page){
+						if(this.page_type == 'yygh'){
+							this.total_num = res.data.total;
+							this.listArray = [...this.listArray,...res.data.data];
+							if(this.page == res.data.last_page){
+								this.finished = true;
+							}
+						}else{
+							this.listArray = res.data;
 							this.finished = true;
 						}
 					}
@@ -245,14 +255,14 @@
 					this.showModel = true;
 					break;
 					case '3':
-					if(this.total_num == 0){
+					if(this.listArray.length == 0){
 						this.$toast('暂时没有商品哦！');
 					}else{
 						if(this.room_id != ''){
-							this.value = `即将入库${this.total_num}件商品？`;
+							this.value = `即将入库${this.listArray.length}件商品？`;
 							this.showModel = true;
 						}else{
-							this.value = `即将借样${this.total_num}件商品？`;
+							this.value = `即将借样${this.listArray.length}件商品？`;
 							this.showModel = true;
 						}
 					}
@@ -299,7 +309,12 @@
 				},
 			//绑定提交
 			postbBinding(){
+				// if(!this.user_id){
+				// 	this.$toast('责任人不能为空!');
+				// 	return;
+				// }
 				var arg = {
+					type:this.yylyIndex == 0?2:1,
 					binding_id:this.bindingInfo.binding_id,
 					user_name:this.user_name,
 					user_id:this.user_id
@@ -397,13 +412,44 @@
 			},
 			//点击扫描样衣码
 			scanYyCode(){
+				// 549,22T2M878704604112
+				if(this.page_type == 'yybd'){	//样衣绑定
+								if(this.yylyIndex == 0){	//外部采购
+									//验证样衣码接口
+									this.getSkuCodeInfo(sku_code);
+								}else{	//内部调拨
+									//仓内调拨直接添加
+									this.callBack('22T2M878704604559');
+								}
+							}else{	//样衣归还
+								let arg = {
+									sku_code:'549',
+									batch_id:this.returnInfo.return_id,
+									type:'1'
+								}
+								resource.scanGoods(arg).then(res => {
+									if(res.code == 1){
+										this.$toast(res.msg);
+										this.page = 1;
+										this.listArray = [];
+										//获取已绑定的商品列表
+										this.getGoodsList();
+									}
+								})
+							}
+				return;
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
 							var sku_code = data.text.split('=')[1];
 							if(this.page_type == 'yybd'){	//样衣绑定
-								//验证样衣码接口
-								this.getSkuCodeInfo(sku_code);
+								if(this.yylyIndex == 0){	//外部采购
+									//验证样衣码接口
+									this.getSkuCodeInfo(sku_code);
+								}else{	//内部调拨
+									//仓内调拨直接添加
+									this.callBack(sku_code);
+								}
 							}else{	//样衣归还
 								let arg = {
 									sku_code:sku_code,
@@ -435,6 +481,21 @@
 					}
 				})
 			},
+			//仓内调拨直接添加
+			callBack(sku_code){		
+				var arg = {
+					type:1,
+					batch_id:this.bindingInfo.binding_id,
+					sku_code:sku_code
+				}
+				resource.bindGoods(arg).then(res => {
+					if(res.code == 1){
+						this.$toast(res.msg);
+						//获取已绑定的商品列表
+						this.getGoodsList();
+					}
+				})
+			},
 			//切换样衣间
 			checkYyj(index){
 				this.roomIndex = index;
@@ -461,17 +522,12 @@
 	padding: 15px;
 	.yyj_gly{
 		width: 100%;
-		// height: 129px;
 		padding-left:15px;
 		padding-right:15px;
-		// display:flex;
-		// flex-direction: column;
-		// justify-content: space-around;
 		.row{
 			display:flex;
 			padding-top: 5px;
 			padding-bottom: 5px;
-			// align-items: center;
 			justify-content: space-between;
 			font-size: 14px;
 			color: #000000;

@@ -20,7 +20,7 @@
 				<div class="option_label">调拨记录</div>
 			</div>
 			<div class="arrow_box">
-				<div class="num" v-if="unreturnnum > 0">{{unreturnnum}}</div>
+				<div class="num" v-if="transfernum > 0">{{transfernum}}</div>
 				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
 		</div>
@@ -70,6 +70,8 @@
 		created(){
 			//获取借样记录待借样数量
 			this.getWaitNum();
+			//获取借样记录待借样数量
+			this.getTransferNum();
 		},
 		computed:{
 			userInfo(){
@@ -77,7 +79,10 @@
 			},
 			unreturnnum(){
 				return this.$store.state.unreturnnum;
-			}
+			},
+			transfernum(){
+				return this.$store.state.transfernum;
+			},
 		},
 		methods:{
 			//获取借样记录待借样数量
@@ -85,7 +90,13 @@
 				resource.getWaitNum().then(res => {
 					this.$store.commit('setUnReturnNum',res.data);
 				})
-			}
+			},
+			//获取借样记录待借样数量
+			getTransferNum(){
+				resource.getTransferNum().then(res => {
+					this.$store.commit('setTransferNum',res.data);
+				})
+			},
 		}
 	}
 </script>

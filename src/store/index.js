@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     userInfo:{
       user_type:'1'
     },
-    unreturnnum:0
+    unreturnnum:0,
+    transfernum:0,
   },
   mutations: {
     //用户信息
@@ -17,6 +18,9 @@ const store = new Vuex.Store({
     //待借用数量
     setUnReturnNum (state, num) {  
       state.unreturnnum = num;
+    },
+    setTransferNum(state, num) {  
+      state.transfernum = num;
     },
   },
   actions: {

@@ -24,6 +24,7 @@
 	export default{
 		data(){
 			return{
+				sku_code:"",
 				listArray:[],		//列表
 				loading:true,
 				finished:false,
@@ -32,13 +33,19 @@
 			}
 		},
 		created(){
+			this.sku_code = this.$route.query.sku_code;
 			//获取绑定记录
-			this.bindingRecord();
+			this.transferList();
 		},
 		methods:{
 			//获取绑定记录
-			bindingRecord(){
-				resource.bindingRecord().then(res => {
+			transferList(){
+				let arg = {
+					sku_code:this.sku_code,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.transferList(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
 						this.listArray = [...this.listArray,...res.data.data];
@@ -50,18 +57,13 @@
 			},
 			//点击进入详情
 			goDetail(batch_id){
-				this.$router.push('/dbjlxq?batch_id=' + batch_id);
-				// if(this.tab_index == 0){		//调拨记录
-				// 	this.$router.push('/dbjlxq?batch_id=' + batch_id);
-				// }else{							//绑定记录
-				// 	this.$router.push('/bdjlxq?batch_id=' + batch_id);
-				// }
+				this.$router.replace('/dbjlxq?batch_id=' + batch_id + '&page_type=index');
 			},
 			//获取更多
 			loadMore(){
 				this.page += 1;
 				//获取已绑定的商品列表
-				this.bindingRecord();
+				this.transferList();
 			},
 		},
 		components:{

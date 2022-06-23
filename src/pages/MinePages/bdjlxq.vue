@@ -18,10 +18,7 @@
 				<div>{{topInfo.finish_time}}</div>
 			</div>
 		</div>
-		<van-list v-model:loading="loading"
-		:finished="finished"
-		@load="loadMore"
-		finished-text="没有更多了"
+		<van-list
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
@@ -34,7 +31,7 @@
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
-	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
+	<EmptyPage v-if="listArray.length == 0"></EmptyPage>
 </div>
 </template>
 <script>
@@ -46,10 +43,6 @@
 				topInfo:{},			//顶部信息
 				batch_id:"",				//批次ID
 				listArray:[],		//列表
-				loading:true,
-				finished:false,
-				page:1,
-				pagesize:10
 			}
 		},
 		created(){
@@ -65,37 +58,25 @@
 			bindingDetail(){
 				resource.bindingDetail({binding_id:this.batch_id}).then(res => {
 					if(res.code == 1){
-					this.topInfo = res.data;
-				}
+						this.topInfo = res.data;
+					}
 				})
 			},
 			//获取商品列表
 			getGoodsList(){
 				let arg = {
 					batch_id:this.batch_id,
-					type:0,
-					page:this.page,
-					pagesize:this.pagesize
+					type:0
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.listArray = res.data;
 					}
-				}
 				})
 			},
 			//点击进入详情
 			goDetail(sku_code){
 				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id);
-			},
-			//获取更多
-			loadMore(){
-				this.page += 1;
-				//获取已绑定的商品列表
-				this.getGoodsList();
 			}
 		},
 		components:{

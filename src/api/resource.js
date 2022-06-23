@@ -33,6 +33,9 @@ let path = {
 	ajaxTypeList:'index/ajaxtypelist',				//ajax获取类型列表接口
 	getSkuCodeInfo:'binding/getskucodeinfo',		//验证样衣码接口
 	getWaitNum:'lending/getwaitnum',				//获取待借用记录数量
+	transferList:'binding/transferlist',			//调拨记录列表
+	addConfirm:'binding/addconfirm',				//调拨记录一键确认
+	getTransferNum:'binding/gettransfernum',		//获取未确认的调拨记录数量
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -178,6 +181,18 @@ export default{
 	//获取待借用记录数量
 	getWaitNum(params){
 		return http.get(path.getWaitNum, params)
+	},
+	//调拨记录列表
+	transferList(params){
+		return http.get(path.transferList, params)
+	},
+	//调拨记录一键确认
+	addConfirm(params){
+		return http.post(path.addConfirm, params)
+	},
+	//获取未确认的调拨记录数量
+	getTransferNum(params){
+		return http.get(path.getTransferNum, params)
 	},
 }
 

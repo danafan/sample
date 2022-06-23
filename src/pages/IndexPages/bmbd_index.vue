@@ -30,9 +30,6 @@
 				batch_id:"",		//批次id
 				domain:"",
 				image_list:[],		//图片列表
-				codeInfo:{
-					sku_id:""
-				},					//商品信息
 			}
 		},
 		created(){
@@ -70,15 +67,10 @@
 					return;
 				}
 				var arg = {
+					type:2,
 					batch_id:this.batch_id,
 					images:this.image_list.join(','),
-					sku_code:this.yym,
-				}
-				if(this.codeInfo.sku_id != ''){
-					arg.supplier_i_id = this.codeInfo.supplier_i_id,
-					arg.i_id = this.codeInfo.i_id,
-					arg.sku_id = this.codeInfo.sku_id,
-					arg.unique_no = this.codeInfo.unique_no
+					sku_code:this.yym
 				}
 				resource.bindGoods(arg).then(res => {
 					if(res.code == 1){

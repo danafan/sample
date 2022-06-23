@@ -18,7 +18,7 @@
 				<div>{{topInfo.finish_time}}</div>
 			</div>
 		</div>
-		<div class="tab_row">
+		<div class="tab_row" v-if="topInfo.status == 1 || (topInfo.status == 2 && wsd_num > 0)">
 			<div class="tab_item all" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">
 				全部
 			</div>
@@ -29,10 +29,7 @@
 				未收到
 			</div>
 		</div>
-		<van-list v-model:loading="loading"
-		:finished="finished"
-		@load="loadMore"
-		finished-text="没有更多了"
+		<van-list
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
@@ -40,45 +37,62 @@
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>
-				<!-- <div class="status">收到</div> -->
-				<van-radio-group v-model="checked" direction="horizontal">
-					<van-radio name="1" @click.stop.native="()=>{}">收到</van-radio>
-					<van-radio name="2" @click.stop.native="()=>{}">未收到</van-radio>
+				<div class="status" v-if="page_type == 'menu' || (page_type == 'index' &&topInfo.status == 2)">{{item.receive_status == 0?'未确认':item.receive_status == 1?'已收到':'未收到'}}</div>
+				<van-radio-group v-model="item.receive_status" direction="horizontal" v-if="page_type == 'index' && topInfo.status == 1">
+					<van-radio :name="1" @click.stop.native="()=>{}">收到</van-radio>
+					<van-radio :name="2" @click.stop.native="()=>{}">未收到</van-radio>
 				</van-radio-group>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
-	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
-	<div class="button_box">
-		<div class="button">一键确认</div>
+	<EmptyPage v-if="listArray.length == 0"></EmptyPage>
+	<div class="button_box" v-if="page_type == 'index' && (topInfo.status == 1 || (topInfo.status == 2 && wsd_num > 0))">
+		<div class="button" @click="confirm">一键确认</div>
 	</div>
+	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
 	import EmptyPage from '../CommonPages/empty_page.vue'
+	import DialogModel from '../../components/dialog_model.vue'
 	export default{
 		data(){
 			return{
+				page_type:'index',		//页面类型（index：直接，menu：绑定记录进入）
 				checked:'1',
 				topInfo:{},			//顶部信息
 				batch_id:"",				//批次ID
 				tab_index:0,
-				listArray:[],		//列表
-				loading:true,
-				finished:false,
-				page:1,
-				pagesize:10
+				dataArray:[],		//总列表
+				listArray:[],		//渲染列表
+				wsd_num:0,			//未收到的数量
+				showModel:false,
+				value:"",
+				wsd_ids:[],
 			}
 		},
-		created(){
-			//批次ID
-			this.batch_id = this.$route.query.batch_id;
-			//获取商品列表
-			this.getGoodsList();
-			//绑定记录详情
-			this.bindingDetail();
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/yyxq'){	//样衣报损
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
+			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				this.tab_index = 0;
+				this.listArray = [];	
+				//批次ID
+				this.batch_id = this.$route.query.batch_id;
+				// 页面类型
+				this.page_type = this.$route.query.page_type;
+				//绑定记录详情
+				this.bindingDetail();
+			}
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//绑定记录详情
@@ -86,34 +100,43 @@
 				resource.bindingDetail({binding_id:this.batch_id}).then(res => {
 					if(res.code == 1){
 						this.topInfo = res.data;
+						//获取商品列表
+						this.getGoodsList();
 					}
 				})
 			},
 			//切换选中tab
 			checkTab(index){
 				this.tab_index = index;
-				this.page = 1;
 				this.listArray = [];
-				this.loading = true;
-				this.finished = false;
-				//调拨记录记录
-				this.getGoodsList();
+				if(this.tab_index == 0){
+					this.listArray = this.dataArray;
+				}else{
+					this.dataArray.map(item => {
+						if(item.receive_status == this.tab_index){
+							this.listArray.push(item);
+						}
+					})
+				}
 			},
 			//获取商品列表
 			getGoodsList(){
 				let arg = {
 					batch_id:this.batch_id,
-					type:0,
-					page:this.page,
-					pagesize:this.pagesize
+					type:0
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-						this.loading = false;
-						this.listArray = [...this.listArray,...res.data.data];
-						if(this.page == res.data.last_page){
-							this.finished = true;
-						}
+						this.dataArray = res.data;
+						this.listArray = res.data;
+						this.listArray.map(item => {
+							if(item.receive_status == 2){
+								this.wsd_num += 1;
+							};
+							if(this.page_type == 'index' && item.receive_status == 0){
+								item.receive_status = 1;
+							}
+						});
 					}
 				})
 			},
@@ -121,15 +144,40 @@
 			goDetail(sku_code){
 				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id);
 			},
-			//获取更多
-			loadMore(){
-				this.page += 1;
-				//获取已绑定的商品列表
-				this.getGoodsList();
-			}
+			//一键确认
+			confirm(){
+				var ysd = 0;
+				var wsd = 0;
+				this.listArray.map(item => {
+					if(item.receive_status == 1){
+						ysd += 1;
+					}
+					if(item.receive_status == 2){
+						this.wsd_ids.push(item.id);
+						wsd += 1;
+					}
+				});
+				this.value = `看准哦！一键确认${this.listArray.length}件商品，${ysd}件收到，${wsd}件未收到`;
+				this.showModel = true;
+			},
+			//弹窗确认
+			callbackFn(v){
+				if(v == '2'){
+					let arg = {
+						binding_id:this.batch_id,
+						un_received_ids:this.wsd_ids.join(',')
+					}
+					resource.addConfirm(arg).then(res => {
+						this.$toast('已确认');
+						this.$router.go(-1);
+					})
+				}
+				this.showModel = false;
+			},
 		},
 		components:{
-			EmptyPage
+			EmptyPage,
+			DialogModel
 		}
 	}
 </script>

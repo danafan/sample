@@ -91,6 +91,10 @@ const router = new Router({
 	{
 		path: '/bdjl_index',
 		name:"入库记录",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: bdjl_index
 	},
 	{
@@ -101,6 +105,10 @@ const router = new Router({
 	{
 		path: '/dbjl_index',
 		name:"调拨记录",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: dbjl_index
 	},
 	{
@@ -111,6 +119,10 @@ const router = new Router({
 	{
 		path: '/dbjlxq',
 		name:"调拨记录详情",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: dbjlxq
 	},
 	{

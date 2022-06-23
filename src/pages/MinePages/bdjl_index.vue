@@ -1,10 +1,10 @@
 <template>
 	<div class="container">
 		<div class="tab_row">
-			<div class="tab_item dbjl" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">
+			<div class="tab_item dbjl" :class="{'active_item':tab_index == 1}" @click="checkTab(1)">
 				调拨记录
 			</div>
-			<div class="tab_item rkjl" :class="{'active_item':tab_index == 1}" @click="checkTab(1)">
+			<div class="tab_item rkjl" :class="{'active_item':tab_index == 2}" @click="checkTab(2)">
 				入库记录
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 	export default{
 		data(){
 			return{
-				tab_index:0,		//默认调拨记录
+				tab_index:1,		//默认调拨记录
 				listArray:[],		//列表
 				loading:true,
 				finished:false,
@@ -40,9 +40,25 @@
 				pagesize:10
 			}
 		},
-		created(){
+		beforeRouteLeave(to,from,next){
+			if(to.path == '/dbjlxq' || to.path == '/bdjlxq'){	//样衣报损
+				from.meta.isUseCache = true;
+			}else{
+				from.meta.isUseCache = false;
+			}
+			next();
+		},
+		activated(){
+			if(!this.$route.meta.isUseCache){
+				this.tab_index = 1;
+			}
+			this.page = 1;
+			this.listArray = [];	
+			this.loading = true;
+			this.finished = false;
 			//获取绑定记录
 			this.bindingRecord();
+			this.$route.meta.isUseCache = false;
 		},
 		methods:{
 			//切换选中tab
@@ -52,12 +68,17 @@
 				this.listArray = [];
 				this.loading = true;
 				this.finished = false;
-				//借样记录
+				//获取绑定记录
 				this.bindingRecord();
 			},
 			//获取绑定记录
 			bindingRecord(){
-				resource.bindingRecord().then(res => {
+				let arg = {
+					binding_flag:this.tab_index,
+					page:this.page,
+					pagesize:this.pagesize
+				}
+				resource.bindingRecord(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
 						this.listArray = [...this.listArray,...res.data.data];
@@ -69,8 +90,8 @@
 			},
 			//点击进入详情
 			goDetail(batch_id){
-				if(this.tab_index == 0){		//调拨记录
-					this.$router.push('/dbjlxq?batch_id=' + batch_id);
+				if(this.tab_index == 1){		//调拨记录
+					this.$router.push('/dbjlxq?batch_id=' + batch_id + '&page_type=menu');
 				}else{							//绑定记录
 					this.$router.push('/bdjlxq?batch_id=' + batch_id);
 				}
