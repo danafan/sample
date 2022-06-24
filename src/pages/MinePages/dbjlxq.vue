@@ -7,18 +7,18 @@
 			</div>
 			<div class="row">
 				<div>责任人：</div>
-				<div>{{topInfo.user_name}}</div>
+				<div>{{topInfo.liabler_name}}</div>
 			</div>
 			<div class="row">
 				<div>提交人：</div>
-				<div>{{topInfo.room_name}}</div>
+				<div>{{topInfo.user_name}}</div>
 			</div>
 			<div class="row">
 				<div>绑定时间：</div>
 				<div>{{topInfo.finish_time}}</div>
 			</div>
 		</div>
-		<div class="tab_row" v-if="topInfo.status == 1 || (topInfo.status == 2 && wsd_num > 0)">
+		<div class="tab_row" v-if="topInfo.status == 2">
 			<div class="tab_item all" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">
 				全部
 			</div>
@@ -37,8 +37,8 @@
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>
-				<div class="status" v-if="page_type == 'menu' || (page_type == 'index' &&topInfo.status == 2)">{{item.receive_status == 0?'未确认':item.receive_status == 1?'已收到':'未收到'}}</div>
-				<van-radio-group v-model="item.receive_status" direction="horizontal" v-if="page_type == 'index' && topInfo.status == 1">
+				<div class="status" v-if="page_type == 'menu' || (page_type == 'index' &&topInfo.status == 2 && item.receive_status != 2)">{{item.receive_status == 0?'未确认':item.receive_status == 1?'已收到':'未收到'}}</div>
+				<van-radio-group v-model="item.receive_status" direction="horizontal" v-if="(page_type == 'index' && topInfo.status == 1) || (page_type == 'index' && topInfo.status == 2 && item.receive_status == 2)">
 					<van-radio :name="1" @click.stop.native="()=>{}">收到</van-radio>
 					<van-radio :name="2" @click.stop.native="()=>{}">未收到</van-radio>
 				</van-radio-group>

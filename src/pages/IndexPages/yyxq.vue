@@ -3,7 +3,7 @@
 		<div class="yy_img_list">
 			<img class="yy_img" :src="item" @click="preImg(index)" v-for="(item,index) in new_images">
 		</div>
-		<div class="info_row">样衣码：{{yyInfo.sku_code}}</div>
+		<div class="info_row">{{yyInfo.sku_code.length < 14?'样衣码':'唯一码'}}：{{yyInfo.sku_code}}</div>
 		<div class="info_row">款式编码：{{yyInfo.i_id}}</div>
 		<div class="info_row">商品编码：{{yyInfo.sku_id}}</div>
 		<div class="info_row">供应商款号：{{yyInfo.supplier_i_id}}</div>
@@ -47,7 +47,9 @@
 		data(){
 			return{
 				showPreImg:false,	//预览图片弹窗
-				yyInfo:{},			//样衣详情
+				yyInfo:{
+					sku_code:""
+				},			//样衣详情
 				new_images:[],		//图片列表
 				activeIndex:0,		//预览当前图片下标
 				page_type:"",		//页面类型

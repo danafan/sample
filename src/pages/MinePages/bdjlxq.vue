@@ -7,7 +7,7 @@
 			</div>
 			<div class="row">
 				<div>责任人：</div>
-				<div>{{topInfo.user_name}}</div>
+				<div>{{topInfo.liabler_name}}</div>
 			</div>
 			<div class="row">
 				<div>样衣间：</div>

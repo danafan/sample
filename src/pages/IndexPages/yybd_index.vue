@@ -4,7 +4,7 @@
 			<!-- 样衣绑定 -->
 			<div class="row" v-if="page_type == 'yybd'">
 				<div class="lable">样衣来源：</div>
-				<div class="value" @click="showYyly = true">
+				<div class="value" @click="clickYyly">
 					<div class="yyj_txt default_txt">{{yyly_list[yylyIndex].name}}</div>
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
@@ -54,9 +54,7 @@
 		<div class="button_box">
 			<div class="button" @click="scanYyCode">
 				<img class="bind_scan_icon" src="../../static/bind_scan_icon.png">
-				<div class="scan_text" v-if="page_type == 'yybd' && yylyIndex == 0">扫描样衣码</div>
-				<div class="scan_text" v-if="page_type == 'yybd' && yylyIndex == 1">扫描唯一码</div>
-				<div class="scan_text" v-if="page_type == 'yygh'">扫一扫</div>
+				<div class="scan_text">扫一扫</div>
 			</div>
 			<!-- 样衣绑定 -->
 			<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">提交</div>
@@ -401,6 +399,14 @@
 					});
 				})
 			},
+			//点击切换样衣来源
+			clickYyly(){
+				if(this.listArray.length > 0){
+					this.$toast('请清空列表后再切换样衣来源！')
+				}else{
+					this.showYyly = true;
+				}
+			},
 			//切换样衣来源
 			checkYyly(index){
 				this.yylyIndex = index;
@@ -415,7 +421,12 @@
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = data.text.split('=')[1];
+							var sku_code = "";	//小于：样衣码；等于：商品编码；大于：唯一吗
+							if(data.text.indexOf('=') > -1){
+								sku_code = data.text.split('=')[1];
+							}else{
+								sku_code = data.text;
+							}
 							if(this.page_type == 'yybd'){	//样衣绑定
 								if(this.yylyIndex == 0){	//外部采购
 									//验证样衣码接口
