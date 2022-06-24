@@ -428,11 +428,18 @@
 								sku_code = data.text;
 							}
 							if(this.page_type == 'yybd'){	//样衣绑定
-								if(this.yylyIndex == 0){	//外部采购
-									//验证样衣码接口
+								// if(this.yylyIndex == 0){	//外部采购
+								// 	//验证样衣码接口
+								// 	this.getSkuCodeInfo(sku_code);
+								// }else{	//内部调拨
+								// 	//仓内调拨直接添加
+								// 	this.callBack(sku_code);
+								// }
+								if(sku_code.length < 14){	//样衣码
 									this.getSkuCodeInfo(sku_code);
-								}else{	//内部调拨
-									//仓内调拨直接添加
+								}else if(sku_code.length == 14){	//商品编码
+									this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id);
+								}else{		//唯一码
 									this.callBack(sku_code);
 								}
 							}else{	//样衣归还

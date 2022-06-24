@@ -1,19 +1,21 @@
 <template>
 	<div class="container">
-		<div class="bd_row">
-			<div class="row_label">样衣码：</div>
-			<div class="row_label">{{yym}}</div>
-		</div>
-		<div class="img_box">
-			<div class="row_label">上传照片：</div>
-			<div class="img_toast">（至少上传一张照片，上限上传数量为六张）</div>
-		</div>
-		<div class="image_list">
-			<div class="image_box" v-for="(item,index) in image_list">
-				<img class="image" :src="domain + item">
-				<img class="close_icon" src='../../static/close_icon.png' @click="deleteImg(item,index)">
+		<div v-if="!!yym">
+			<div class="bd_row">
+				<div class="row_label">样衣码：</div>
+				<div class="row_label">{{yym}}</div>
 			</div>
-			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
+			<div class="img_box">
+				<div class="row_label">上传照片：</div>
+				<div class="img_toast">（至少上传一张照片，上限上传数量为六张）</div>
+			</div>
+			<div class="image_list">
+				<div class="image_box" v-for="(item,index) in image_list">
+					<img class="image" :src="domain + item">
+					<img class="close_icon" src='../../static/close_icon.png' @click="deleteImg(item,index)">
+				</div>
+				<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
+			</div>
 		</div>
 		<BigButton button_txt="添加" @callback="callBack"/>
 	</div>
@@ -27,6 +29,7 @@
 		data(){
 			return{
 				yym:"",				//样衣码
+				spbm:"",			//商品编码
 				batch_id:"",		//批次id
 				domain:"",
 				image_list:[],		//图片列表
@@ -34,6 +37,7 @@
 		},
 		created(){
 			this.yym = this.$route.query.yym;
+			this.spbm = this.$route.query.spbm;
 			this.batch_id = this.$route.query.batch_id
 		},
 		methods:{
