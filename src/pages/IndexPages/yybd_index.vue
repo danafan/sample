@@ -114,10 +114,10 @@
 				showYyly:false,				//样衣来源弹窗
 				yyly_list:[{
 					name:'外部采购',
-					id:'1'
+					id:'2'
 				},{
 					name:'仓内调拨',
-					id:'2'
+					id:'1'
 				}],							//样衣来源列表
 				yylyIndex:0,				//选中的样衣来源下标
 			}
@@ -418,33 +418,28 @@
 			},
 			//点击扫描样衣码
 			scanYyCode(){
-				// 样衣码：20 - 100；商品编码：22K2M324702307；唯一码：22K2M324702001
-				var sku_code = '22K2M324702307';	//小于：样衣码；等于：商品编码；大于：唯一吗
-							// if(data.text.indexOf('=') > -1){
-							// 	sku_code = data.text.split('=')[1];
-							// }else{
-							// 	sku_code = data.text;
-							// }
-								if(this.yylyIndex == 0){	//外部采购
-									if(sku_code.length < 14){	
-										this.getSkuCodeInfo(sku_code);
-									}else{		
-										this.$toast('请扫描样衣码');
-									}
-								}else{		//内部调拨
-									if(sku_code.length < 14){	//样衣码
-										this.$toast('请扫描商品编码或唯一码');
-									}else if(sku_code.length == 14){	//商品编码
-										this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
-									}else{		//唯一码
-										this.callBack(sku_code);
-									}
-								}
-								return;
+				// 样衣码(小于)：20 - 100；商品编码(等于)：22K2M324702307；唯一码(大于)：22K2M324702001
+				// var sku_code = '22K2M32470200130232';	
+				// if(this.yylyIndex == 0){	//外部采购
+				// 	if(sku_code.length < 14){	
+				// 		this.getSkuCodeInfo(sku_code);
+				// 	}else{		
+				// 		this.$toast('请扫描样衣码');
+				// 	}
+				// }else{						//内部调拨
+				// 	if(sku_code.length < 14){				//样衣码
+				// 		this.$toast('请扫描商品编码或唯一码');
+				// 	}else if(sku_code.length == 14){		//商品编码
+				// 		this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
+				// 	}else{									//唯一码
+				// 		this.callBack(sku_code);
+				// 	}
+				// }
+				// return;
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = "";	//小于：样衣码；等于：商品编码；大于：唯一吗
+							var sku_code = "";	
 							if(data.text.indexOf('=') > -1){
 								sku_code = data.text.split('=')[1];
 							}else{
@@ -457,12 +452,12 @@
 									}else{		
 										this.$toast('请扫描样衣码');
 									}
-								}else{		//内部调拨
-									if(sku_code.length < 14){	//样衣码
+								}else{						//内部调拨
+									if(sku_code.length < 14){				//样衣码
 										this.$toast('请扫描商品编码或唯一码');
-									}else if(sku_code.length == 14){	//商品编码
+									}else if(sku_code.length == 14){		//商品编码
 										this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
-									}else{		//唯一码
+									}else{									//唯一码
 										this.callBack(sku_code);
 									}
 								}

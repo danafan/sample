@@ -1,25 +1,27 @@
 <template>
 	<div class="container">
-		<div class="bd_row" v-if="!!yym">
+		<!-- 外部采购 -->
+		<div class="bd_row" v-if="type == '2'">
 			<div class="row_label">样衣码：</div>
 			<div class="row_label">{{yym}}</div>
 		</div>
-		<div class="img_box" v-if="!!yym">
+		<div class="img_box" v-if="type == '2'">
 			<div class="row_label">上传照片：</div>
 			<div class="img_toast">（至少上传一张照片，上限上传数量为六张）</div>
 		</div>
-		<div class="image_list" v-if="!!yym">
+		<div class="image_list" v-if="type == '2'">
 			<div class="image_box" v-for="(item,index) in image_list">
 				<img class="image" :src="domain + item">
 				<img class="close_icon" src='../../static/close_icon.png' @click="deleteImg(item,index)">
 			</div>
 			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
 		</div>
-		<div class="bd_row" v-if="!!spbm">
+		<!-- 内部调拨 -->
+		<div class="bd_row" v-if="type == '1'">
 			<div class="row_label">商品编码：</div>
 			<div class="row_label">{{spbm}}</div>
 		</div>
-		<div class="bd_row" v-if="!!spbm">
+		<div class="bd_row" v-if="type == '1'">
 			<div class="row_label">样衣码：</div>
 			<div class="scan_txt" @click="scanYyCode">{{!sku_code?'扫码':sku_code}}</div>
 		</div>
@@ -37,16 +39,16 @@
 				yym:"",				//样衣码
 				spbm:"",			//商品编码
 				sku_code:"",		//扫出来的样衣码
-				type:1,				//类型（1:内部调拨 2:外部采购）
+				type:2,				//类型（1:内部调拨 2:外部采购）
 				batch_id:"",		//批次id
 				domain:"",
 				image_list:[],		//图片列表
 			}
 		},
 		created(){
+			this.type = this.$route.query.type;
 			this.yym = this.$route.query.yym;
 			this.spbm = this.$route.query.spbm;
-			this.type = this.$route.query.type;
 			this.batch_id = this.$route.query.batch_id
 		},
 		methods:{
@@ -75,27 +77,28 @@
 			},
 			//点击扫描样衣码
 			scanYyCode(){
-				this.sku_code = '88'
-				// dd.ready(() => {
-				// 	dd.biz.util.scan({
-				// 		onSuccess: (data) => {
-				// 			var sku_code = "";	//小于：样衣码；等于：商品编码；大于：唯一吗
-				// 			if(data.text.indexOf('=') > -1){
-				// 				sku_code = data.text.split('=')[1];
-				// 			}else{
-				// 				sku_code = data.text;
-				// 			}
-				// 			if(sku_code.length < 14){	//样衣码
-				// 				this.sku_code = sku_code;
-				// 			}else{		
-				// 				this.$toast('请扫描样衣码');
-				// 			}
-				// 		},
-				// 		onFail : (err) => {
-				// 			console.log(err)
-				// 		}
-				// 	})
-				// })
+				// this.sku_code = '88'
+				
+				dd.ready(() => {
+					dd.biz.util.scan({
+						onSuccess: (data) => {
+							var sku_code = "";	//小于：样衣码；等于：商品编码；大于：唯一吗
+							if(data.text.indexOf('=') > -1){
+								sku_code = data.text.split('=')[1];
+							}else{
+								sku_code = data.text;
+							}
+							if(sku_code.length < 14){	//样衣码
+								this.sku_code = sku_code;
+							}else{		
+								this.$toast('请扫描样衣码');
+							}
+						},
+						onFail : (err) => {
+							console.log(err)
+						}
+					})
+				})
 			},
 			//添加
 			callBack(){		
@@ -103,7 +106,7 @@
 					type:this.type,
 					batch_id:this.batch_id,
 				}
-				if(!!this.yym){
+				if(this.type == '2'){	//外部采购
 					if(this.image_list.length == 0){
 						this.$toast('至少上传1张图片!');
 						return;
@@ -111,8 +114,7 @@
 						arg.images = this.image_list.join(',');
 						arg.sku_code = this.yym;
 					}
-				}
-				if(!!this.spbm){
+				}else{	//内部调拨
 					if(this.sku_code == ''){
 						this.$toast('请扫描样衣码!');
 						return;
