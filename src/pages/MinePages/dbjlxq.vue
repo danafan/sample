@@ -33,12 +33,12 @@
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="yy_item" v-for="item in listArray" @click="goDetail(item.sku_code)">
+		<div class="yy_item" v-for="(item,index) in listArray" @click="goDetail(item.sku_code)">
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>
-				<div class="status" v-if="page_type == 'menu' || (page_type == 'index' &&topInfo.status == 2 && item.receive_status != 2)">{{item.receive_status == 0?'未确认':item.receive_status == 1?'已收到':'未收到'}}</div>
-				<van-radio-group v-model="item.receive_status" direction="horizontal" v-if="(page_type == 'index' && topInfo.status == 1) || (page_type == 'index' && topInfo.status == 2 && item.receive_status == 2)">
+				<div class="status" v-if="page_type == 'menu' || (page_type == 'index' && topInfo.status == 2 && item.receive_status != 2)">{{item.receive_status == 0?'未确认':item.receive_status == 1?'已收到':'未收到'}}</div>
+				<van-radio-group v-model="useArray[index].receive_status" direction="horizontal" v-if="(page_type == 'index' && topInfo.status == 1) || (page_type == 'index' && topInfo.status == 2 && item.receive_status == 2)">
 					<van-radio :name="1" @click.stop.native="()=>{}">收到</van-radio>
 					<van-radio :name="2" @click.stop.native="()=>{}">未收到</van-radio>
 				</van-radio-group>
@@ -47,7 +47,7 @@
 		</div>
 	</van-list>
 	<EmptyPage v-if="listArray.length == 0"></EmptyPage>
-	<div class="button_box" v-if="page_type == 'index' && (topInfo.status == 1 || (topInfo.status == 2 && wsd_num > 0))">
+	<div class="button_box" v-if="page_type == 'index' && (topInfo.status == 1 || (topInfo.status == 2 && tab_index != 1 && wsd_num > 0))">
 		<div class="button" @click="confirm">一键确认</div>
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
@@ -67,6 +67,8 @@
 				tab_index:0,
 				dataArray:[],		//总列表
 				listArray:[],		//渲染列表
+				useArray:[],		//当前渲染的临时列表
+				czArray:[],			//需要操作的列表
 				wsd_num:0,			//未收到的数量
 				showModel:false,
 				value:"",
@@ -85,6 +87,7 @@
 			if(!this.$route.meta.isUseCache){
 				this.tab_index = 0;
 				this.listArray = [];	
+				this.useArray = [];	
 				//批次ID
 				this.batch_id = this.$route.query.batch_id;
 				// 页面类型
@@ -137,6 +140,14 @@
 								item.receive_status = 1;
 							}
 						});
+						this.useArray = JSON.parse(JSON.stringify(this.listArray));
+						if(this.topInfo.status == 2){	//已确认之后的，把需要操作的取出来
+							this.useArray.map(item => {
+								if(item.receive_status == 2){
+									this.czArray.push(item)
+								}
+							});
+						}	
 					}
 				})
 			},
@@ -148,7 +159,8 @@
 			confirm(){
 				var ysd = 0;
 				var wsd = 0;
-				this.listArray.map(item => {
+				this.wsd_ids = [];
+				this.useArray.map(item => {
 					if(item.receive_status == 1){
 						ysd += 1;
 					}
@@ -157,20 +169,53 @@
 						wsd += 1;
 					}
 				});
-				this.value = `看准哦！一键确认${this.listArray.length}件商品，${ysd}件收到，${wsd}件未收到`;
+				var ysd_num = 0;		//已收到的数量
+				if(this.topInfo.status == 2){
+					this.czArray.map(item => {
+						this.useArray.map(i => {
+							if(i.receive_status == 1 && (item.id == i.id)){
+								ysd_num += 1;
+							}
+						})
+					})
+				}
+				this.value = `看准哦！一键确认${this.topInfo.status == 2?this.czArray.length:this.useArray.length}件商品，${this.topInfo.status == 2?ysd_num:ysd}件收到，${wsd}件未收到`;
 				this.showModel = true;
 			},
 			//弹窗确认
 			callbackFn(v){
 				if(v == '2'){
-					let arg = {
-						binding_id:this.batch_id,
-						un_received_ids:this.wsd_ids.join(',')
+					if(this.topInfo.status == 1){	//待确认
+						let arg = {
+							binding_id:this.batch_id,
+							un_received_ids:this.wsd_ids.join(',')
+						}
+						resource.addConfirm(arg).then(res => {
+							if(res.code == 1){
+								this.$toast('已确认');
+								this.$router.go(-1);
+							}
+						})
+					}else{							//已确认
+						var arr = [];
+						this.czArray.map(item => {
+							this.useArray.map(i => {
+								if(i.receive_status == 1 && (item.id == i.id)){
+									arr.push(item.id);
+								}
+							})
+						})
+						let arg = {
+							binding_id:this.batch_id,
+							un_received_ids:arr.join(',')
+						}
+						resource.editConfirm(arg).then(res => {
+							if(res.code == 1){
+								this.$toast('已确认');
+								this.$router.go(-1);
+							}
+						})
 					}
-					resource.addConfirm(arg).then(res => {
-						this.$toast('已确认');
-						this.$router.go(-1);
-					})
 				}
 				this.showModel = false;
 			},

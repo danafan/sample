@@ -102,6 +102,8 @@
 				font-size: 14px;
 			}
 			.value{
+				padding-left: 20px;
+				padding-right: 20px;
 				width: 100%;
 				flex: 1;
 				display: flex;

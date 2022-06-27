@@ -48,8 +48,17 @@
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = data.text.split('=')[1];
-							this.$router.push('/yybs_index?sku_code=' + sku_code);
+							var sku_code = "";	
+							if(data.text.indexOf('=') > -1){
+								sku_code = data.text.split('=')[1];
+							}else{
+								sku_code = data.text;
+							}
+							if(sku_code.length == 14){	
+								this.$toast('请扫描样衣码或唯一码');
+							}else{		
+								this.$router.push('/yybs_index?sku_code=' + sku_code);
+							}
 						},
 						onFail : (err) => {
 							console.log(err)

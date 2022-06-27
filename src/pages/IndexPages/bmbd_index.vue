@@ -29,7 +29,7 @@
 	</div>
 </template>
 <script>
-	// import * as dd from 'dingtalk-jsapi';
+	import * as dd from 'dingtalk-jsapi';
 	import UploadImage from '../../components/upload_img.vue'
 	import BigButton from '../../components/big_button.vue'
 	import resource from '../../api/resource.js'
@@ -89,7 +89,8 @@
 								sku_code = data.text;
 							}
 							if(sku_code.length < 14){	//样衣码
-								this.sku_code = sku_code;
+								//验证样衣码接口
+								this.getSkuCodeInfo(sku_code)
 							}else{		
 								this.$toast('请扫描样衣码');
 							}
@@ -98,6 +99,14 @@
 							console.log(err)
 						}
 					})
+				})
+			},
+			//验证样衣码接口
+			getSkuCodeInfo(sku_code){
+				resource.getSkuCodeInfo({sku_code:sku_code}).then(res => {
+					if(res.code == '1'){
+						this.sku_code = sku_code;
+					}
 				})
 			},
 			//添加

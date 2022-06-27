@@ -36,6 +36,7 @@ let path = {
 	transferList:'binding/transferlist',			//调拨记录列表
 	addConfirm:'binding/addconfirm',				//调拨记录一键确认
 	getTransferNum:'binding/gettransfernum',		//获取未确认的调拨记录数量
+	editConfirm:'binding/editconfirm',				//编辑确认提交接口
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -193,6 +194,10 @@ export default{
 	//获取未确认的调拨记录数量
 	getTransferNum(params){
 		return http.get(path.getTransferNum, params)
+	},
+	//编辑确认提交接口
+	editConfirm(params){
+		return http.post(path.editConfirm, params)
 	},
 }
 

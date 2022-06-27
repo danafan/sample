@@ -92,22 +92,31 @@
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = data.text.split('=')[1];
-							let arg = {
-								sku_code:sku_code,
-								batch_id:this.batch_id
+							var sku_code = "";	
+							if(data.text.indexOf('=') > -1){
+								sku_code = data.text.split('=')[1];
+							}else{
+								sku_code = data.text;
 							}
-							resource.checkScanGoods(arg).then(res => {
-								if(res.code == 1){
-									this.$toast(res.msg);
-									this.page = 1;
-									this.listArray = [];
-								//获取已绑定的商品列表
-								this.checkGoodsList();
-								//获取头部信息
-								this.checkDetail();
+							if(sku_code.length == 14){	
+								this.$toast('请扫描样衣码或唯一码');
+							}else{		
+								let arg = {
+									sku_code:sku_code,
+									batch_id:this.batch_id
+								}
+								resource.checkScanGoods(arg).then(res => {
+									if(res.code == 1){
+										this.$toast(res.msg);
+										this.page = 1;
+										this.listArray = [];
+										//获取已绑定的商品列表
+										this.checkGoodsList();
+										//获取头部信息
+										this.checkDetail();
+									}
+								})
 							}
-						})
 						},
 						onFail : (err) => {
 							console.log(err)

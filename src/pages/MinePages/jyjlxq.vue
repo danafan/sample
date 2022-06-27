@@ -78,8 +78,8 @@
 			lendingDetail(){
 				resource.lendingDetail({lending_id:this.lending_id}).then(res => {
 					if(res.code == 1){
-					this.lendingInfo = res.data;
-				}
+						this.lendingInfo = res.data;
+					}
 				})
 			},
 			//扫描样衣码
@@ -87,21 +87,30 @@
 				dd.ready(() => {
 					dd.biz.util.scan({
 						onSuccess: (data) => {
-							var sku_code = data.text.split('=')[1];
-							let arg = {
-								sku_code:sku_code,
-								batch_id:this.lending_id,
-								type:'2'
+							var sku_code = "";	
+							if(data.text.indexOf('=') > -1){
+								sku_code = data.text.split('=')[1];
+							}else{
+								sku_code = data.text;
 							}
-							resource.scanGoods(arg).then(res => {
-								if(res.code == 1){
-									this.page = 1;
-									this.listArray = [];
-									//获取已绑定的商品列表
-									this.getGoodsList();
-								};
+							if(sku_code.length == 14){	
+								this.$toast('请扫描样衣码或唯一码');
+							}else{		
+								let arg = {
+									sku_code:sku_code,
+									batch_id:this.lending_id,
+									type:'2'
+								}
+								resource.scanGoods(arg).then(res => {
+									if(res.code == 1){
+										this.page = 1;
+										this.listArray = [];
+										//获取已绑定的商品列表
+										this.getGoodsList();
+									};
 
-							})
+								})
+							}
 						},
 						onFail : (err) => {
 							console.log(err)
@@ -125,12 +134,12 @@
 				}
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
-					this.loading = false;
-					this.listArray = [...this.listArray,...res.data.data];
-					if(this.page == res.data.last_page){
-						this.finished = true;
+						this.loading = false;
+						this.listArray = [...this.listArray,...res.data.data];
+						if(this.page == res.data.last_page){
+							this.finished = true;
+						}
 					}
-				}
 				})
 			},
 			//点击询问
@@ -211,14 +220,14 @@
 				}
 				resource.removeGoods(arg).then(res => {
 					if(res.code == 1){
-					this.$toast(res.msg);
-					if(this.modelType == '1'){
-						this.listArray.splice(this.goods_index,1);
-					}else{
-						this.page = 1;
-						this.listArray = [];
+						this.$toast(res.msg);
+						if(this.modelType == '1'){
+							this.listArray.splice(this.goods_index,1);
+						}else{
+							this.page = 1;
+							this.listArray = [];
+						}
 					}
-				}
 				})
 			},
 			//借样审批
@@ -234,12 +243,12 @@
 				}
 				resource.lendingAdd(arg).then(res => {
 					if(res.code == 1){
-					if(this.modelType == '3'){
-						this.$router.replace('/success?value=' + '借样成功' + '&img_url=success');
-					}else if(this.modelType == '4'){
-						this.$router.replace('/success?value=' + '借样拒绝' + '&img_url=jyjj');
+						if(this.modelType == '3'){
+							this.$router.replace('/success?value=' + '借样成功' + '&img_url=success');
+						}else if(this.modelType == '4'){
+							this.$router.replace('/success?value=' + '借样拒绝' + '&img_url=jyjj');
+						}
 					}
-				}
 				})
 			},
 			//点击进入详情
