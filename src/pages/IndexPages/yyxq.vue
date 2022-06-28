@@ -7,7 +7,7 @@
 		<div class="info_row">款式编码：{{yyInfo.i_id}}</div>
 		<div class="info_row">商品编码：{{yyInfo.sku_id}}</div>
 		<div class="info_row">供应商款号：{{yyInfo.supplier_i_id}}</div>
-		<div class="info_row">样衣状态：{{yyInfo.clothes_status}}</div>
+		<div class="info_row" v-if="show_status == 1">样衣状态：{{yyInfo.clothes_status}}</div>
 		<div class="info_row" v-if="yyInfo.status == '1'">样衣间：{{yyInfo.room_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '1'">责任人：{{yyInfo.admin_name}}</div>
 		<div class="info_row" v-if="yyInfo.status == '2'">借样人：{{yyInfo.user_name}}</div>
@@ -55,6 +55,7 @@
 				page_type:"",		//页面类型
 				sku_code:"",		//样衣码
 				batch_id:"",		//批次id
+				show_status:1
 			}
 		},
 		created(){
@@ -64,6 +65,8 @@
 			this.page_type = this.$route.query.type;
 			//批次id
 			this.batch_id = this.$route.query.batch_id;
+			//是否显示样衣状态
+			this.show_status = this.$route.query.show_status?this.$route.query.show_status:1;
 			//获取商品详情
 			this.getGoodsInfo();
 		},

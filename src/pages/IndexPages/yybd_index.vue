@@ -147,6 +147,7 @@
 				this.roomIndex = 999;				//选中的样衣间下标
 				this.room_name = "";				//选中的样衣间名称
 				this.room_id = "";					//选中的样衣间id 
+				this.room_type = 1;					//样衣类型
 				this.bindingInfo = {};				//获取页面批次信息(绑定页面)
 				this.returnInfo = {};				//获取页面批次信息(归还页面)
 				this.page = 1;			
@@ -164,6 +165,7 @@
 					this.getbBindingInfo();
 				}
 			}
+			this.yylyIndex = localStorage.getItem('yylyIndex')?localStorage.getItem('yylyIndex'):0;
 			this.$route.meta.isUseCache = false;
 		},
 		methods:{
@@ -414,6 +416,13 @@
 			//切换样衣来源
 			checkYyly(index){
 				this.yylyIndex = index;
+				localStorage.setItem('yylyIndex',index);
+				if(this.yylyIndex == 1){
+					this.roomIndex = 999;				//选中的样衣间下标
+					this.room_name = "";				//选中的样衣间名称
+					this.room_id = "";					//选中的样衣间id 
+					this.room_type = 1;					//样衣类型
+				}
 				this.showYyly = false;
 			},
 			//点击进入详情

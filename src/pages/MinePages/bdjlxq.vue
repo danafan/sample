@@ -76,7 +76,7 @@
 			},
 			//点击进入详情
 			goDetail(sku_code){
-				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id);
+				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id + '&show_status=2');
 			}
 		},
 		components:{

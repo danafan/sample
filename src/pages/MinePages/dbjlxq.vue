@@ -142,6 +142,7 @@
 						});
 						this.useArray = JSON.parse(JSON.stringify(this.listArray));
 						if(this.topInfo.status == 2){	//已确认之后的，把需要操作的取出来
+							this.czArray = [];
 							this.useArray.map(item => {
 								if(item.receive_status == 2){
 									this.czArray.push(item)
@@ -153,7 +154,7 @@
 			},
 			//点击进入详情
 			goDetail(sku_code){
-				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id);
+				this.$router.push('/yyxq?sku_code=' + sku_code + '&type=1&' + 'batch_id=' + this.batch_id + '&show_status=2');
 			},
 			//一键确认
 			confirm(){
