@@ -60,10 +60,10 @@
 	export default{
 		data(){
 			return{
-				page_type:'index',		//页面类型（index：直接，menu：绑定记录进入）
+				page_type:'index',	//页面类型（index：直接，menu：绑定记录进入）
 				checked:'1',
 				topInfo:{},			//顶部信息
-				batch_id:"",				//批次ID
+				batch_id:"",		//批次ID
 				tab_index:0,
 				dataArray:[],		//总列表
 				listArray:[],		//渲染列表
@@ -114,12 +114,23 @@
 				this.listArray = [];
 				if(this.tab_index == 0){
 					this.listArray = this.dataArray;
+					this.useArray = JSON.parse(JSON.stringify(this.dataArray));
 				}else{
 					this.dataArray.map(item => {
 						if(item.receive_status == this.tab_index){
 							this.listArray.push(item);
 						}
 					})
+					if(index == 2){
+						let useArray = JSON.parse(JSON.stringify(this.dataArray));
+						this.czArray = [];
+						useArray.map(item => {
+							if(item.receive_status == 2){
+								this.czArray.push(item)
+							}
+						});
+						this.useArray = this.czArray;
+					}
 				}
 			},
 			//获取商品列表
