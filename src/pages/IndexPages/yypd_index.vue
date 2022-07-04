@@ -16,7 +16,7 @@
 		class="van_list"
 		v-if="task_list.length > 0"
 		>
-		<div class="task_item" v-for="item in task_list" @click="goPdxq(item.check_id)">
+		<div class="task_item border_bottom" v-for="item in task_list" @click="goPdxq(item.check_id)">
 			<div class="item_lable">您有新的盘点任务{{item.check_status == '0'?'待完成':'已完成'}}</div>
 			<div class="item_value">{{item.add_time}}</div>
 		</div>

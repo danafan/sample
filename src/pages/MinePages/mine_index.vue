@@ -7,16 +7,16 @@
 				<div>姓名：{{userInfo.user_name}}</div>
 			</div>
 		</div>
-		<div class="option_item" @click="$router.push('/bdjl_index')">
+		<div class="option_item border_bottom" @click="$router.push('/bdjl_index')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/bdjl_icon.png">
 				<div class="option_label">样衣绑定</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/dbjl_index')">
+		<div class="option_item border_bottom" @click="$router.push('/dbjl_index')">
 			<div class="option_left">
-				<img class="option_icon" src="../../static/dbjl_icon.png">
+				<img class="option_icon" src="../../static/dbjl_index.png">
 				<div class="option_label">调拨记录</div>
 			</div>
 			<div class="arrow_box">
@@ -24,14 +24,14 @@
 				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
 		</div>
-		<div class="option_item" @click="$router.push('/wdjy_index?page_type=wdjy')">
+		<div class="option_item border_bottom" @click="$router.push('/wdjy_index?page_type=wdjy')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/wdjy_icon.png">
 				<div class="option_label">我的借样</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/wdjy_index?page_type=jyjl')" v-if="userInfo.user_type == '1'">
+		<div class="option_item border_bottom" @click="$router.push('/wdjy_index?page_type=jyjl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/jyjl_icon.png">
 				<div class="option_label">借样记录</div>
@@ -41,21 +41,21 @@
 				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
 		</div>
-		<div class="option_item" @click="$router.push('/zcjl_index?page_type=ghjl')" v-if="userInfo.user_type == '1'">
+		<div class="option_item border_bottom" @click="$router.push('/zcjl_index?page_type=ghjl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/ghjl_icon.png">
 				<div class="option_label">归还记录</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/zcjl_index?page_type=cljl')" v-if="userInfo.user_type == '1'">
+		<div class="option_item border_bottom" @click="$router.push('/zcjl_index?page_type=cljl')" v-if="userInfo.user_type == '1'">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/zjjl_icon.png">
 				<div class="option_label">样衣处理</div>
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
-		<div class="option_item" @click="$router.push('/bsjl_index')">
+		<div class="option_item border_bottom" @click="$router.push('/bsjl_index')">
 			<div class="option_left">
 				<img class="option_icon" src="../../static/bsjl_icon.png">
 				<div class="option_label">报损记录</div>

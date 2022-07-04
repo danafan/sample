@@ -38,7 +38,7 @@
 		class="yy_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
+		<div class="yy_item border_bottom" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>
@@ -48,7 +48,7 @@
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
-	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
+	<EmptyPage v-if="listArray.length == 0 && loading == false" :icon_type="yylyIndex == 0?'1':'2'"></EmptyPage>
 	<div class="bottom_box">
 		<div class="all_delete" @click="modelFn('2')" v-if="page_type == 'yybd' && listArray.length > 0">全部清空</div>
 		<div class="button_box">

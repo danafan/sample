@@ -23,7 +23,7 @@
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="record_item" v-for="item in listArray" @click="goJyxq(item.lending_id)">
+		<div class="record_item border_bottom" v-for="item in listArray" @click="goJyxq(item.lending_id)">
 			<div class="first_row">
 				<div class="name" v-if="userInfo.user_type == '1'">{{item.user_name}}的样衣记录</div>
 				<div class="name" v-else>样衣记录</div>

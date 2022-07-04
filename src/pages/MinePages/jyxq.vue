@@ -22,7 +22,7 @@
 			@load="loadMore"
 			finished-text="没有更多了" v-if="yy_type == 1 && listArray.length > 0"
 			>
-			<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1">
+			<div class="yy_item border_bottom" v-for="(item,index) in listArray" :key="index + 1">
 				<img class="yy_img" :src="item.domain + item.image">
 				<div class="yy_content">
 					<div class="yy_row">样衣码：{{item.sku_code}}</div>

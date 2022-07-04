@@ -90,7 +90,7 @@ const router = new Router({
 	},
 	{
 		path: '/bdjl_index',
-		name:"入库记录",
+		name:"样衣绑定",
 		meta:{
 			isUseCache:false,
 			keepAlive:true

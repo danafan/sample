@@ -81,10 +81,10 @@
 			ajaxTypeList(){
 				resource.ajaxTypeList({type:'lending_reason'}).then(res => {
 					if(res.code == 1){
-					this.jyyy_list = res.data;
-					this.user_name = this.userInfo.user_name;
-					this.user_id = this.userInfo.userid;
-				}
+						this.jyyy_list = res.data;
+						this.user_name = this.userInfo.user_name;
+						this.user_id = this.userInfo.userid;
+					}
 				})
 			},
 			//切换借样人
@@ -158,9 +158,9 @@
 				}
 				resource.lendingApply(arg).then(res => {
 					if(res.code == 1){
-					this.$toast(res.msg);
-					this.$router.push('/success?value=' + '已发起借样&img_url=jy');
-				}
+						this.$toast(res.msg);
+						this.$router.push('/success?value=' + '已发起借样&img_url=jy');
+					}
 				})
 			}
 		},
@@ -203,6 +203,11 @@
 				border: none;
 				outline: none;
 				font-size: 14px;
+			}
+			.right_arrow{
+				margin-left: 15px;
+				width: 12px;
+				height: 24px;
 			}
 		}
 	}

@@ -18,7 +18,7 @@
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="bdjl_item" v-for="item in listArray" @click="goDetail(item.binding_id)">
+		<div class="bdjl_item border_bottom" v-for="item in listArray" @click="goDetail(item.binding_id)">
 			<div class="item_left">
 				<div class="code">{{item.binding_id}}</div>
 				<div>{{item.user_name}}</div>

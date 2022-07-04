@@ -20,7 +20,7 @@
 		class="yy_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="yy_item" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
+		<div class="yy_item border_bottom" v-for="(item,index) in listArray" :key="index + 1" @click="goDetail(item.sku_code)">
 			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
 				<div class="yy_row">样衣码：{{item.sku_code}}</div>

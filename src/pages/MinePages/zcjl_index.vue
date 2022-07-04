@@ -7,7 +7,7 @@
 		class="van_list"
 		v-if="listArray.length > 0"
 		>
-		<div class="item" @click="goZcxq(page_type == 'ghjl'?item.return_id:item.handle_id)" v-for="item in listArray">
+		<div class="item border_bottom" @click="goZcxq(page_type == 'ghjl'?item.return_id:item.handle_id)" v-for="item in listArray">
 			<div class="item_label">{{page_type == 'ghjl'?'归还记录':'处理记录'}}</div>
 			<div class="item_value">{{item.apply_time}}</div>
 		</div>
