@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div>
-			<div class="info_row">事业部：{{lendingInfo.dept_name}}</div>
+			<div class="info_row">部门：{{lendingInfo.dept_name}}</div>
 			<div class="info_row">借样人：{{lendingInfo.user_name}}</div>
 			<div class="info_row">提交人：{{lendingInfo.apply_user_name}}</div>
 			<div class="info_row">预计归还时间：{{lendingInfo.return_time}}</div>

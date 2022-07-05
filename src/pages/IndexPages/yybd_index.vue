@@ -48,7 +48,7 @@
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
 	</van-list>
-	<EmptyPage v-if="listArray.length == 0 && loading == false" :icon_type="yylyIndex == 0?'1':'2'"></EmptyPage>
+	<EmptyPage v-if="listArray.length == 0 && loading == false" :icon_type="page_type == 'yybd'?yylyIndex == 0?'1':'2':''"></EmptyPage>
 	<div class="bottom_box">
 		<div class="all_delete" @click="modelFn('2')" v-if="page_type == 'yybd' && listArray.length > 0">全部清空</div>
 		<div class="button_box">
