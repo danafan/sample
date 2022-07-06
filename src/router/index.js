@@ -66,7 +66,7 @@ const router = new Router({
 	},
 	{
 		path: '/fqjy_index',
-		name:"发起借样",
+		name:"样衣间借样",
 		component: fqjy_index
 	},
 	{
