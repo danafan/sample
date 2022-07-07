@@ -122,6 +122,8 @@
 						this.listArray = [...this.listArray,...res.data.data];
 						if(this.page == res.data.last_page){
 							this.finished = true;
+						}else{
+							this.finished = false;
 						}
 					}
 				})
