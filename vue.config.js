@@ -15,7 +15,7 @@ module.exports = {
 		host:"0.0.0.0",  
 	},
 	assetsDir: "clothes",
-	publicPath:'./',
+	publicPath:'../',
 	// lintOnSave: true,
 	// chainWebpack: (config)=>{
 	// 	config.resolve.alias
