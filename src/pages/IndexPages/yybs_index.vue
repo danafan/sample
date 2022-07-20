@@ -27,6 +27,29 @@
 			</div>
 			<UploadImage @uploadCallBack="uploadCallBack" v-if="image_list.length < 6"></UploadImage>
 		</div>
+		<div class="image_lable">报损类型：</div>
+		<div class="radio_group">
+			<van-radio-group v-model="loss_type" direction="horizontal">
+				<van-radio name="1">个人</van-radio>
+				<van-radio name="2">部门</van-radio>
+			</van-radio-group>
+		</div>
+		<!-- 个人 -->
+		<div class="radio_group" @click="checkLoss" v-if="loss_type == '1'">
+			<div class="type_box">
+				<div class="loss_name">{{liabler_name}}</div>
+				<img class="right_arrow" src="../../static/right_arrow.png">
+			</div>
+		</div>
+		<!-- 部门 -->
+		<div class="radio_group" @click="checkLoss" v-if="loss_type == '2'">
+			<div class="type_box">
+				<div class="loss_name">{{dept_name}}</div>
+				<img class="right_arrow" src="../../static/right_arrow.png">
+			</div>
+		</div>
+
+
 		<BigButton button_txt="报损" @callback="callBack"></BigButton>
 		<van-popup v-model:show="showPopup" position="bottom" round>
 			<div class="list">
@@ -38,6 +61,7 @@
 	</div>
 </template>
 <script>
+	import * as dd from 'dingtalk-jsapi';
 	import resource from '../../api/resource.js'
 	import UploadImage from '../../components/upload_img.vue'
 	import BigButton from '../../components/big_button.vue'
@@ -53,6 +77,11 @@
 				ysjz:"",			//原始价值
 				domain:"",
 				image_list:[],		//图片列表
+				loss_type:'1',		//报损类型
+				liabler_name:"",	//个人名称
+				liabler_id:"",		//个人ID
+				dept_name:"",		//部门名称
+				dept_id:"",			//部门ID
 			}
 		},
 		created(){
@@ -74,6 +103,12 @@
 							this.$router.go(-1);
 						},1500);
 					}else{
+						//样衣详情
+						let info_data = res.data;
+						this.liabler_name = info_data.liabler_name;
+						this.liabler_id = info_data.liabler_id;
+						this.dept_name = info_data.dept_name;
+						this.dept_id = info_data.dept_id;
 						//获取报损原因
 						this.ajaxTypeList();
 					}
@@ -117,6 +152,56 @@
 					}
 				})
 			},
+			//选择报损类型的人或部门
+			checkLoss(){
+				if(this.loss_type == '1'){		//个人
+					dd.ready(() => {
+						dd.biz.contact.complexPicker({
+							title: "选择个人",
+							corpId: "ding7828fff434921f5b",
+							multiple: false,
+							limitTips: "超出了",
+							maxUsers: 1000,
+							pickedUsers: [this.liabler_id],
+							pickedDepartments: [],
+							disabledUsers: [],
+							disabledDepartments: [],
+							requiredUsers: [],
+							requiredDepartments: [],
+							appId: 1664876526,
+							permissionType: "GLOBAL",
+							responseUserOnly: true,
+							startWithDepartmentId: 0,
+							onSuccess : (res) => {
+								this.liabler_name = res.users[0].name;
+								this.liabler_id = res.users[0].id;
+							},
+							onFail : function(err) {
+								// 调用失败时回调
+								console.log(err)
+							}
+						});
+					})
+				}else{
+					dd.biz.contact.departmentsPicker({
+						title:"选择部门",            
+						corpId:"ding7828fff434921f5b",             
+						multiple:false,            
+						limitTips:"超出了",          
+						maxDepartments:100,           
+						pickedDepartments:[this.dept_id],         
+						disabledDepartments:[],        
+						requiredDepartments:[],        
+						appId:1664876526,              
+						permissionType:"GLOBAL",
+						onSuccess : (res) => {
+							this.dept_name = res.departments[0].name;
+							this.dept_id = res.departments[0].id;
+						},
+						onFail : function(err) {}
+					});
+				}
+			},
 			//报损
 			callBack(){
 				if(this.bsyy == ''){
@@ -129,6 +214,9 @@
 					reason:this.bsyy,
 					price:this.ysjz,
 					images:this.image_list.join(','),
+					loss_type:this.loss_type,
+					losser_name:this.loss_type == '1'?this.liabler_name:this.dept_name,
+					losser_id:this.loss_type == '1'?this.liabler_id:this.dept_id
 				}
 				if(this.batch_id){
 					arg.batch_id = this.batch_id;
@@ -166,30 +254,53 @@
 		justify-content: space-between;
 		font-size: 14px;
 		color: #000000;
-		.value{
-			display:flex;
-			align-items: center;
-			.yyj_txt{
-				color: rgba(0, 0, 0, 0.4);
-			}
-			.default_txt{
-				color:#2C82FF;
-			}
-			.ysjz{
-				text-align: end;
-				border: none;
-				outline: none;
-				font-size: 14px;
-			}
-		}
+		
 	}
-	
+	.value{
+		display:flex;
+		align-items: center;
+		.yyj_txt{
+			color: rgba(0, 0, 0, 0.4);
+		}
+		.default_txt{
+			color:#2C82FF;
+		}
+		.ysjz{
+			text-align: end;
+			border: none;
+			outline: none;
+			font-size: 14px;
+		}
+
+	}
+	.type_box{
+		margin-top: 15px;
+		height: 32px;
+		border:1px solid #cccccc;
+		border-radius: 3px;
+		display: flex;
+		align-items: center;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+	.right_arrow{
+		margin-left: 5px;
+		width: 12px;
+		height: 24px;
+	}
 	.image_lable{
 		width: 100%;
 		margin-bottom: 10px;
 		margin-top: 10px;
 		font-size: 14px;
 		color: #000000;
+	}
+	.radio_group{
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+		font-size: 14px;
+		color: #333333;
 	}
 	.image_list{
 		width: 100%;
