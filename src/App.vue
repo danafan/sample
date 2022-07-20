@@ -90,7 +90,8 @@
 					nonceStr: data.nonceStr, // 必填，自定义固定字符串。
 					signature: data.signature, // 必填，签名
 					jsApiList : [
-					'biz.contact.complexPicker'
+					'biz.contact.complexPicker',
+					'biz.contact.departmentsPicker'
 					] // 必填，需要使用的jsapi列表，注意：不要带dd。
 				});
 				dd.error(function (err) {

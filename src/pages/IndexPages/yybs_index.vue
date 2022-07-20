@@ -162,7 +162,7 @@
 							multiple: false,
 							limitTips: "超出了",
 							maxUsers: 1000,
-							pickedUsers: [this.liabler_id],
+							pickedUsers: [],
 							pickedDepartments: [],
 							disabledUsers: [],
 							disabledDepartments: [],
@@ -174,7 +174,7 @@
 							startWithDepartmentId: 0,
 							onSuccess : (res) => {
 								this.liabler_name = res.users[0].name;
-								this.liabler_id = res.users[0].id;
+								this.liabler_id = res.users[0].emplId;
 							},
 							onFail : function(err) {
 								// 调用失败时回调
@@ -183,23 +183,25 @@
 						});
 					})
 				}else{
-					dd.biz.contact.departmentsPicker({
-						title:"选择部门",            
-						corpId:"ding7828fff434921f5b",             
-						multiple:false,            
-						limitTips:"超出了",          
-						maxDepartments:100,           
-						pickedDepartments:[this.dept_id],         
-						disabledDepartments:[],        
-						requiredDepartments:[],        
-						appId:1664876526,              
-						permissionType:"GLOBAL",
-						onSuccess : (res) => {
-							this.dept_name = res.departments[0].name;
-							this.dept_id = res.departments[0].id;
-						},
-						onFail : function(err) {}
-					});
+					dd.ready(() => {
+						dd.biz.contact.departmentsPicker({
+							title:"选择部门",            
+							corpId:"ding7828fff434921f5b",             
+							multiple:false,            
+							limitTips:"超出了",          
+							maxDepartments:100,           
+							pickedDepartments:[],         
+							disabledDepartments:[],        
+							requiredDepartments:[],        
+							appId:1664876526,              
+							permissionType:"GLOBAL",
+							onSuccess : (res) => {
+								this.dept_name = res.departments[0].name;
+								this.dept_id = res.departments[0].id;
+							},
+							onFail : function(err) {}
+						});
+					})
 				}
 			},
 			//报损
