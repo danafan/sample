@@ -174,7 +174,7 @@
 						this.$router.push('/jyjlxq?lending_id=' + lending_id);
 					}
 				}else{
-					this.$router.push('/jyxq?type=' + this.tab_index + '&lending_id=' + lending_id);
+					this.$router.push('/jyxq?type=' + this.tab_index + '&lending_id=' + lending_id + '&page_type=' + this.page_type);
 				}
 				
 			}

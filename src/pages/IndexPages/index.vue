@@ -29,6 +29,10 @@
 						<img class="item_icon" src="../../static/yybs_icon.png">
 						<div class="item_lable">样衣报损</div>
 					</div>
+					<!-- <div class="item">
+						<img class="item_icon" src="../../static/yybs_icon.png">
+						<div class="item_lable">样衣转移</div>
+					</div> -->
 				</div>
 			</div>
 		</div>

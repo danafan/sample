@@ -17,6 +17,7 @@
 		<div class="info_row" v-if="yyInfo.status == '2'">借样原因：{{yyInfo.reason}}</div>
 		<div class="info_row" v-if="yyInfo.status == '3'">报损时间：{{yyInfo.add_time}}</div>
 		<div class="info_row" v-if="yyInfo.status == '3'">报损人：{{yyInfo.user_name}}</div>
+		<div class="info_row" v-if="yyInfo.status == '3'">个人/部门：{{yyInfo.losser_name}}</div>
 		<van-image-preview v-model:show="showPreImg" :images="new_images" :start-position="activeIndex">
 		</van-image-preview>
 	</div>
