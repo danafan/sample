@@ -7,6 +7,7 @@ const yybd_index = resolve=>System.import('@/pages/IndexPages/yybd_index')
 const bmbd_index = resolve=>System.import('@/pages/IndexPages/bmbd_index')
 const yyxq = resolve=>System.import('@/pages/IndexPages/yyxq')
 const yybs_index = resolve=>System.import('@/pages/IndexPages/yybs_index')
+const yyzy_index = resolve=>System.import('@/pages/IndexPages/yyzy_index')
 const fqjy_index = resolve=>System.import('@/pages/IndexPages/fqjy_index')
 const yypd_index = resolve=>System.import('@/pages/IndexPages/yypd_index')
 const pdxq_index = resolve=>System.import('@/pages/IndexPages/pdxq_index')
@@ -23,6 +24,8 @@ const zcxq = resolve=>System.import('@/pages/MinePages/zcxq')
 const bsjl_index = resolve=>System.import('@/pages/MinePages/bsjl_index')
 const jyjlxq = resolve=>System.import('@/pages/MinePages/jyjlxq')
 const jyxq = resolve=>System.import('@/pages/MinePages/jyxq')
+const yyzj_index = resolve=>System.import('@/pages/MinePages/yyzj_index')
+const zj_record = resolve=>System.import('@/pages/MinePages/zj_record')
 
 const success = resolve=>System.import('@/pages/CommonPages/success')
 
@@ -63,6 +66,11 @@ const router = new Router({
 		path: '/yybs_index',
 		name:"报损原因",
 		component: yybs_index
+	},
+	{
+		path: '/yyzy_index',
+		name:"样衣转移",
+		component: yyzy_index
 	},
 	{
 		path: '/fqjy_index',
@@ -142,6 +150,16 @@ const router = new Router({
 			keepAlive:true
 		},
 		component: jyxq
+	},
+	{
+		path: '/yyzj_index',
+		name:"样衣转接",
+		component: yyzj_index
+	},
+	{
+		path: '/zj_record',
+		name:"转移记录/接管记录",
+		component: zj_record
 	},
 	{
 		path: '/jyjlxq',

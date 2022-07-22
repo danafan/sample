@@ -13,9 +13,9 @@
 	export default {
 		name: 'app',
 		created(){
-			// this.$router.replace('/index');
+			this.$router.replace('/index');
 			//获取钉钉鉴权信息
-			this.getConfig();
+			// this.getConfig();
 		},
 		watch:{
 			$route(to,from){
@@ -46,6 +46,12 @@
 						this.setTabBarTitle('处理记录详情')
 					}else{
 						this.setTabBarTitle('归还记录详情')
+					}
+				}else if(path == '/zj_record'){
+					if(query.page_type == 'zyju'){
+						this.setTabBarTitle('转移记录')
+					}else{
+						this.setTabBarTitle('接管记录')
 					}
 				}else{
 					this.setTabBarTitle(router.name)

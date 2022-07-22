@@ -62,6 +62,13 @@
 			</div>
 			<img class="right_arrow" src="../../static/right_arrow.png">
 		</div>
+		<div class="option_item border_bottom" @click="$router.push('/yyzj_index')">
+			<div class="option_left">
+				<img class="option_icon" src="../../static/bsjl_icon.png">
+				<div class="option_label">样衣转接</div>
+			</div>
+			<img class="right_arrow" src="../../static/right_arrow.png">
+		</div>
 	</div>
 </template>
 <script>
