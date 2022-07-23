@@ -3,17 +3,19 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div class="lable">申请人：</div>
-				<div class="value">晁错</div>
+				<div class="value">{{top_info.user_name}}</div>
 			</div>
 			<div class="row">
 				<div class="lable">转移后责任人：</div>
-				<div class="value">彪子</div>
+				<div class="value">{{top_info.liabler_name}}</div>
 			</div>
 			<div class="row">
 				<div class="lable">当前状态：</div>
-				<div class="value">已拒绝</div>
+				<div class="value" v-if="top_info.status == 0">未处理</div>
+				<div class="value" v-if="top_info.status == 1">已同意</div>
+				<div class="value" v-if="top_info.status == 2">已拒绝</div>
 			</div>
-			<textarea class="remark_input" disabled :row="5" v-model="remark" placeholder="备注内容"></textarea>
+			<textarea class="remark_input" disabled :row="5" v-model="top_info.remark" placeholder="备注内容"></textarea>
 		</div>
 		<van-list v-model:loading="loading"
 		:finished="finished"
@@ -23,81 +25,102 @@
 		v-if="listArray.length > 0"
 		>
 		<div class="yy_item border_bottom" v-for="(item,index) in listArray">
-			<img class="yy_img" src="../../static/empty_icon.png">
+			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
-				唯一码：876128316283
+				唯一码：{{item.sku_code}}
 			</div>
 		</div>
 	</van-list>
 	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
-	<div class="bottom_box">
+	<div class="bottom_box" v-if="page_type == '1' && top_info.status == 0">
 		<div class="button" @click="auditFn('0')">拒绝</div>
 		<div class="button rk_button" @click="auditFn('1')">同意</div>
 	</div>
+	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 </div>
 </template>
 <script>
 	import EmptyPage from '../CommonPages/empty_page.vue'
 	import resource from '../../api/resource.js'
+	import DialogModel from '../../components/dialog_model.vue'
 	export default{
 		data(){
 			return{
+				page_type:"",				//0:转移记录；1:接管记录
+				handover_id:"",				//ID
 				user_name:"",				//责任人
 				user_id:"",					//责任人ID
 				remark:"",					//备注
 				page:1,
 				pagesize:10,				
-				listArray:[''],				//列表
-				total_num:0,				//总数量
+				listArray:[],				//列表
+				top_info:{},				//顶部信息
 				loading:false,
 				finished:false,
+				showModel:false,
+				value:"",
+				type:""
 			}
 		},
 		created(){
 			let query = this.$route.query;
-			console.log(query);
+			this.page_type = query.page_type;
+			this.handover_id = query.id;
+			//转移和接管记录详情
+			this.handoverDetail();
 		},
 		methods:{
 			//获取更多
 			loadMore(){
-				if(this.page_type == 'yygh'){
-					this.page += 1;
-					//获取已绑定的商品列表
-					this.getGoodsList();
-				}
+				this.page += 1;
+				//转移和接管记录详情
+				this.getGoodsList();
 			},
-			//获取已绑定的商品列表
-			getGoodsList(){
-				let batch_id = this.page_type == 'yybd'?this.bindingInfo.binding_id:this.returnInfo.return_id;
+			//转移和接管记录详情
+			handoverDetail(){
 				let arg = {
-					batch_id:batch_id,
-					type:this.page_type == 'yybd'?'0':'1',
+					handover_id:this.handover_id,
 					page:this.page,
-					pagesize:this.pagesize
+					pagesize:this.pagesize,	
 				}
-				resource.getGoodsList(arg).then(res => {
+				resource.handoverDetail(arg).then(res => {
 					if(res.code == 1){
+						this.top_info = res.data.info;
 						this.loading = false;
-						if(this.page_type == 'yygh'){
-							this.total_num = res.data.total;
-							this.listArray = [...this.listArray,...res.data.data];
-							if(this.page == res.data.last_page){
-								this.finished = true;
-							}
-						}else{
-							this.listArray = res.data;
+						this.listArray = [...this.listArray,...res.data.list.data];
+						if(this.page == res.data.list.last_page){
 							this.finished = true;
 						}
 					}
 				})
 			},
 			//审核
-			auditFn(type){	//0:同意；1:拒绝
-				console.log(type)
+			auditFn(type){	//0:拒绝;1:同意
+				this.type = type;
+				this.value = type == '0'?'确认拒绝？':'确认同意？';
+				this.showModel = true;
+			},
+			//提交审核
+			callbackFn(type){
+				if(type == '1'){
+					this.showModel = false;
+				}else{
+					let arg = {
+						handover_id:this.handover_id,
+						type:this.type
+					}
+					resource.handoverAudit(arg).then(res => {
+						if(res.code == 1){
+							this.$toast('审核成功！');
+							this.$router.go(-1);
+						}
+					})
+				}
 			}
 		},
 		components:{
-			EmptyPage
+			EmptyPage,
+			DialogModel
 		}
 	}
 </script>

@@ -30,6 +30,12 @@
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
 			</div>
+			<div class="row">
+				<div class="lable">样衣合计：</div>
+				<div class="value">
+					{{total_num}}
+				</div>
+			</div>
 		</div>
 		<van-list v-model:loading="loading"
 		:finished="finished"

@@ -3,7 +3,7 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div class="lable">申请人：</div>
-				<div class="value">晁错</div>
+				<div class="value">{{userInfo.user_name}}</div>
 			</div>
 			<div class="row">
 				<div class="lable">转移后责任人：</div>
@@ -17,31 +17,30 @@
 		<div class="all_checked" v-if="listArray.length > 0">
 			<van-checkbox v-model="all_checked" shape="square">全选</van-checkbox>
 		</div>
-		<van-list v-model:loading="loading"
-		:finished="finished"
-		@load="loadMore"
-		finished-text="没有更多了"
+		<van-list
 		class="yy_list"
 		v-if="listArray.length > 0"
 		>
 		<div class="yy_item border_bottom" v-for="(item,index) in listArray">
-			<img class="yy_img" src="../../static/empty_icon.png">
+			<img class="yy_img" :src="item.domain + item.image">
 			<div class="yy_content">
-				唯一码：876128316283
+				唯一码：{{item.sku_code}}
 			</div>
-			<van-checkbox v-model="checked"></van-checkbox>
+			<van-checkbox v-model="item.is_checked"></van-checkbox>
 		</div>
 	</van-list>
-	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
+	<EmptyPage v-if="listArray.length == 0"></EmptyPage>
 	<div class="bottom">
 		<BigButton button_txt="一键转移" @callback="callBack"></BigButton>
 	</div>
+	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 </div>
 </template>
 <script>
 	import * as dd from 'dingtalk-jsapi'; 
 	import EmptyPage from '../CommonPages/empty_page.vue'
 	import BigButton from '../../components/big_button.vue'
+	import DialogModel from '../../components/dialog_model.vue'
 	import resource from '../../api/resource.js'
 	export default{
 		data(){
@@ -49,20 +48,27 @@
 				user_name:"",				//责任人
 				user_id:"",					//责任人ID
 				remark:"",					//备注
-				page:1,
-				pagesize:10,				
-				listArray:[''],				//列表
-				total_num:0,				//总数量
-				loading:false,
-				finished:false,
-				checked:false,
+				listArray:[],				//列表
 				all_checked:false,			//全选
+				showModel:false,			//确认转移弹窗
+				value:"",					//确认转移弹窗文字提示
 			}
 		},
 		computed:{
 			userInfo(){
 				return this.$store.state.userInfo;
+			},
+		},
+		watch:{
+			all_checked:function(n,o){
+				this.listArray.map(item => {
+					item.is_checked = n;
+				})
 			}
+		},
+		created(){
+			//当前用户所有借样中的样衣接口
+			this.getClothesList();
 		},
 		methods:{
 			//点击选择责任人
@@ -96,45 +102,60 @@
 					});
 				})
 			},
-			//获取更多
-			loadMore(){
-				if(this.page_type == 'yygh'){
-					this.page += 1;
-					//获取已绑定的商品列表
-					this.getGoodsList();
-				}
-			},
-			//获取已绑定的商品列表
-			getGoodsList(){
-				let batch_id = this.page_type == 'yybd'?this.bindingInfo.binding_id:this.returnInfo.return_id;
-				let arg = {
-					batch_id:batch_id,
-					type:this.page_type == 'yybd'?'0':'1',
-					page:this.page,
-					pagesize:this.pagesize
-				}
-				resource.getGoodsList(arg).then(res => {
+			//当前用户所有借样中的样衣接口
+			getClothesList(){
+				resource.clothesList().then(res => {
 					if(res.code == 1){
-						this.loading = false;
-						if(this.page_type == 'yygh'){
-							this.total_num = res.data.total;
-							this.listArray = [...this.listArray,...res.data.data];
-							if(this.page == res.data.last_page){
-								this.finished = true;
-							}
-						}else{
-							this.listArray = res.data;
-							this.finished = true;
-						}
+						let data_list = res.data;
+						data_list.splice(0,70)
+						data_list.map(item => {
+							item.is_checked = false;
+						})
+						this.listArray = data_list;
 					}
 				})
 			},
 			//一键转移
 			callBack(){
-				this.$router.replace('/success?value=已提交转移&img_url=success&showBut=1');
+				let checked_list = this.listArray.filter(item => {
+					return item.is_checked == true;
+				})
+				if(this.user_id == ''){
+					this.$toast('请选择转移后责任人');
+				}else if(checked_list.length == 0){
+					this.$toast('请选择样衣！');
+				}else{
+					this.value = `确认将选中样衣转移给【${this.user_name}】？`
+					this.showModel = true;
+				}
+			},
+			//弹窗确认或取消
+			callbackFn(type){
+				if(type == '2'){
+					var ids = [];
+					this.listArray.map(item => {
+						if(item.is_checked == true){
+							ids.push(item.sku_code);
+						}
+					})
+					let arg = {
+						ids:ids.join(','),
+						user_name:this.user_name,
+						user_id:this.user_id,
+						remark:this.remark
+					}
+					resource.applyTransfer(arg).then(res => {
+						if(res.code == 1){
+							this.$router.replace('/success?value=已提交转移&img_url=success&showBut=1');
+						}
+					})
+				}else{
+					this.showModel = false;
+				}
 			}
 		},
 		components:{
+			DialogModel,
 			BigButton,
 			EmptyPage
 		}

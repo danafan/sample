@@ -37,6 +37,13 @@ let path = {
 	addConfirm:'binding/addconfirm',				//调拨记录一键确认
 	getTransferNum:'binding/gettransfernum',		//获取未确认的调拨记录数量
 	editConfirm:'binding/editconfirm',				//编辑确认提交接口
+	clothesList:'handover/clothes_list',			//当前用户所有借样中的样衣
+	applyTransfer:'handover/add',					//申请转移
+	handoverList:'handover/handover_list',			//转移记录
+	receiveList:'handover/receive_list',			//接管记录
+	handoverDetail:'handover/detail',				//转移和接管记录详情
+	handoverAudit:'handover/audit',					//审核转移记录
+	receiveNum:'handover/receive_num',				//未处理接管记录的数量
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -198,6 +205,34 @@ export default{
 	//编辑确认提交接口
 	editConfirm(params){
 		return http.post(path.editConfirm, params)
+	},
+	//当前用户所有借样中的样衣接口
+	clothesList(params){
+		return http.get(path.clothesList, params)
+	},
+	//申请转移
+	applyTransfer(params){
+		return http.post(path.applyTransfer, params)
+	},
+	//转移记录
+	handoverList(params){
+		return http.get(path.handoverList, params)
+	},
+	//接管记录
+	receiveList(params){
+		return http.get(path.receiveList, params)
+	},
+	//转移和接管记录详情
+	handoverDetail(params){
+		return http.get(path.handoverDetail, params)
+	},
+	//审核转移记录
+	handoverAudit(params){
+		return http.post(path.handoverAudit, params)
+	},
+	//未处理接管记录的数量
+	receiveNum(params){
+		return http.get(path.receiveNum, params)
 	},
 }
 

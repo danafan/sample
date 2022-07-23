@@ -13,6 +13,10 @@
 				<div class="lable">归还时间：</div>
 				<div class="value">{{topInfo.finish_time}}</div>
 			</div>
+			<div class="row">
+				<div class="lable">样衣合计：</div>
+				<div class="value">{{total_num}}</div>
+			</div>
 		</div>
 		<div class="yyj_gly" v-if="page_type == 'cljl'">
 			<div class="row">
@@ -53,6 +57,7 @@
 		data(){
 			return{
 				listArray:[],		//列表
+				total_num:0,
 				loading:false,
 				finished:false,
 				page:1,
@@ -109,6 +114,7 @@
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
+						this.total_num = res.data.total;
 						this.listArray = [...this.listArray,...res.data.data];
 						if(this.page == res.data.last_page){
 							this.finished = true;

@@ -17,6 +17,10 @@
 				<div>绑定时间：</div>
 				<div>{{topInfo.finish_time}}</div>
 			</div>
+			<div class="row">
+				<div>样衣合计：</div>
+				<div>{{listArray.length}}</div>
+			</div>
 		</div>
 		<div class="tab_row" v-if="topInfo.status == 2">
 			<div class="tab_item all" :class="{'active_item':tab_index == 0}" @click="checkTab(0)">

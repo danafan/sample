@@ -17,6 +17,10 @@
 				<div>入库时间：</div>
 				<div>{{topInfo.finish_time}}</div>
 			</div>
+			<div class="row">
+				<div>样衣合计：</div>
+				<div>{{listArray.length}}</div>
+			</div>
 		</div>
 		<van-list
 		class="van_list"

@@ -154,6 +154,10 @@ const router = new Router({
 	{
 		path: '/yyzj_index',
 		name:"样衣转接",
+		meta:{
+			isUseCache:false,
+			keepAlive:true
+		},
 		component: yyzj_index
 	},
 	{
