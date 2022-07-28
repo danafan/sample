@@ -107,7 +107,6 @@
 				resource.clothesList().then(res => {
 					if(res.code == 1){
 						let data_list = res.data;
-						data_list.splice(0,70)
 						data_list.map(item => {
 							item.is_checked = false;
 						})

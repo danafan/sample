@@ -30,7 +30,7 @@
 						<div class="item_lable">样衣报损</div>
 					</div>
 					<div class="item" @click="$router.push('/yyzy_index')">
-						<img class="item_icon" src="../../static/yybs_icon.png">
+						<img class="item_icon" src="../../static/yyzy_icon.png">
 						<div class="item_lable">样衣转移</div>
 					</div>
 				</div>
@@ -95,10 +95,9 @@
 		.list_box{
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-between;
 			.item{
 				margin-bottom: 40px;
-				width: 120px;
+				width: 125px;
 				display:flex;
 				flex-direction: column;
 				align-items: center;

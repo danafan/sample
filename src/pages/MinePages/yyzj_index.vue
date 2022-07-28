@@ -84,6 +84,7 @@
 				this.page = 1;			
 				this.data_list = [];				//列表
 				this.showPopup = false;
+				this.active_index = '0';
 				this.status_index = 0;
 				//转移记录
 				this.handoverList();
@@ -97,8 +98,8 @@
 			receiveNum(){
 				resource.receiveNum().then(res => {
 					if(res.code == 1){
-						this.zyjl_num = res.data.transfer_unm;
-						this.jgjl_num = res.data.receive_unm;
+						this.zyjl_num = res.data.transfer_num;
+						this.jgjl_num = res.data.receive_num;
 					}
 				})
 			},

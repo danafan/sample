@@ -242,6 +242,7 @@
 							}
 						}else{
 							this.listArray = res.data;
+							this.total_num = res.data.length;
 							this.finished = true;
 						}
 					}

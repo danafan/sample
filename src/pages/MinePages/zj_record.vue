@@ -74,7 +74,7 @@
 			loadMore(){
 				this.page += 1;
 				//转移和接管记录详情
-				this.getGoodsList();
+				this.handoverDetail();
 			},
 			//转移和接管记录详情
 			handoverDetail(){
