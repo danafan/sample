@@ -88,9 +88,18 @@
 				this.status_index = 0;
 				//转移记录
 				this.handoverList();
-				//未处理接管记录的数量
-				this.receiveNum();
 			}
+			if(this.active_index == '1'){
+				this.loading = true;			//是否加载中
+				this.finished = false;			//是否是最后一页
+				this.page = 1;			
+				this.data_list = [];				//列表
+				this.showPopup = false;
+				//接管记录
+				this.receiveList();
+			}
+			//未处理接管记录的数量
+			this.receiveNum();
 			this.$route.meta.isUseCache = false;
 		},
 		methods:{
@@ -162,6 +171,8 @@
 					//接管记录
 					this.receiveList();
 				}
+				//未处理接管记录的数量
+				this.receiveNum();
 			},
 			//切换状态
 			checkStatus(index){
