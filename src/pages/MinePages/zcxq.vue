@@ -48,6 +48,18 @@
 		</div>
 	</van-list>
 	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
+	<!-- 归还记录样衣间转移 -->
+	<div class="bottom_box">
+		<div class="button" @click="showPopup = true">样衣间转移</div>
+	</div>
+	<!-- 样衣间 -->
+	<van-popup v-model:show="showPopup" position="bottom" round>
+		<div class="list">
+			<div class="item" :class="{'active_item':roomIndex == index}" v-for="(item,index) in room_list" @click="checkYyj(item.room_id)">{{item.room_name}}</div>
+		</div>
+		<div class="padding_box"></div>
+		<div class="item" @click="showPopup = false">取消</div>
+	</van-popup>
 </div>
 </template>
 <script>
@@ -65,6 +77,11 @@
 				page_type:"",			//页面来源
 				batch_id:"",		
 				topInfo:{},				//头部信息
+				showPopup:false,		//选择样衣间弹窗
+				room_list:[],				//样衣间列表
+				roomIndex:999,				//选中的样衣间下标
+				room_name:"",				//选中的样衣间名称
+				room_id:"",					//选中的样衣间id 
 			}
 		},
 		created(){
@@ -94,6 +111,8 @@
 				resource.returnDetail({return_id:this.batch_id}).then(res => {
 					if(res.code == 1){
 						this.topInfo = res.data;
+						//获取样衣间列表
+						this.getAjaxRooms();
 					}
 				})
 			},
@@ -122,6 +141,38 @@
 					}
 				})
 			},
+			//获取样衣间列表
+			getAjaxRooms(){
+				let arg = {
+					is_return:0
+				}
+				resource.ajaxRooms(arg).then(res => {
+					if(res.code == 1){
+						this.room_list = res.data;
+						this.roomIndex = this.room_list.findIndex(item => {
+							return this.topInfo.room_id == item.room_id;
+						})
+					}
+				})
+			},
+			//切换样衣间
+			checkYyj(room_id){
+				let arg = {
+					room_id:room_id,
+					return_id:this.batch_id
+				}
+				resource.editRoom(arg).then(res => {
+					if(res.code == 1){
+						this.showPopup = false;
+						this.$toast(res.msg);
+						setTimeout(()=>{
+							this.$router.go(-1);
+						},1000)
+						
+					}
+				})
+				
+			}
 		},
 		components:{
 			EmptyPage
@@ -177,4 +228,38 @@
 		}
 	}
 }
+.bottom_box{
+	width: 100%;
+	height: 70px;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	.button{
+		border-radius: 20px;
+		background: #2C82FF;
+		color: #ffffff;
+		width: 160px;
+		height: 40px;
+		display:flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		font-weight: 500;
+	}
+}
+.list{
+		max-height: 300px;
+		overflow-y: scroll;
+	}
+	.item{
+		width: 100%;
+		text-align: center;
+		height: 56px;
+		line-height: 56px;
+		font-size: 17px;
+		color: #000000;
+	}
+	.active_item{
+		color: #2C82FF;
+	}
 </style>

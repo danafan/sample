@@ -9,7 +9,7 @@
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
 			</div>
-			<div class="row" v-if="page_type == 'yybd' || (page_type == 'yygh' && room_type == 2)">
+			<div class="row" v-if="page_type == 'yybd' || ((page_type == 'yygh' || page_type == 'ckgh') && room_type == 2)">
 				<div class="lable">责任人：</div>
 				<div class="value" @click="checkZrr">
 					<div class="yyj_txt" :class="{'default_txt':user_name != ''}">{{user_name == ''?'选择责任人':user_name}}</div>
@@ -17,16 +17,16 @@
 				</div>
 			</div>
 			<!-- 样衣归还 -->
-			<div class="row" v-if="page_type == 'yygh'">
+			<div class="row" v-if="page_type == 'yygh' || page_type == 'ckgh'">
 				<div class="lable">管理员：</div>
 				<div class="value">
 					{{admin_name}}
 				</div>
 			</div>
-			<div class="row" v-if="(yylyIndex == 0 && page_type == 'yybd') || page_type == 'yygh'">
-				<div class="lable">样衣间：</div>
+			<div class="row" v-if="(yylyIndex == 0 && page_type == 'yybd') || page_type == 'yygh' || page_type == 'ckgh'">
+				<div class="lable">{{page_type == 'yygh' || page_type == 'yybd'?'样衣间':'仓库'}}：</div>
 				<div class="value" @click="showPopup = true">
-					<div class="yyj_txt" :class="{'default_txt':room_name != ''}">{{room_name == ''?'选择样衣间':room_name}}</div>
+					<div class="yyj_txt" :class="{'default_txt':room_name != ''}">{{room_name == ''?`选择${page_type == 'yygh' || page_type == 'yybd'?'样衣间':'仓库'}`:room_name}}</div>
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 			<!-- 样衣绑定 -->
 			<div class="button rk_button" @click="modelFn('3')" v-if="page_type == 'yybd'">提交</div>
 			<!-- 样衣归还 -->
-			<div class="button rk_button" @click="modelFn('4')" v-if="page_type == 'yygh'">归还</div>
+			<div class="button rk_button" @click="modelFn('4')" v-if="page_type == 'yygh' || page_type == 'ckgh'">归还</div>
 		</div>
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
@@ -178,7 +178,7 @@
 			//获取样衣间列表
 			getAjaxRooms(){
 				let arg = {
-					is_return:this.page_type == 'yybd'?0:1
+					is_return:this.page_type == 'ckgh'?1:0
 				}
 				resource.ajaxRooms(arg).then(res => {
 					if(res.code == 1){
@@ -186,7 +186,7 @@
 						if(this.page_type == 'yybd'){	//样衣绑定
 							//进入绑定页面获取批次信息
 							this.getbBindingInfo();
-						}else{							//样衣归还
+						}else{							//样衣间归还
 							//进入归还页面获取批次信息
 							this.getReturnInfo();
 						}
@@ -205,7 +205,10 @@
 			},
 			//进入归还页面获取批次信息
 			getReturnInfo(){
-				resource.getReturnAdd().then(res => {
+				let arg = {
+					return_type:this.page_type == 'yygh'?1:2
+				}
+				resource.getReturnAdd(arg).then(res => {
 					if(res.code == 1){
 						this.returnInfo = res.data;
 						this.admin_name = this.returnInfo.admin_name;
@@ -216,7 +219,7 @@
 			},
 			//获取更多
 			loadMore(){
-				if(this.page_type == 'yygh'){
+				if(this.page_type == 'yygh' || this.page_type == 'ckgh'){
 					this.page += 1;
 					//获取已绑定的商品列表
 					this.getGoodsList();
@@ -234,7 +237,7 @@
 				resource.getGoodsList(arg).then(res => {
 					if(res.code == 1){
 						this.loading = false;
-						if(this.page_type == 'yygh'){
+						if(this.page_type == 'yygh' || this.page_type == 'ckgh'){
 							this.total_num = res.data.total;
 							this.listArray = [...this.listArray,...res.data.data];
 							if(this.page == res.data.last_page){

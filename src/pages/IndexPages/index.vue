@@ -13,9 +13,9 @@
 						<img class="item_icon" src="../../static/fqjy_icon.png">
 						<div class="item_lable">样衣间借样</div>
 					</div>
-					<div class="item" @click="$router.push('/yybd_index?page_type=yygh')"  v-if="userInfo.user_type == '1'">
+					<div class="item" @click="$router.push('/yybd_index?page_type=yygh')" v-if="userInfo.user_type == '1'">
 						<img class="item_icon" src="../../static/yygh_icon.png">
-						<div class="item_lable">样衣归还</div>
+						<div class="item_lable">样衣间归还</div>
 					</div>
 					<div class="item" @click="$router.push('/yypd_index')">
 						<img class="item_icon" src="../../static/yypd_icon.png">
@@ -24,6 +24,10 @@
 					<div class="item" @click="$router.push('/zjcl_index')" v-if="userInfo.user_type == '1'">
 						<img class="item_icon" src="../../static/zjcl_icon.png">
 						<div class="item_lable">样衣处理</div>
+					</div>
+					<div class="item" @click="$router.push('/yybd_index?page_type=ckgh')" v-if="userInfo.user_type == '1'">
+						<img class="item_icon" src="../../static/ckgh_icon.png">
+						<div class="item_lable">仓库归还</div>
 					</div>
 					<div class="item" @click="yybsFn">
 						<img class="item_icon" src="../../static/yybs_icon.png">

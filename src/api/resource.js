@@ -44,6 +44,7 @@ let path = {
 	handoverDetail:'handover/detail',				//转移和接管记录详情
 	handoverAudit:'handover/audit',					//审核转移记录
 	receiveNum:'handover/receive_num',				//未处理接管记录的数量
+	editRoom:'return/edit_room',					//归还记录变更样衣间
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -233,6 +234,10 @@ export default{
 	//未处理接管记录的数量
 	receiveNum(params){
 		return http.get(path.receiveNum, params)
+	},
+	//归还记录变更样衣间
+	editRoom(params){
+		return http.post(path.editRoom, params)
 	},
 }
 
