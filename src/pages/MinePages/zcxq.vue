@@ -55,16 +55,19 @@
 	<!-- 样衣间 -->
 	<van-popup v-model:show="showPopup" position="bottom" round>
 		<div class="list">
-			<div class="item" :class="{'active_item':roomIndex == index}" v-for="(item,index) in room_list" @click="checkYyj(item.room_id)">{{item.room_name}}</div>
+			<div class="item" :class="{'active_item':roomIndex == index}" v-for="(item,index) in room_list" @click="checkYyj(item.room_name,item.room_id)">{{item.room_name}}</div>
 		</div>
 		<div class="padding_box"></div>
 		<div class="item" @click="showPopup = false">取消</div>
 	</van-popup>
+	<!-- 转移前提醒 -->
+	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 </div>
 </template>
 <script>
 	import resource from '../../api/resource.js'
 	import EmptyPage from '../CommonPages/empty_page.vue'
+	import DialogModel from '../../components/dialog_model.vue'
 	export default{
 		data(){
 			return{
@@ -80,8 +83,9 @@
 				showPopup:false,		//选择样衣间弹窗
 				room_list:[],				//样衣间列表
 				roomIndex:999,				//选中的样衣间下标
-				room_name:"",				//选中的样衣间名称
 				room_id:"",					//选中的样衣间id 
+				showModel:false,			//提醒弹窗
+				value:"",					//提醒文字
 			}
 		},
 		created(){
@@ -156,26 +160,36 @@
 				})
 			},
 			//切换样衣间
-			checkYyj(room_id){
-				let arg = {
-					room_id:room_id,
-					return_id:this.batch_id
-				}
-				resource.editRoom(arg).then(res => {
-					if(res.code == 1){
-						this.showPopup = false;
-						this.$toast(res.msg);
-						setTimeout(()=>{
-							this.$router.go(-1);
-						},1000)
-						
+			checkYyj(room_name,room_id){
+				this.room_id = room_id;
+				this.value = `确定要将样衣间转移至${room_name}吗？`;
+				this.showPopup = false;
+				this.showModel = true;
+			},
+			//弹窗确认
+			callbackFn(v){
+				if(v == '1'){
+					this.showModel = false;
+				}else{
+					let arg = {
+						room_id:this.room_id,
+						return_id:this.batch_id
 					}
-				})
-				
+					resource.editRoom(arg).then(res => {
+						if(res.code == 1){
+							this.showModel = false;
+							this.$toast(res.msg);
+							setTimeout(()=>{
+								this.$router.go(-1);
+							},1000)
+						}
+					})
+				}
 			}
 		},
 		components:{
-			EmptyPage
+			EmptyPage,
+			DialogModel
 		}
 	}
 </script>
@@ -248,18 +262,18 @@
 	}
 }
 .list{
-		max-height: 300px;
-		overflow-y: scroll;
-	}
-	.item{
-		width: 100%;
-		text-align: center;
-		height: 56px;
-		line-height: 56px;
-		font-size: 17px;
-		color: #000000;
-	}
-	.active_item{
-		color: #2C82FF;
-	}
+	max-height: 300px;
+	overflow-y: scroll;
+}
+.item{
+	width: 100%;
+	text-align: center;
+	height: 56px;
+	line-height: 56px;
+	font-size: 17px;
+	color: #000000;
+}
+.active_item{
+	color: #2C82FF;
+}
 </style>
