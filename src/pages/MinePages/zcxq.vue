@@ -49,7 +49,7 @@
 	</van-list>
 	<EmptyPage v-if="listArray.length == 0 && loading == false"></EmptyPage>
 	<!-- 归还记录样衣间转移 -->
-	<div class="bottom_box">
+	<div class="bottom_box" v-if="is_beyond && topInfo.return_type == 1">
 		<div class="button" @click="showPopup = true">样衣间转移</div>
 	</div>
 	<!-- 样衣间 -->
@@ -86,6 +86,7 @@
 				room_id:"",					//选中的样衣间id 
 				showModel:false,			//提醒弹窗
 				value:"",					//提醒文字
+				is_beyond:false,			//是否超出24小时
 			}
 		},
 		created(){
@@ -102,6 +103,12 @@
 			this.getGoodsList()
 		},
 		methods:{
+			//判断是否大于24小时
+			getTimeFormat(time){
+				let finish_time = (new Date(time).getTime()); 
+				let current_time = (new Date().getTime()); 
+				this.is_beyond = (current_time - finish_time) < 86400000;
+			},
 			//处理记录头部信息
 			handleDetail(){
 				resource.handleDetail({handle_id:this.batch_id}).then(res => {
@@ -115,6 +122,8 @@
 				resource.returnDetail({return_id:this.batch_id}).then(res => {
 					if(res.code == 1){
 						this.topInfo = res.data;
+						//判断是否大于24小时
+						this.getTimeFormat(this.topInfo.finish_time);
 						//获取样衣间列表
 						this.getAjaxRooms();
 					}
