@@ -26,8 +26,10 @@
 				if(path == '/yybd_index'){
 					if(query.page_type == 'yybd'){
 						this.setTabBarTitle('样衣绑定')
+					}else if(query.page_type == 'yygh'){
+						this.setTabBarTitle('样衣间归还')
 					}else{
-						this.setTabBarTitle('样衣归还')
+						this.setTabBarTitle('仓库归还')
 					}
 				}else if(path == '/wdjy_index'){
 					if(query.page_type == 'wdjy'){

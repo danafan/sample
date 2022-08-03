@@ -9,7 +9,7 @@
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
 			</div>
-			<div class="row" v-if="page_type == 'yybd' || ((page_type == 'yygh' || page_type == 'ckgh') && room_type == 2)">
+			<div class="row" v-if="page_type == 'yybd' || page_type == 'ckgh'">
 				<div class="lable">责任人：</div>
 				<div class="value" @click="checkZrr">
 					<div class="yyj_txt" :class="{'default_txt':user_name != ''}">{{user_name == ''?'选择责任人':user_name}}</div>
@@ -103,7 +103,6 @@
 				roomIndex:999,				//选中的样衣间下标
 				room_name:"",				//选中的样衣间名称
 				room_id:"",					//选中的样衣间id 
-				room_type:1,				//样衣间类型（2:显示责任人）
 				bindingInfo:{},				//获取页面批次信息(绑定页面)
 				returnInfo:{},				//获取页面批次信息(归还页面)
 				page:1,
@@ -153,7 +152,6 @@
 				this.roomIndex = 999;				//选中的样衣间下标
 				this.room_name = "";				//选中的样衣间名称
 				this.room_id = "";					//选中的样衣间id 
-				this.room_type = 1;					//样衣类型
 				this.bindingInfo = {};				//获取页面批次信息(绑定页面)
 				this.returnInfo = {};				//获取页面批次信息(归还页面)
 				this.page = 1;			
@@ -351,7 +349,7 @@
 					room_name:this.room_name,
 					return_id:this.returnInfo.return_id
 				}
-				if(this.room_type == 2){
+				if(this.page_type == 'ckgh'){
 					arg.user_id = this.user_id
 				}
 				resource.postReturnAdd(arg).then(res => {
@@ -431,7 +429,6 @@
 					this.roomIndex = 999;				//选中的样衣间下标
 					this.room_name = "";				//选中的样衣间名称
 					this.room_id = "";					//选中的样衣间id 
-					this.room_type = 1;					//样衣类型
 				}
 				this.showYyly = false;
 			},
@@ -539,7 +536,6 @@
 				}else{
 					this.room_name = this.room_list[index].room_name;
 					this.room_id = this.room_list[index].room_id;
-					this.room_type = this.room_list[index].type;
 				}
 				this.showPopup = false;
 			}
