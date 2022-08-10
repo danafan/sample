@@ -181,6 +181,9 @@
 				resource.ajaxRooms(arg).then(res => {
 					if(res.code == 1){
 						this.room_list = res.data;
+						this.roomIndex = this.page_type == 'ckgh'?0:999;
+						this.room_name = this.page_type == 'ckgh'?this.room_list[0].room_name:'';
+						this.room_id = this.page_type == 'ckgh'?this.room_list[0].room_id:'';
 						if(this.page_type == 'yybd'){	//样衣绑定
 							//进入绑定页面获取批次信息
 							this.getbBindingInfo();
