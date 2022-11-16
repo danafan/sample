@@ -45,6 +45,7 @@ let path = {
 	handoverAudit:'handover/audit',					//审核转移记录
 	receiveNum:'handover/receive_num',				//未处理接管记录的数量
 	editRoom:'return/edit_room',					//归还记录变更样衣间
+	indexSale:'index/sale',							//扫码获取样衣详情—点击按钮修改售出状态
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -238,6 +239,10 @@ export default{
 	//归还记录变更样衣间
 	editRoom(params){
 		return http.post(path.editRoom, params)
+	},
+	//扫码获取样衣详情—点击按钮修改售出状态
+	indexSale(params){
+		return http.post(path.indexSale, params)
 	},
 }
 
