@@ -114,8 +114,9 @@
 			//点击操作
 			callBack(){
 				resource.indexSale({sku_code:this.sku_code}).then(res => {
-					this.$router.go(-1);
 					this.$toast(res.msg)
+					//获取商品详情
+					this.getGoodsInfo();
 				})
 			}
 		},
