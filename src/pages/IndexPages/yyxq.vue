@@ -4,9 +4,9 @@
 			<div class="yy_img_list">
 				<img class="yy_img" :src="item" @click="preImg(index)" v-for="(item,index) in new_images">
 			</div>
-			<div class="info_row" v-if="yyInfo.sale_status === 0 || yyInfo.sale_status === 1">销售状态：{{yyInfo.sale_status == 0?'未售出':'已售出'}}</div>
-			<div class="info_row" v-if="yyInfo.sale_status == 0">参考售价：{{yyInfo.selling_price}}</div>
-			<div class="info_row" v-if="yyInfo.sale_status == 1">销售人员：{{yyInfo.salesman}}</div>
+			<div class="info_row" v-if="(yyInfo.sale_status === 0 || yyInfo.sale_status === 1) && yyInfo.is_sale == 1">销售状态：{{yyInfo.sale_status == 0?'未售出':'已售出'}}</div>
+			<div class="info_row" v-if="yyInfo.sale_status == 0 && yyInfo.is_sale == 1">参考售价：{{yyInfo.selling_price}}</div>
+			<div class="info_row" v-if="yyInfo.sale_status == 1 && yyInfo.is_sale == 1">销售人员：{{yyInfo.salesman}}</div>
 			<div class="info_row">{{yyInfo.sku_code.length < 14?'样衣码':'唯一码'}}：{{yyInfo.sku_code}}</div>
 			<div class="info_row">款式编码：{{yyInfo.i_id}}</div>
 			<div class="info_row">商品编码：{{yyInfo.sku_id}}</div>
@@ -26,7 +26,7 @@
 		
 		<van-image-preview v-model:show="showPreImg" :images="new_images" :start-position="activeIndex">
 		</van-image-preview>
-		<BigButton button_txt="操作" @callback="callBack" v-if="yyInfo.is_sale == 1 && yyInfo.sale_status == 0"></BigButton>
+		<BigButton button_txt="标记售出" @callback="callBack" v-if="yyInfo.is_sale == 1 && yyInfo.sale_status == 0"></BigButton>
 	</div>
 </template>
 <style lang="less" scoped>
