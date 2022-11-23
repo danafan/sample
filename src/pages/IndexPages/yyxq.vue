@@ -5,7 +5,7 @@
 				<img class="yy_img" :src="item" @click="preImg(index)" v-for="(item,index) in new_images">
 			</div>
 			<div class="info_row" v-if="(yyInfo.sale_status === 0 || yyInfo.sale_status === 1) && yyInfo.is_sale == 1">销售状态：{{yyInfo.sale_status == 0?'未售出':'已售出'}}</div>
-			<div class="info_row" v-if="yyInfo.sale_status == 0 && yyInfo.is_sale == 1">参考售价：{{yyInfo.selling_price}}</div>
+			<div class="info_row" v-if="yyInfo.sale_status == 1 && yyInfo.is_sale == 1">参考售价：{{yyInfo.selling_price}}</div>
 			<div class="info_row" v-if="yyInfo.sale_status == 1 && yyInfo.is_sale == 1">销售人员：{{yyInfo.salesman}}</div>
 			<div class="info_row">{{yyInfo.sku_code.length < 14?'样衣码':'唯一码'}}：{{yyInfo.sku_code}}</div>
 			<div class="info_row">款式编码：{{yyInfo.i_id}}</div>
@@ -26,7 +26,12 @@
 		
 		<van-image-preview v-model:show="showPreImg" :images="new_images" :start-position="activeIndex">
 		</van-image-preview>
-		<BigButton button_txt="标记售出" @callback="callBack" v-if="yyInfo.is_sale == 1 && yyInfo.sale_status == 0"></BigButton>
+		<BigButton button_txt="标记售出" @callback="show_dialog = true" v-if="yyInfo.is_sale == 1 && yyInfo.sale_status == 0"></BigButton>
+		<van-dialog v-model="show_dialog" title="标记售出" show-cancel-button @confirm="confirmFn" @close="price = ''">
+			<van-cell-group inset>
+				<van-field v-model="price" type="number" label="售价：" :label-width="48" placeholder="请输入售价"/>
+			</van-cell-group>
+		</van-dialog>
 	</div>
 </template>
 <style lang="less" scoped>
@@ -71,7 +76,9 @@
 				page_type:"",		//页面类型
 				sku_code:"",		//样衣码
 				batch_id:"",		//批次id
-				show_status:1
+				show_status:1,
+				show_dialog:false,
+				price:"",				//标记的售价
 			}
 		},
 		created(){
@@ -113,10 +120,15 @@
 				this.showPreImg = true;
 				this.activeIndex = index;
 			},
-			//点击操作
-			callBack(){
-				resource.indexSale({sku_code:this.sku_code}).then(res => {
-					this.$toast(res.msg)
+			//提交售出
+			confirmFn(){
+				if(this.price == ''){
+					this.$toast('请输入售价!');
+					return;
+				}
+				resource.indexSale({sku_code:this.sku_code,selling_price:this.price}).then(res => {
+					this.$toast(res.msg);
+					this.show_dialog = false;
 					//获取商品详情
 					this.getGoodsInfo();
 				})

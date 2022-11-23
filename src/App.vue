@@ -14,7 +14,7 @@
 		name: 'app',
 		created(){
 			// this.$router.replace('/index');
-			// this.$router.replace('/yyxq?sku_code=22N2M08930140400304');
+			// this.$router.replace('/yyxq?sku_code=Y202207080051');
 			//获取钉钉鉴权信息
 			this.getConfig();
 		},
