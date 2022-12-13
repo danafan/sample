@@ -3,7 +3,7 @@
 		<div class="yyj_gly">
 			<div class="row">
 				<div class="lable">申请人：</div>
-				<div class="value" @click="showPicker = true" v-if="userInfo.user_type == 1">
+				<div class="value" @click="checkSqr" v-if="userInfo.user_type == 1">
 					<div class="default_txt">{{sqr_name}}</div>
 					<img class="right_arrow" src="../../static/right_arrow.png">
 				</div>
@@ -39,6 +39,11 @@
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
 	<van-popup v-model="showPicker" round position="bottom">
+		<van-search v-model="username"  show-action placeholder="请输入用户姓名">
+			<template #action>
+				<div @click="onSearch">搜索</div>
+			</template>
+		</van-search>
 		<van-picker title="申请人" :default-index="current_index" :columns="columns" show-toolbar @cancel="showPicker = false" @confirm="onConfirm">
 			<template #option="option">
 				<div>
@@ -68,6 +73,7 @@
 				showModel:false,			//确认转移弹窗
 				value:"",					//确认转移弹窗文字提示
 				showPicker:false,
+				username:"",				//检索的用户名
 				current_index:null,			//当前选中的下标
 				columns:[],					//申请人列表
 			}
@@ -88,10 +94,6 @@
 			//当前用户所有借样中的样衣接口
 			this.getClothesList();
 			this.sqr_name = this.userInfo.user_name;
-			if(this.userInfo.user_type == 1){
-				//获取申请人列表
-				this.ajaxUsers();
-			}
 		},
 		methods:{
 			//点击选择责任人
@@ -179,9 +181,19 @@
 					this.showModel = false;
 				}
 			},
+			//点击选择申请人
+			checkSqr(){
+				this.showPicker = true;
+				//获取申请人列表
+				this.onSearch();
+			},
 			//获取申请人列表
-			ajaxUsers(){
-				resource.ajaxUsers().then(res => {
+			onSearch(){
+				console.log(this.username)
+				let arg = {
+					username:this.username
+				}
+				resource.ajaxUsers(arg).then(res => {
 					if(res.code == 1){
 						this.columns = res.data;
 					}
