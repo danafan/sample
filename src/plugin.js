@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import { Popup,ImagePreview,DatetimePicker,List,Toast,RadioGroup, Radio,Checkbox,Dialog,Field, CellGroup } from "vant";
+import { Picker,Popup,ImagePreview,DatetimePicker,List,Toast,RadioGroup, Radio,Checkbox,Dialog,Field, CellGroup } from "vant";
 import 'vant/lib/index.css';
+Vue.use(Picker)
 Vue.use(Popup)
 Vue.use(ImagePreview)
 Vue.use(DatetimePicker)
