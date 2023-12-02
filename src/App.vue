@@ -14,7 +14,7 @@
 		name: 'app',
 		created(){
 			// this.$store.commit('setUserInfo',{user_type:1,user_name:'哈哈哈'});
-			// this.$router.replace('/yyzy_index');
+			// this.$router.replace('/index');
 			//获取钉钉鉴权信息
 			this.getConfig();
 		},

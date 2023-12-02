@@ -256,17 +256,17 @@
 			modelFn(type,sku_code,index){	//1:删除单条；2:全部清空；3:入库；3:归还
 				this.modelType = type;
 				switch(this.modelType){
-					case '1':
+				case '1':
 					this.value = '确认删除该条记录？';
 					this.sku_code = sku_code;
 					this.goods_index = index;
 					this.showModel = true;
 					break;
-					case '2':
+				case '2':
 					this.value = '确定要全部清空历史记录吗？';
 					this.showModel = true;
 					break;
-					case '3':
+				case '3':
 					if(this.listArray.length == 0){
 						this.$toast('暂时没有商品哦！');
 					}else{
@@ -279,7 +279,7 @@
 						}
 					}
 					break;
-					case '4':
+				case '4':
 					if(this.room_id == ''){
 						this.$toast('请选择样衣间！');
 						return;
@@ -300,25 +300,25 @@
 				}else{
 					this.showModel = false;
 					switch(this.modelType){
-						case '1':
+					case '1':
 							//删除商品
-							this.removeGoods();
-							break;
-							case '2':
+						this.removeGoods();
+						break;
+					case '2':
 							//删除商品
-							this.removeGoods();
-							break;
-							case '3':
+						this.removeGoods();
+						break;
+					case '3':
 							//底部提交(样衣绑定)
-							this.postbBinding();
-							break;
-							case '4':
+						this.postbBinding();
+						break;
+					case '4':
 							//归还提交
-							this.postReturnAdd();
-							break;
-						}
+						this.postReturnAdd();
+						break;
 					}
-				},
+				}
+			},
 			//绑定提交
 			postbBinding(){
 				if(!this.user_id){
@@ -442,7 +442,7 @@
 			//点击扫描样衣码
 			scanYyCode(){
 				// 样衣码(小于)：20 - 100；商品编码(等于)：22K2M324702307；唯一码(大于)：22K2M324702001
-				// var sku_code = '22K2M32470200130232';	
+				// var sku_code = '23K3M105700103';	
 				// if(this.yylyIndex == 0){	//外部采购
 				// 	if(sku_code.length < 14){	
 				// 		this.getSkuCodeInfo(sku_code);
@@ -450,13 +450,19 @@
 				// 		this.$toast('请扫描样衣码');
 				// 	}
 				// }else{						//内部调拨
-				// 	if(sku_code.length < 14){				//样衣码
-				// 		this.$toast('请扫描商品编码或唯一码');
-				// 	}else if(sku_code.length == 14){		//商品编码
-				// 		this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
-				// 	}else{									//唯一码
-				// 		this.callBack(sku_code);
-				// 	}
+				// 	resource.checkUniqueType({unique_ksbm:sku_code}).then(res => {
+				// 		if(res.code == 1){
+				// 			console.log(res.data.type)
+				// 			if(res.data.type == 1){		//商品编码
+				// 				this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
+				// 			}else if(res.data.type == 2){									//唯一码
+				// 				this.callBack(sku_code);
+				// 			}
+				// 		}else{
+				// 			this.$toast(res.msg);
+				// 		}
+				// 	})
+					
 				// }
 				// return;
 				dd.ready(() => {
@@ -476,13 +482,17 @@
 										this.$toast('请扫描样衣码');
 									}
 								}else{						//内部调拨
-									if(sku_code.length < 14){				//样衣码
-										this.$toast('请扫描商品编码或唯一码');
-									}else if(sku_code.length == 14){		//商品编码
-										this.$router.push('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
-									}else{									//唯一码
-										this.callBack(sku_code);
-									}
+									resource.checkUniqueType({unique_ksbm:sku_code}).then(res => {
+										if(res.code == 1){
+											if(res.data.type == 1){		//商品编码
+												this.$router.replace('/bmbd_index?spbm=' + sku_code + '&batch_id=' + this.bindingInfo.binding_id + '&type=' + this.yyly_list[this.yylyIndex].id);
+											}else if(res.data.type == 2){//唯一码
+												this.callBack(sku_code);
+											}
+										}else{
+											this.$toast(res.msg);
+										}
+									})
 								}
 							}else{	//样衣归还
 								let arg = {
@@ -550,130 +560,130 @@
 	}
 </script>
 <style lang="less" scoped>
-.container{
-	display: flex;
-	flex-direction: column;
-	padding: 15px;
-	.yyj_gly{
-		width: 100%;
-		padding-left:15px;
-		padding-right:15px;
-		.row{
-			display:flex;
-			padding-top: 5px;
-			padding-bottom: 5px;
-			justify-content: space-between;
-			font-size: 14px;
-			color: #000000;
-			.value{
+	.container{
+		display: flex;
+		flex-direction: column;
+		padding: 15px;
+		.yyj_gly{
+			width: 100%;
+			padding-left:15px;
+			padding-right:15px;
+			.row{
+				display:flex;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				justify-content: space-between;
+				font-size: 14px;
+				color: #000000;
+				.value{
+					display:flex;
+					align-items: center;
+					.yyj_txt{
+						color: rgba(0, 0, 0, 0.4);
+					}
+					.default_txt{
+						color:#2C82FF;
+					}
+				}
+			}
+		}
+		.yy_list{
+			flex:1;
+			overflow-y: scroll;
+			.yy_item{
+				margin-bottom: 6px;
+				padding-left: 15px;
+				padding-right: 15px;
+				width: 100%;
+				height: 100px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.yy_img{
+					margin-right: 15px;
+					width: 70px;
+					height: 70px;
+				}
+				.yy_content{
+					flex:1;
+					height: 70px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+					.yy_row{
+						font-size: 14px;
+						color: #000000;
+					}
+				}
+				.delete_icon{
+					width: 18px;
+					height: 20px;
+				}
+			}
+		}
+		.bottom_box{
+			.all_delete{
+				margin-top:15px; 
+				width: 100%;
+				text-align: center;
+				color: #428FFF;
+				font-size: 14px;
+			}
+			.button_box{
+				width: 100%;
+				height: 70px;
 				display:flex;
 				align-items: center;
-				.yyj_txt{
-					color: rgba(0, 0, 0, 0.4);
-				}
-				.default_txt{
-					color:#2C82FF;
-				}
-			}
-		}
-	}
-	.yy_list{
-		flex:1;
-		overflow-y: scroll;
-		.yy_item{
-			margin-bottom: 6px;
-			padding-left: 15px;
-			padding-right: 15px;
-			width: 100%;
-			height: 100px;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			.yy_img{
-				margin-right: 15px;
-				width: 70px;
-				height: 70px;
-			}
-			.yy_content{
-				flex:1;
-				height: 70px;
-				display: flex;
-				flex-direction: column;
 				justify-content: space-around;
-				.yy_row{
+				.button{
+					border-radius: 20px;
+					border:1px solid #2C82FF;
+					width: 160px;
+					height: 40px;
+					display:flex;
+					align-items: center;
+					justify-content: center;
 					font-size: 14px;
-					color: #000000;
+					font-weight: 500;
+					.bind_scan_icon{
+						margin-right: 4px;
+						width: 14px;
+						height: 14px;
+					}
+					.scan_text{
+						color: #2C82FF;
+					}
+				}
+				.rk_button{
+					background: #2C82FF;
+					color: #ffffff;
 				}
 			}
-			.delete_icon{
-				width: 18px;
-				height: 20px;
-			}
 		}
-	}
-	.bottom_box{
-		.all_delete{
-			margin-top:15px; 
+		.right_arrow{
+			margin-left: 15px;
+			width: 12px;
+			height: 24px;
+		}
+		.padding_box{
+			width: 100%;
+			height: 8px;
+			background:#F2F2F2;
+		}
+		.list{
+			max-height: 300px;
+			overflow-y: scroll;
+		}
+		.item{
 			width: 100%;
 			text-align: center;
-			color: #428FFF;
-			font-size: 14px;
+			height: 56px;
+			line-height: 56px;
+			font-size: 17px;
+			color: #000000;
 		}
-		.button_box{
-			width: 100%;
-			height: 70px;
-			display:flex;
-			align-items: center;
-			justify-content: space-around;
-			.button{
-				border-radius: 20px;
-				border:1px solid #2C82FF;
-				width: 160px;
-				height: 40px;
-				display:flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 14px;
-				font-weight: 500;
-				.bind_scan_icon{
-					margin-right: 4px;
-					width: 14px;
-					height: 14px;
-				}
-				.scan_text{
-					color: #2C82FF;
-				}
-			}
-			.rk_button{
-				background: #2C82FF;
-				color: #ffffff;
-			}
+		.active_item{
+			color: #2C82FF;
 		}
 	}
-	.right_arrow{
-		margin-left: 15px;
-		width: 12px;
-		height: 24px;
-	}
-	.padding_box{
-		width: 100%;
-		height: 8px;
-		background:#F2F2F2;
-	}
-	.list{
-		max-height: 300px;
-		overflow-y: scroll;
-	}
-	.item{
-		width: 100%;
-		text-align: center;
-		height: 56px;
-		line-height: 56px;
-		font-size: 17px;
-		color: #000000;
-	}
-	.active_item{
-		color: #2C82FF;
-	}
-}
 </style>

@@ -94,6 +94,7 @@
 			//当前用户所有借样中的样衣接口
 			this.getClothesList();
 			this.sqr_name = this.userInfo.user_name;
+			this.sqr_id = this.userInfo.userid;
 		},
 		methods:{
 			//点击选择责任人
@@ -128,10 +129,9 @@
 				})
 			},
 			//当前用户所有借样中的样衣接口
-			getClothesList(sqr_id){
-				let arg = {}
-				if(sqr_id){
-					arg.select_user_id = sqr_id;
+			getClothesList(){
+				let arg = {
+					select_user_id:this.sqr_id
 				}
 				resource.clothesList(arg).then(res => {
 					if(res.code == 1){
@@ -170,7 +170,8 @@
 						ids:ids.join(','),
 						user_name:this.user_name,
 						user_id:this.user_id,
-						remark:this.remark
+						remark:this.remark,
+						select_user_id:this.sqr_id
 					}
 					resource.applyTransfer(arg).then(res => {
 						if(res.code == 1){
@@ -189,7 +190,6 @@
 			},
 			//获取申请人列表
 			onSearch(){
-				console.log(this.username)
 				let arg = {
 					username:this.username
 				}
@@ -205,7 +205,7 @@
 				this.current_index = index;
 				this.showPicker = false;
 				//当前用户所有借样中的样衣接口
-				this.getClothesList(this.sqr_id)
+				this.getClothesList();
 			}
 		},
 		components:{

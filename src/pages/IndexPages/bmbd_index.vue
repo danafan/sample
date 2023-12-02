@@ -88,12 +88,7 @@
 							}else{
 								sku_code = data.text;
 							}
-							if(sku_code.length < 14){	//样衣码
-								//验证样衣码接口
-								this.getSkuCodeInfo(sku_code)
-							}else{		
-								this.$toast('请扫描样衣码');
-							}
+							this.getSkuCodeInfo(sku_code)
 						},
 						onFail : (err) => {
 							console.log(err)

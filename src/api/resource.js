@@ -47,6 +47,7 @@ let path = {
 	editRoom:'return/edit_room',					//归还记录变更样衣间
 	indexSale:'index/sale',							//扫码获取样衣详情—点击按钮修改售出状态
 	ajaxUsers:'handover/ajax_users',				//样衣转移获取申请人列表
+	checkUniqueType:'binding/checkuniquetype',		//验证商品码类型
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -248,6 +249,10 @@ export default{
 	//样衣转移获取申请人列表
 	ajaxUsers(params){
 		return http.get(path.ajaxUsers, params)
+	},
+	//验证商品码类型
+	checkUniqueType(params){
+		return http.post(path.checkUniqueType, params)
 	},
 }
 
