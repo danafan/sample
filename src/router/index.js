@@ -8,6 +8,7 @@ const bmbd_index = resolve=>System.import('@/pages/IndexPages/bmbd_index')
 const yyxq = resolve=>System.import('@/pages/IndexPages/yyxq')
 const yybs_index = resolve=>System.import('@/pages/IndexPages/yybs_index')
 const yyzy_index = resolve=>System.import('@/pages/IndexPages/yyzy_index')
+const wbth_index = resolve=>System.import('@/pages/IndexPages/wbth_index')
 const fqjy_index = resolve=>System.import('@/pages/IndexPages/fqjy_index')
 const yypd_index = resolve=>System.import('@/pages/IndexPages/yypd_index')
 const pdxq_index = resolve=>System.import('@/pages/IndexPages/pdxq_index')
@@ -71,6 +72,11 @@ const router = new Router({
 		path: '/yyzy_index',
 		name:"样衣转移",
 		component: yyzy_index
+	},
+	{
+		path: '/wbth_index',
+		name:"外部退回",
+		component: wbth_index
 	},
 	{
 		path: '/fqjy_index',

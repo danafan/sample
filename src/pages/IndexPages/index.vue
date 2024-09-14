@@ -37,6 +37,10 @@
 						<img class="item_icon" src="../../static/yyzy_icon.png">
 						<div class="item_lable">样衣转移</div>
 					</div>
+					<div class="item" @click="$router.push('/wbth_index')">
+						<img class="item_icon" src="../../static/wbth_icon.png">
+						<div class="item_lable">外部退回</div>
+					</div>
 				</div>
 			</div>
 		</div>

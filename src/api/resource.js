@@ -48,6 +48,7 @@ let path = {
 	indexSale:'index/sale',							//扫码获取样衣详情—点击按钮修改售出状态
 	ajaxUsers:'handover/ajax_users',				//样衣转移获取申请人列表
 	checkUniqueType:'binding/checkuniquetype',		//验证商品码类型
+	batchReturn:'sampleexternal/batchreturn',		//外部退回
 }								
 export default{
 	//获取钉钉鉴权信息
@@ -253,6 +254,10 @@ export default{
 	//验证商品码类型
 	checkUniqueType(params){
 		return http.post(path.checkUniqueType, params)
+	},
+	//外部退回
+	batchReturn(params){
+		return http.post(path.batchReturn, params)
 	},
 }
 
