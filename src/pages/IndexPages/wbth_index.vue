@@ -1,9 +1,12 @@
 <template>
 	<div class="container">
 		<div class="row">
-			<div class="lable">部门：</div>
-			<div class="value" @click="changeDept">
-				<div class="yyj_txt" :class="{'default_txt':dept_name != ''}">{{dept_name == ''?'选择部门':dept_name}}</div>
+			<div class="lable" @click="show_person_dept = true">
+				<div>{{type_list[typeIndex].name}}</div>
+				<img class="down_arrow_icon" src="../../static/down_arrow_icon.png">
+			</div>
+			<div class="value" @click="changeType">
+				<div class="yyj_txt" :class="{'default_txt':show_name != ''}">{{show_name == ''?`选择${type_list[typeIndex].name}`:show_name}}</div>
 				<img class="right_arrow" src="../../static/right_arrow.png">
 			</div>
 		</div>
@@ -31,6 +34,14 @@
 		<div class="button rk_button" @click="modelFn('3')">提交</div>
 	</div>
 	<DialogModel :value="value" @callbackFn="callbackFn" v-if="showModel"></DialogModel>
+	<!-- 切换个人/部门 -->
+	<van-popup v-model:show="show_person_dept" position="bottom" round>
+		<div class="list">
+			<div class="item" :class="{'active_item':typeIndex == index}" v-for="(item,index) in type_list" @click="checkPersonDept(index)">{{item.name}}</div>
+		</div>
+		<div class="padding_box"></div>
+		<div class="item" @click="showYyly = false">关闭</div>
+	</van-popup>
 </div>
 </template>
 <script>
@@ -41,12 +52,23 @@
 	export default{
 		data(){
 			return{
-				dept_name:"",					//部门名称
+				show_name:"",					//展示的名称
+				userid:"",						//个人ID
 				dept_id:"",						//部门ID
 				listArray:[],					//商品编码列表
 				showModel:false,				//是否显示弹窗
 				value:"",						//弹窗内容
 				modelType:"",					//弹窗类型
+				show_person_dept:false,			//切换个人/部门
+				type_list:[
+				{
+					id:1,
+					name:'个人'
+				},{
+					id:2,
+					name:'部门'
+				}],				  //类型列表
+				typeIndex:0
 			}
 		},
 		methods:{
@@ -69,6 +91,13 @@
 					break;
 				}
 			},
+			//切换个人/部门
+			checkPersonDept(index){
+				this.typeIndex = index;
+				this.show_person_dept = false;
+				this.dept_id = "";
+				this.userid = "";
+			},
 			//弹窗确认
 			callbackFn(v){
 				if(v == '1'){					//取消
@@ -87,12 +116,20 @@
 							this.$toast('请扫描商品编码！');
 						}else{
 							let arg = {
-								dept_id:this.dept_id,
+								type:this.typeIndex + 1,
 								sku_list:this.listArray.join(',')
 							}
+							if(this.typeIndex == 0){
+								arg['userid'] = this.userid;
+							}
+							if(this.typeIndex == 1){
+								arg['dept_id'] = this.dept_id;
+							}
 							resource.batchReturn(arg).then(res => {
+								this.$toast(res.msg);
 								if(res.code == 1){
-									this.dept_name = "";
+									this.show_name = "";
+									this.userid = "";
 									this.dept_id = "";
 									this.listArray = [];
 								}
@@ -100,7 +137,6 @@
 							this.showModel = false;
 						}
 					}
-					
 				}
 			},
 			//点击扫描商品编码
@@ -117,27 +153,58 @@
 					})
 				})
 			},
-			//点击选择部门
-			changeDept(){
-				dd.ready(() => {
-					dd.biz.contact.departmentsPicker({
-						title:"选择部门",            
-						corpId:"ding7828fff434921f5b",             
-						multiple:false,            
-						limitTips:"超出了",          
-						maxDepartments:100,           
-						pickedDepartments:[],         
-						disabledDepartments:[],        
-						requiredDepartments:[],        
-						appId:1664876526,              
-						permissionType:"GLOBAL",
-						onSuccess : (res) => {
-							this.dept_name = res.departments[0].name;
-							this.dept_id = res.departments[0].id;
-						},
-						onFail : function(err) {}
-					});
-				})
+			//点击选择个人/部门
+			changeType(){	
+				if(this.typeIndex == 0){		//选择个人
+					dd.ready(() => {
+						dd.biz.contact.complexPicker({
+							title: "选择个人",
+							corpId: "ding7828fff434921f5b",
+							multiple: false,
+							limitTips: "超出了",
+							maxUsers: 1000,
+							pickedUsers: [],
+							pickedDepartments: [],
+							disabledUsers: [],
+							disabledDepartments: [],
+							requiredUsers: [],
+							requiredDepartments: [],
+							appId: 1664876526,
+							permissionType: "GLOBAL",
+							responseUserOnly: true,
+							startWithDepartmentId: 0,
+							onSuccess : (res) => {
+								this.show_name = res.users[0].name;
+								this.userid = res.users[0].emplId;
+							},
+							onFail : function(err) {
+							// 调用失败时回调
+								console.log(err)
+							}
+						});
+					})
+				}else if(this.typeIndex == 0){	//选择部门
+					dd.ready(() => {
+						dd.biz.contact.departmentsPicker({
+							title:"选择部门",            
+							corpId:"ding7828fff434921f5b",             
+							multiple:false,            
+							limitTips:"超出了",          
+							maxDepartments:100,           
+							pickedDepartments:[],         
+							disabledDepartments:[],        
+							requiredDepartments:[],        
+							appId:1664876526,              
+							permissionType:"GLOBAL",
+							onSuccess : (res) => {
+								this.show_name = res.departments[0].name;
+								this.dept_id = res.departments[0].id;
+							},
+							onFail : function(err) {}
+						});
+					})
+				}
+				
 			},
 		},
 		components:{
@@ -163,6 +230,15 @@
 			border-radius: 6px;
 			padding-left:15px;
 			padding-right:15px;
+			.lable{
+				display: flex;
+				align-items: center;
+				color:#999999;
+				.down_arrow_icon{
+					width: 17px;
+					height: 8.5px;
+				}
+			}
 			.value{
 				display:flex;
 				align-items: center;
@@ -249,11 +325,25 @@
 			width: 12px;
 			height: 24px;
 		}
+		.padding_box{
+			width: 100%;
+			height: 8px;
+			background:#F2F2F2;
+		}
 		.list{
 			max-height: 300px;
 			overflow-y: scroll;
 		}
-		
-		
+		.item{
+			width: 100%;
+			text-align: center;
+			height: 56px;
+			line-height: 56px;
+			font-size: 17px;
+			color: #000000;
+		}
+		.active_item{
+			color: #2C82FF;
+		}
 	}
 </style>
