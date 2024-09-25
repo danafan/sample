@@ -94,9 +94,10 @@
 			//切换个人/部门
 			checkPersonDept(index){
 				this.typeIndex = index;
-				this.show_person_dept = false;
-				this.dept_id = "";
+				this.show_name = "";
 				this.userid = "";
+				this.dept_id = "";
+				this.show_person_dept = false;
 			},
 			//弹窗确认
 			callbackFn(v){
@@ -110,7 +111,9 @@
 						this.listArray = [];
 						this.showModel = false;
 					}else if(this.modelType == '3'){	//提交
-						if(this.dept_id == ''){
+						if(this.typeIndex == 0 && this.userid == ''){
+							this.$toast('请选择个人！');
+						}else if(this.typeIndex == 1 && this.dept_id == ''){
 							this.$toast('请选择部门！');
 						}else if(this.listArray.length == 0){
 							this.$toast('请扫描商品编码！');
@@ -128,6 +131,7 @@
 							resource.batchReturn(arg).then(res => {
 								this.$toast(res.msg);
 								if(res.code == 1){
+									this.typeIndex = 0;
 									this.show_name = "";
 									this.userid = "";
 									this.dept_id = "";
@@ -183,7 +187,7 @@
 							}
 						});
 					})
-				}else if(this.typeIndex == 0){	//选择部门
+				}else if(this.typeIndex == 1){	//选择部门
 					dd.ready(() => {
 						dd.biz.contact.departmentsPicker({
 							title:"选择部门",            
